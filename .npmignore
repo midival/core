@@ -1,0 +1,10 @@
+.github
+.cache
+src
+.gitignore
+.npmignore
+.npmrc
+jest.config.js
+tsconfig.json
+yarn.lock
+coverage
