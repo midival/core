@@ -20,6 +20,9 @@ export default class BrowserMIDIAccess implements IMIDIAccess {
   }
 
   async connect(sysex: boolean = false): Promise<WebMidi.MIDIAccess> {
+    if (!navigator.requestMIDIAccess) {
+      throw new Error("requestMIDIAccess not available, make sure you are using MIDI-compatible browser.");
+    }
     this.access = await navigator.requestMIDIAccess({ sysex }); // FIXME: check.
     return this.access;
   }
