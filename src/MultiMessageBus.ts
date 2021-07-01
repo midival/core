@@ -19,7 +19,7 @@ export default class MultiMessageBus {
   onAll(callback: Callback): UnregisterCallback {
     // assuming there is a polymorphism in TypeScript
     if (!this.buses.has(ALL)) {
-      this.buses.set(ALL, new MessageBus(name));
+      this.buses.set(ALL, new MessageBus(this.name));
     }
     return this.buses.get(ALL).on(callback);
   }
@@ -27,7 +27,7 @@ export default class MultiMessageBus {
   on(key: string, callback: Callback): UnregisterCallback {
     // FIXME: when the key is not set, we set the callback to "_all" Symbol
     if (!this.buses.has(key)) {
-      this.buses.set(key, new MessageBus(name + "::" + key));
+      this.buses.set(key, new MessageBus(this.name + "::" + key));
     }
     return this.buses.get(key).on(callback);
   }
