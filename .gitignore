@@ -4,3 +4,4 @@ yarn-error.log
 .cache/
 coverage/
 .DS_Store
+docs/

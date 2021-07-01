@@ -22,5 +22,7 @@
     "prettier": "prettier --check \"src/**/*.ts\"",
     "prettier:fix": "prettier --write \"src/**/*.ts\""
   },
-  "dependencies": {}
+  "dependencies": {
+    "typedoc": "^0.21.2"
+  }
 }
