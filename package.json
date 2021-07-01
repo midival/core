@@ -8,15 +8,11 @@
     "@types/jest": "^24.0.18",
     "@types/webmidi": "^2.0.3",
     "jest": "^24.9.0",
-    "parcel-bundler": "^1.12.4",
     "prettier": "^2.0.5",
     "ts-jest": "^24.0.2",
-    "ts-node": "^8.6.2",
-    "tslib": "^2.1.0",
     "typescript": "^3.8.2"
   },
   "scripts": {
-    "start": "parcel demo/index.html",
     "compile": "tsc",
     "test": "jest",
     "prettier": "prettier --check \"src/**/*.ts\"",
