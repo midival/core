@@ -32,6 +32,8 @@ jobs:
   publish-docs:
     runs-on: ubuntu-latest
     needs: build-docs
+    env:
+      NPM_TOKEN: ${{secrets.NPM_TOKEN}}
     steps:
     - uses: actions/checkout@v1
     - name: Download math result for job 1
