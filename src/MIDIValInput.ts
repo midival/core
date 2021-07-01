@@ -32,6 +32,11 @@ export default class MIDIValInput {
     this.registerInput(input);
   }
 
+  /**
+   * Returns new MIDIValInput object based on the interface id.
+   * @param interfaceId id of the interface from the MIDIAcces object. 
+   * @returns Promise resolving to MIDIValInput.
+   */
   static async fromInterfaceId(interfaceId: string): Promise<MIDIValInput> {
     const midiAccess = await this.getMidiAccess();
     const input = midiAccess.inputs.find(({ id }) => id === interfaceId);
@@ -56,7 +61,6 @@ export default class MIDIValInput {
   }
 
   private async registerInput(input: IMIDIInput): Promise<void> {
-    // console.log("registeringInput", input);
     this.midiInput = input;
     this.unregisterInput = await input.onMessage(
       (e: WebMidi.MIDIMessageEvent) => {
@@ -100,13 +104,16 @@ export default class MIDIValInput {
             break;
 
           default:
-            // console.warn("Unknown message: ", logMessage(midiMessage));
+            // TODO: Unknown message.
             break;
         }
       }
     );
   }
 
+  /**
+   * Disconnects all listeners.
+   */
   public disconnect(): void {
     for (const key of Object.keys(this.buses)) {
       this.buses[key].offAll();
@@ -116,10 +123,21 @@ export default class MIDIValInput {
     }
   }
 
+  /**
+   * Registers new callback on every note on event.
+   * @param callback Callback that will get called on each note on event. 
+   * @returns Callback to unregister.
+   */
   onAllNoteOn(callback: Callback): UnregisterCallback {
     return this.buses.noteOn.onAll(callback);
   }
 
+  /**
+   * Registers new callback on specific note on event.
+   * @param key string representation of the key number (To be reworked to number in future version)
+   * @param callback Callback that gets called on every note on on this specific key
+   * @returns Callback to unregister.
+   */
   onNoteOn(key: string, callback: Callback): UnregisterCallback {
     return this.buses.noteOn.on(key, callback);
   }

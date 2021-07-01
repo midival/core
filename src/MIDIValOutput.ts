@@ -1,11 +1,8 @@
-import toMidiMessage, {
-  logMessage,
+import {
   COMMAND,
   CHANNEL_MODE,
-  isChannelMode,
 } from "./utils/MIDIMessageConvert";
 import IMIDIOutput from "./wrappers/outputs/IMIDIOutput";
-import MIDIAccess from "./wrappers/access/MIDIAccess";
 import MIDIVal from "./index";
 import IMIDIAccess from "./wrappers/access/IMIDIAccess";
 
