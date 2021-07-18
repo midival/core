@@ -48,13 +48,15 @@ jobs:
         key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
         restore-keys: |
           ${{ runner.os }}-yarn-
-    - name: Preconfigure git
-      run: git config --global user.email "midival@kulak.at" && git config --global user.name "Midival Pipeline"
     - name: Install node_modules
       run: yarn install --frozen-lockfile
     - name: Download math result for job 1
       uses: actions/download-artifact@v1
       with:
         name: docs
-    - name: Publish documentation
-      run: yarn deploy
+    - name: Deploy with gh-pages
+      run: |
+        git remote set-url origin https://git:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
+        npx gh-pages -d build -u "github-actions-bot <support+actions@github.com>"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
