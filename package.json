@@ -5,13 +5,13 @@
   "types": "dist/index.d.ts",
   "license": "MIT",
   "devDependencies": {
-    "@types/jest": "^26.0.23",
-    "@types/webmidi": "^2.0.3",
+    "@types/jest": "^26.0.24",
+    "@types/webmidi": "^2.0.6",
     "gh-pages": "^3.2.3",
     "jest": "^27.0.6",
     "prettier": "^2.3.2",
     "ts-jest": "^27.0.3",
-    "typedoc": "^0.21.2",
+    "typedoc": "^0.21.4",
     "typescript": "^4.3.5"
   },
   "scripts": {
