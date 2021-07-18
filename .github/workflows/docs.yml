@@ -48,6 +48,8 @@ jobs:
         key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
         restore-keys: |
           ${{ runner.os }}-yarn-
+    - name: Preconfigure git
+      run: git config --global user.email "midival@kulak.at" && git config --global user.name "Midival Pipeline"
     - name: Install node_modules
       run: yarn install --frozen-lockfile
     - name: Download math result for job 1
