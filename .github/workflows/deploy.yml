@@ -1,4 +1,4 @@
-name: CI
+name: Deploy NPM package
 
 on:
   push:
