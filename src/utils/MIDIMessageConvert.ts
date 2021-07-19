@@ -1,4 +1,4 @@
-type MidiMessage = {
+export type MidiMessage = {
   channel: number;
   command: number;
   data1: number;

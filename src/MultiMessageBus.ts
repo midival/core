@@ -4,35 +4,29 @@ import MessageBus, {
   UnregisterCallback,
 } from "./MessageBus";
 
-// write an article about this.
-
-const ALL = "_ALL";
-
-export default class MultiMessageBus {
+export default class MultiMessageBus<Key, Args extends any[]> {
   private name: string;
-  private buses: Map<string, IMessageBus>;
+  private buses: Map<string, IMessageBus<Args>>;
+  private allBus: IMessageBus<[Key, ...Args]>;
   constructor(name) {
     this.name = name;
     this.buses = new Map();
+    this.allBus = new MessageBus(this.name + "::all");
   }
 
-  onAll(callback: Callback): UnregisterCallback {
-    // assuming there is a polymorphism in TypeScript
-    if (!this.buses.has(ALL)) {
-      this.buses.set(ALL, new MessageBus(this.name));
-    }
-    return this.buses.get(ALL).on(callback);
+  onAll(callback: Callback<[Key, ...Args]>): UnregisterCallback {
+    return this.allBus.on(callback);
   }
 
-  on(key: string, callback: Callback): UnregisterCallback {
+  on(key: Key, callback: Callback<Args>): UnregisterCallback {
     // FIXME: when the key is not set, we set the callback to "_all" Symbol
-    if (!this.buses.has(key)) {
-      this.buses.set(key, new MessageBus(this.name + "::" + key));
+    if (!this.buses.has(key.toString())) {
+      this.buses.set(key.toString(), new MessageBus(this.name + "::" + key.toString()));
     }
-    return this.buses.get(key).on(callback);
+    return this.buses.get(key.toString()).on(callback);
   }
 
-  off(key: string, callback: Callback): void {
+  off(key: string, callback: Callback<Args>): void {
     if (!this.buses.has(key)) {
       return;
     }
@@ -45,20 +39,15 @@ export default class MultiMessageBus {
     }
   }
 
-  trigger(key: string, ...args: any[]): void {
+  trigger(key: Key, ...args: Args): void {
     this._triggerAll(key, ...args);
-    if (!this.buses.has(key)) {
-      // console.log("No triggers for", key, ...args);
+    if (!this.buses.has(key.toString())) {
       return;
     }
-    this.buses.get(key).trigger(...args);
+    this.buses.get(key.toString()).trigger(...args);
   }
 
-  _triggerAll(...args: any[]) {
-    if (!this.buses.has(ALL)) {
-      return;
-    }
-    this.buses.get(ALL).trigger(...args);
+  _triggerAll(...args: [Key, ...Args]) {
+    this.allBus.trigger(...args);
   }
-  // is there a polymorphism in TypeScript? If so, we can do the second, single-argument implementation here.
 }
