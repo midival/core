@@ -121,7 +121,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/midival/core/blob/0e81004/src/MIDIValInput.ts#L30">MIDIValInput.ts:30</a></li>
+									<li>Defined in <a href="https://github.com/midival/core/blob/42955e4/src/MIDIValInput.ts#L41">MIDIValInput.ts:41</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -147,7 +147,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/midival/core/blob/0e81004/src/MIDIValInput.ts#L117">MIDIValInput.ts:117</a></li>
+									<li>Defined in <a href="https://github.com/midival/core/blob/42955e4/src/MIDIValInput.ts#L128">MIDIValInput.ts:128</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -163,22 +163,31 @@
 					<a name="onAllControlChange" class="tsd-anchor"></a>
 					<h3>on<wbr>All<wbr>Control<wbr>Change</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">on<wbr>All<wbr>Control<wbr>Change<span class="tsd-signature-symbol">(</span>callback<span class="tsd-signature-symbol">: </span><a href="../modules.html#Callback" class="tsd-signature-type" data-tsd-kind="Type alias">Callback</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../modules.html#UnregisterCallback" class="tsd-signature-type" data-tsd-kind="Type alias">UnregisterCallback</a></li>
+						<li class="tsd-signature tsd-kind-icon">on<wbr>All<wbr>Control<wbr>Change<span class="tsd-signature-symbol">(</span>callback<span class="tsd-signature-symbol">: </span><a href="../modules.html#Callback" class="tsd-signature-type" data-tsd-kind="Type alias">Callback</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">MidiMessage</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../modules.html#UnregisterCallback" class="tsd-signature-type" data-tsd-kind="Type alias">UnregisterCallback</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/midival/core/blob/0e81004/src/MIDIValInput.ts#L153">MIDIValInput.ts:153</a></li>
+									<li>Defined in <a href="https://github.com/midival/core/blob/42955e4/src/MIDIValInput.ts#L180">MIDIValInput.ts:180</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Registers callback on every control change message</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>callback: <a href="../modules.html#Callback" class="tsd-signature-type" data-tsd-kind="Type alias">Callback</a></h5>
+									<h5>callback: <a href="../modules.html#Callback" class="tsd-signature-type" data-tsd-kind="Type alias">Callback</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">MidiMessage</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Callback that will get called on control change.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="../modules.html#UnregisterCallback" class="tsd-signature-type" data-tsd-kind="Type alias">UnregisterCallback</a></h4>
+							<p>Unregister callback.</p>
 						</li>
 					</ul>
 				</section>
@@ -186,22 +195,31 @@
 					<a name="onAllNoteOff" class="tsd-anchor"></a>
 					<h3>on<wbr>All<wbr>Note<wbr>Off</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">on<wbr>All<wbr>Note<wbr>Off<span class="tsd-signature-symbol">(</span>callback<span class="tsd-signature-symbol">: </span><a href="../modules.html#Callback" class="tsd-signature-type" data-tsd-kind="Type alias">Callback</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../modules.html#UnregisterCallback" class="tsd-signature-type" data-tsd-kind="Type alias">UnregisterCallback</a></li>
+						<li class="tsd-signature tsd-kind-icon">on<wbr>All<wbr>Note<wbr>Off<span class="tsd-signature-symbol">(</span>callback<span class="tsd-signature-symbol">: </span><a href="../modules.html#Callback" class="tsd-signature-type" data-tsd-kind="Type alias">Callback</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">MidiMessage</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../modules.html#UnregisterCallback" class="tsd-signature-type" data-tsd-kind="Type alias">UnregisterCallback</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/midival/core/blob/0e81004/src/MIDIValInput.ts#L145">MIDIValInput.ts:145</a></li>
+									<li>Defined in <a href="https://github.com/midival/core/blob/42955e4/src/MIDIValInput.ts#L161">MIDIValInput.ts:161</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Registers new callback on all notes off.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>callback: <a href="../modules.html#Callback" class="tsd-signature-type" data-tsd-kind="Type alias">Callback</a></h5>
+									<h5>callback: <a href="../modules.html#Callback" class="tsd-signature-type" data-tsd-kind="Type alias">Callback</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">MidiMessage</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Callback that gets called on every note off.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="../modules.html#UnregisterCallback" class="tsd-signature-type" data-tsd-kind="Type alias">UnregisterCallback</a></h4>
+							<p>Unregister callback</p>
 						</li>
 					</ul>
 				</section>
@@ -209,13 +227,13 @@
 					<a name="onAllNoteOn" class="tsd-anchor"></a>
 					<h3>on<wbr>All<wbr>Note<wbr>On</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">on<wbr>All<wbr>Note<wbr>On<span class="tsd-signature-symbol">(</span>callback<span class="tsd-signature-symbol">: </span><a href="../modules.html#Callback" class="tsd-signature-type" data-tsd-kind="Type alias">Callback</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../modules.html#UnregisterCallback" class="tsd-signature-type" data-tsd-kind="Type alias">UnregisterCallback</a></li>
+						<li class="tsd-signature tsd-kind-icon">on<wbr>All<wbr>Note<wbr>On<span class="tsd-signature-symbol">(</span>callback<span class="tsd-signature-symbol">: </span><a href="../modules.html#Callback" class="tsd-signature-type" data-tsd-kind="Type alias">Callback</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">MidiMessage</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../modules.html#UnregisterCallback" class="tsd-signature-type" data-tsd-kind="Type alias">UnregisterCallback</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/midival/core/blob/0e81004/src/MIDIValInput.ts#L131">MIDIValInput.ts:131</a></li>
+									<li>Defined in <a href="https://github.com/midival/core/blob/42955e4/src/MIDIValInput.ts#L142">MIDIValInput.ts:142</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -226,7 +244,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>callback: <a href="../modules.html#Callback" class="tsd-signature-type" data-tsd-kind="Type alias">Callback</a></h5>
+									<h5>callback: <a href="../modules.html#Callback" class="tsd-signature-type" data-tsd-kind="Type alias">Callback</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">MidiMessage</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>Callback that will get called on each note on event.</p>
 									</div>
@@ -241,22 +259,31 @@
 					<a name="onAllNotesOff" class="tsd-anchor"></a>
 					<h3>on<wbr>All<wbr>Notes<wbr>Off</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">on<wbr>All<wbr>Notes<wbr>Off<span class="tsd-signature-symbol">(</span>callback<span class="tsd-signature-symbol">: </span><a href="../modules.html#Callback" class="tsd-signature-type" data-tsd-kind="Type alias">Callback</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../modules.html#UnregisterCallback" class="tsd-signature-type" data-tsd-kind="Type alias">UnregisterCallback</a></li>
+						<li class="tsd-signature tsd-kind-icon">on<wbr>All<wbr>Notes<wbr>Off<span class="tsd-signature-symbol">(</span>callback<span class="tsd-signature-symbol">: </span><a href="../modules.html#Callback" class="tsd-signature-type" data-tsd-kind="Type alias">Callback</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">MidiMessage</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../modules.html#UnregisterCallback" class="tsd-signature-type" data-tsd-kind="Type alias">UnregisterCallback</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/midival/core/blob/0e81004/src/MIDIValInput.ts#L209">MIDIValInput.ts:209</a></li>
+									<li>Defined in <a href="https://github.com/midival/core/blob/42955e4/src/MIDIValInput.ts#L289">MIDIValInput.ts:289</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Registers callback on all notes off</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>callback: <a href="../modules.html#Callback" class="tsd-signature-type" data-tsd-kind="Type alias">Callback</a></h5>
+									<h5>callback: <a href="../modules.html#Callback" class="tsd-signature-type" data-tsd-kind="Type alias">Callback</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">MidiMessage</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Callback to be called</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="../modules.html#UnregisterCallback" class="tsd-signature-type" data-tsd-kind="Type alias">UnregisterCallback</a></h4>
+							<p>Unregister callback</p>
 						</li>
 					</ul>
 				</section>
@@ -264,22 +291,31 @@
 					<a name="onAllPolyKeyPressure" class="tsd-anchor"></a>
 					<h3>on<wbr>All<wbr>Poly<wbr>Key<wbr>Pressure</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">on<wbr>All<wbr>Poly<wbr>Key<wbr>Pressure<span class="tsd-signature-symbol">(</span>callback<span class="tsd-signature-symbol">: </span><a href="../modules.html#Callback" class="tsd-signature-type" data-tsd-kind="Type alias">Callback</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../modules.html#UnregisterCallback" class="tsd-signature-type" data-tsd-kind="Type alias">UnregisterCallback</a></li>
+						<li class="tsd-signature tsd-kind-icon">on<wbr>All<wbr>Poly<wbr>Key<wbr>Pressure<span class="tsd-signature-symbol">(</span>callback<span class="tsd-signature-symbol">: </span><a href="../modules.html#Callback" class="tsd-signature-type" data-tsd-kind="Type alias">Callback</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">MidiMessage</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../modules.html#UnregisterCallback" class="tsd-signature-type" data-tsd-kind="Type alias">UnregisterCallback</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/midival/core/blob/0e81004/src/MIDIValInput.ts#L175">MIDIValInput.ts:175</a></li>
+									<li>Defined in <a href="https://github.com/midival/core/blob/42955e4/src/MIDIValInput.ts#L224">MIDIValInput.ts:224</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Registers callback on all poly key pressure events</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>callback: <a href="../modules.html#Callback" class="tsd-signature-type" data-tsd-kind="Type alias">Callback</a></h5>
+									<h5>callback: <a href="../modules.html#Callback" class="tsd-signature-type" data-tsd-kind="Type alias">Callback</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">MidiMessage</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Callback to be called</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="../modules.html#UnregisterCallback" class="tsd-signature-type" data-tsd-kind="Type alias">UnregisterCallback</a></h4>
+							<p>Unregister function</p>
 						</li>
 					</ul>
 				</section>
@@ -287,22 +323,31 @@
 					<a name="onAllProgramChange" class="tsd-anchor"></a>
 					<h3>on<wbr>All<wbr>Program<wbr>Change</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">on<wbr>All<wbr>Program<wbr>Change<span class="tsd-signature-symbol">(</span>callback<span class="tsd-signature-symbol">: </span><a href="../modules.html#Callback" class="tsd-signature-type" data-tsd-kind="Type alias">Callback</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../modules.html#UnregisterCallback" class="tsd-signature-type" data-tsd-kind="Type alias">UnregisterCallback</a></li>
+						<li class="tsd-signature tsd-kind-icon">on<wbr>All<wbr>Program<wbr>Change<span class="tsd-signature-symbol">(</span>callback<span class="tsd-signature-symbol">: </span><a href="../modules.html#Callback" class="tsd-signature-type" data-tsd-kind="Type alias">Callback</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">MidiMessage</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../modules.html#UnregisterCallback" class="tsd-signature-type" data-tsd-kind="Type alias">UnregisterCallback</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/midival/core/blob/0e81004/src/MIDIValInput.ts#L167">MIDIValInput.ts:167</a></li>
+									<li>Defined in <a href="https://github.com/midival/core/blob/42955e4/src/MIDIValInput.ts#L205">MIDIValInput.ts:205</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Registers callback to be called on every program change event</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>callback: <a href="../modules.html#Callback" class="tsd-signature-type" data-tsd-kind="Type alias">Callback</a></h5>
+									<h5>callback: <a href="../modules.html#Callback" class="tsd-signature-type" data-tsd-kind="Type alias">Callback</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">MidiMessage</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Callback to be called</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="../modules.html#UnregisterCallback" class="tsd-signature-type" data-tsd-kind="Type alias">UnregisterCallback</a></h4>
+							<p>Unregister function.</p>
 						</li>
 					</ul>
 				</section>
@@ -310,22 +355,31 @@
 					<a name="onAllSoundsOff" class="tsd-anchor"></a>
 					<h3>on<wbr>All<wbr>Sounds<wbr>Off</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">on<wbr>All<wbr>Sounds<wbr>Off<span class="tsd-signature-symbol">(</span>callback<span class="tsd-signature-symbol">: </span><a href="../modules.html#Callback" class="tsd-signature-type" data-tsd-kind="Type alias">Callback</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../modules.html#UnregisterCallback" class="tsd-signature-type" data-tsd-kind="Type alias">UnregisterCallback</a></li>
+						<li class="tsd-signature tsd-kind-icon">on<wbr>All<wbr>Sounds<wbr>Off<span class="tsd-signature-symbol">(</span>callback<span class="tsd-signature-symbol">: </span><a href="../modules.html#Callback" class="tsd-signature-type" data-tsd-kind="Type alias">Callback</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">MidiMessage</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../modules.html#UnregisterCallback" class="tsd-signature-type" data-tsd-kind="Type alias">UnregisterCallback</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/midival/core/blob/0e81004/src/MIDIValInput.ts#L187">MIDIValInput.ts:187</a></li>
+									<li>Defined in <a href="https://github.com/midival/core/blob/42955e4/src/MIDIValInput.ts#L252">MIDIValInput.ts:252</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Registers callback on all sounds off event</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>callback: <a href="../modules.html#Callback" class="tsd-signature-type" data-tsd-kind="Type alias">Callback</a></h5>
+									<h5>callback: <a href="../modules.html#Callback" class="tsd-signature-type" data-tsd-kind="Type alias">Callback</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">MidiMessage</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Callback to be called</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="../modules.html#UnregisterCallback" class="tsd-signature-type" data-tsd-kind="Type alias">UnregisterCallback</a></h4>
+							<p>Unregister callback</p>
 						</li>
 					</ul>
 				</section>
@@ -333,25 +387,37 @@
 					<a name="onControlChange" class="tsd-anchor"></a>
 					<h3>on<wbr>Control<wbr>Change</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">on<wbr>Control<wbr>Change<span class="tsd-signature-symbol">(</span>key<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, callback<span class="tsd-signature-symbol">: </span><a href="../modules.html#Callback" class="tsd-signature-type" data-tsd-kind="Type alias">Callback</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../modules.html#UnregisterCallback" class="tsd-signature-type" data-tsd-kind="Type alias">UnregisterCallback</a></li>
+						<li class="tsd-signature tsd-kind-icon">on<wbr>Control<wbr>Change<span class="tsd-signature-symbol">(</span>key<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, callback<span class="tsd-signature-symbol">: </span><a href="../modules.html#Callback" class="tsd-signature-type" data-tsd-kind="Type alias">Callback</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">MidiMessage</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../modules.html#UnregisterCallback" class="tsd-signature-type" data-tsd-kind="Type alias">UnregisterCallback</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/midival/core/blob/0e81004/src/MIDIValInput.ts#L157">MIDIValInput.ts:157</a></li>
+									<li>Defined in <a href="https://github.com/midival/core/blob/42955e4/src/MIDIValInput.ts#L190">MIDIValInput.ts:190</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Registers callback on specific control change key.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>key: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Control change key value</p>
+									</div>
 								</li>
 								<li>
-									<h5>callback: <a href="../modules.html#Callback" class="tsd-signature-type" data-tsd-kind="Type alias">Callback</a></h5>
+									<h5>callback: <a href="../modules.html#Callback" class="tsd-signature-type" data-tsd-kind="Type alias">Callback</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">MidiMessage</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Callback to be called</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="../modules.html#UnregisterCallback" class="tsd-signature-type" data-tsd-kind="Type alias">UnregisterCallback</a></h4>
+							<p>Unregister function</p>
 						</li>
 					</ul>
 				</section>
@@ -359,22 +425,31 @@
 					<a name="onLocalControlChange" class="tsd-anchor"></a>
 					<h3>on<wbr>Local<wbr>Control<wbr>Change</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">on<wbr>Local<wbr>Control<wbr>Change<span class="tsd-signature-symbol">(</span>callback<span class="tsd-signature-symbol">: </span><a href="../modules.html#Callback" class="tsd-signature-type" data-tsd-kind="Type alias">Callback</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../modules.html#UnregisterCallback" class="tsd-signature-type" data-tsd-kind="Type alias">UnregisterCallback</a></li>
+						<li class="tsd-signature tsd-kind-icon">on<wbr>Local<wbr>Control<wbr>Change<span class="tsd-signature-symbol">(</span>callback<span class="tsd-signature-symbol">: </span><a href="../modules.html#Callback" class="tsd-signature-type" data-tsd-kind="Type alias">Callback</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">MidiMessage</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../modules.html#UnregisterCallback" class="tsd-signature-type" data-tsd-kind="Type alias">UnregisterCallback</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/midival/core/blob/0e81004/src/MIDIValInput.ts#L202">MIDIValInput.ts:202</a></li>
+									<li>Defined in <a href="https://github.com/midival/core/blob/42955e4/src/MIDIValInput.ts#L276">MIDIValInput.ts:276</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Registers callback on local control change event</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>callback: <a href="../modules.html#Callback" class="tsd-signature-type" data-tsd-kind="Type alias">Callback</a></h5>
+									<h5>callback: <a href="../modules.html#Callback" class="tsd-signature-type" data-tsd-kind="Type alias">Callback</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">MidiMessage</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Callback to be called</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="../modules.html#UnregisterCallback" class="tsd-signature-type" data-tsd-kind="Type alias">UnregisterCallback</a></h4>
+							<p>Unregister event</p>
 						</li>
 					</ul>
 				</section>
@@ -382,25 +457,37 @@
 					<a name="onNoteOff" class="tsd-anchor"></a>
 					<h3>on<wbr>Note<wbr>Off</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">on<wbr>Note<wbr>Off<span class="tsd-signature-symbol">(</span>key<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, callback<span class="tsd-signature-symbol">: </span><a href="../modules.html#Callback" class="tsd-signature-type" data-tsd-kind="Type alias">Callback</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../modules.html#UnregisterCallback" class="tsd-signature-type" data-tsd-kind="Type alias">UnregisterCallback</a></li>
+						<li class="tsd-signature tsd-kind-icon">on<wbr>Note<wbr>Off<span class="tsd-signature-symbol">(</span>key<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, callback<span class="tsd-signature-symbol">: </span><a href="../modules.html#Callback" class="tsd-signature-type" data-tsd-kind="Type alias">Callback</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">MidiMessage</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../modules.html#UnregisterCallback" class="tsd-signature-type" data-tsd-kind="Type alias">UnregisterCallback</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/midival/core/blob/0e81004/src/MIDIValInput.ts#L149">MIDIValInput.ts:149</a></li>
+									<li>Defined in <a href="https://github.com/midival/core/blob/42955e4/src/MIDIValInput.ts#L171">MIDIValInput.ts:171</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Registers new callback on specific note off.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>key: <span class="tsd-signature-type">string</span></h5>
+									<h5>key: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>key number</p>
+									</div>
 								</li>
 								<li>
-									<h5>callback: <a href="../modules.html#Callback" class="tsd-signature-type" data-tsd-kind="Type alias">Callback</a></h5>
+									<h5>callback: <a href="../modules.html#Callback" class="tsd-signature-type" data-tsd-kind="Type alias">Callback</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">MidiMessage</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Callback that gets called on every note off on this specific key</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="../modules.html#UnregisterCallback" class="tsd-signature-type" data-tsd-kind="Type alias">UnregisterCallback</a></h4>
+							<p>Unregister callback</p>
 						</li>
 					</ul>
 				</section>
@@ -408,13 +495,13 @@
 					<a name="onNoteOn" class="tsd-anchor"></a>
 					<h3>on<wbr>Note<wbr>On</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">on<wbr>Note<wbr>On<span class="tsd-signature-symbol">(</span>key<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, callback<span class="tsd-signature-symbol">: </span><a href="../modules.html#Callback" class="tsd-signature-type" data-tsd-kind="Type alias">Callback</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../modules.html#UnregisterCallback" class="tsd-signature-type" data-tsd-kind="Type alias">UnregisterCallback</a></li>
+						<li class="tsd-signature tsd-kind-icon">on<wbr>Note<wbr>On<span class="tsd-signature-symbol">(</span>key<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, callback<span class="tsd-signature-symbol">: </span><a href="../modules.html#Callback" class="tsd-signature-type" data-tsd-kind="Type alias">Callback</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">MidiMessage</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../modules.html#UnregisterCallback" class="tsd-signature-type" data-tsd-kind="Type alias">UnregisterCallback</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/midival/core/blob/0e81004/src/MIDIValInput.ts#L141">MIDIValInput.ts:141</a></li>
+									<li>Defined in <a href="https://github.com/midival/core/blob/42955e4/src/MIDIValInput.ts#L152">MIDIValInput.ts:152</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -425,13 +512,13 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>key: <span class="tsd-signature-type">string</span></h5>
+									<h5>key: <span class="tsd-signature-type">number</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>string representation of the key number (To be reworked to number in future version)</p>
+										<p>the key number</p>
 									</div>
 								</li>
 								<li>
-									<h5>callback: <a href="../modules.html#Callback" class="tsd-signature-type" data-tsd-kind="Type alias">Callback</a></h5>
+									<h5>callback: <a href="../modules.html#Callback" class="tsd-signature-type" data-tsd-kind="Type alias">Callback</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">MidiMessage</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>Callback that gets called on every note on on this specific key</p>
 									</div>
@@ -446,25 +533,37 @@
 					<a name="onPolyKeyPressure" class="tsd-anchor"></a>
 					<h3>on<wbr>Poly<wbr>Key<wbr>Pressure</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">on<wbr>Poly<wbr>Key<wbr>Pressure<span class="tsd-signature-symbol">(</span>key<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, callback<span class="tsd-signature-symbol">: </span><a href="../modules.html#Callback" class="tsd-signature-type" data-tsd-kind="Type alias">Callback</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../modules.html#UnregisterCallback" class="tsd-signature-type" data-tsd-kind="Type alias">UnregisterCallback</a></li>
+						<li class="tsd-signature tsd-kind-icon">on<wbr>Poly<wbr>Key<wbr>Pressure<span class="tsd-signature-symbol">(</span>key<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, callback<span class="tsd-signature-symbol">: </span><a href="../modules.html#Callback" class="tsd-signature-type" data-tsd-kind="Type alias">Callback</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">MidiMessage</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../modules.html#UnregisterCallback" class="tsd-signature-type" data-tsd-kind="Type alias">UnregisterCallback</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/midival/core/blob/0e81004/src/MIDIValInput.ts#L179">MIDIValInput.ts:179</a></li>
+									<li>Defined in <a href="https://github.com/midival/core/blob/42955e4/src/MIDIValInput.ts#L234">MIDIValInput.ts:234</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Registers callback on specific poly key pressure event</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>key: <span class="tsd-signature-type">string</span></h5>
+									<h5>key: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Key for poly key pressure</p>
+									</div>
 								</li>
 								<li>
-									<h5>callback: <a href="../modules.html#Callback" class="tsd-signature-type" data-tsd-kind="Type alias">Callback</a></h5>
+									<h5>callback: <a href="../modules.html#Callback" class="tsd-signature-type" data-tsd-kind="Type alias">Callback</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">MidiMessage</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Callback to be called</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="../modules.html#UnregisterCallback" class="tsd-signature-type" data-tsd-kind="Type alias">UnregisterCallback</a></h4>
+							<p>Unregister function</p>
 						</li>
 					</ul>
 				</section>
@@ -472,25 +571,37 @@
 					<a name="onProgramChange" class="tsd-anchor"></a>
 					<h3>on<wbr>Program<wbr>Change</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">on<wbr>Program<wbr>Change<span class="tsd-signature-symbol">(</span>key<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, callback<span class="tsd-signature-symbol">: </span><a href="../modules.html#Callback" class="tsd-signature-type" data-tsd-kind="Type alias">Callback</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../modules.html#UnregisterCallback" class="tsd-signature-type" data-tsd-kind="Type alias">UnregisterCallback</a></li>
+						<li class="tsd-signature tsd-kind-icon">on<wbr>Program<wbr>Change<span class="tsd-signature-symbol">(</span>key<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, callback<span class="tsd-signature-symbol">: </span><a href="../modules.html#Callback" class="tsd-signature-type" data-tsd-kind="Type alias">Callback</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">MidiMessage</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../modules.html#UnregisterCallback" class="tsd-signature-type" data-tsd-kind="Type alias">UnregisterCallback</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/midival/core/blob/0e81004/src/MIDIValInput.ts#L171">MIDIValInput.ts:171</a></li>
+									<li>Defined in <a href="https://github.com/midival/core/blob/42955e4/src/MIDIValInput.ts#L215">MIDIValInput.ts:215</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Registers callback to be called on specific program change</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>key: <span class="tsd-signature-type">string</span></h5>
+									<h5>key: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Program value for key change</p>
+									</div>
 								</li>
 								<li>
-									<h5>callback: <a href="../modules.html#Callback" class="tsd-signature-type" data-tsd-kind="Type alias">Callback</a></h5>
+									<h5>callback: <a href="../modules.html#Callback" class="tsd-signature-type" data-tsd-kind="Type alias">Callback</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">MidiMessage</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Callback to be called</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="../modules.html#UnregisterCallback" class="tsd-signature-type" data-tsd-kind="Type alias">UnregisterCallback</a></h4>
+							<p>Unregister function</p>
 						</li>
 					</ul>
 				</section>
@@ -498,22 +609,31 @@
 					<a name="onResetAllControllers" class="tsd-anchor"></a>
 					<h3>on<wbr>Reset<wbr>All<wbr>Controllers</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">on<wbr>Reset<wbr>All<wbr>Controllers<span class="tsd-signature-symbol">(</span>callback<span class="tsd-signature-symbol">: </span><a href="../modules.html#Callback" class="tsd-signature-type" data-tsd-kind="Type alias">Callback</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../modules.html#UnregisterCallback" class="tsd-signature-type" data-tsd-kind="Type alias">UnregisterCallback</a></li>
+						<li class="tsd-signature tsd-kind-icon">on<wbr>Reset<wbr>All<wbr>Controllers<span class="tsd-signature-symbol">(</span>callback<span class="tsd-signature-symbol">: </span><a href="../modules.html#Callback" class="tsd-signature-type" data-tsd-kind="Type alias">Callback</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">MidiMessage</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../modules.html#UnregisterCallback" class="tsd-signature-type" data-tsd-kind="Type alias">UnregisterCallback</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/midival/core/blob/0e81004/src/MIDIValInput.ts#L194">MIDIValInput.ts:194</a></li>
+									<li>Defined in <a href="https://github.com/midival/core/blob/42955e4/src/MIDIValInput.ts#L264">MIDIValInput.ts:264</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Registers callback on reset all controllers event</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>callback: <a href="../modules.html#Callback" class="tsd-signature-type" data-tsd-kind="Type alias">Callback</a></h5>
+									<h5>callback: <a href="../modules.html#Callback" class="tsd-signature-type" data-tsd-kind="Type alias">Callback</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">MidiMessage</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Callback to be called</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="../modules.html#UnregisterCallback" class="tsd-signature-type" data-tsd-kind="Type alias">UnregisterCallback</a></h4>
+							<p>Unregister callback</p>
 						</li>
 					</ul>
 				</section>
@@ -521,22 +641,31 @@
 					<a name="onSysex" class="tsd-anchor"></a>
 					<h3>on<wbr>Sysex</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">on<wbr>Sysex<span class="tsd-signature-symbol">(</span>callback<span class="tsd-signature-symbol">: </span><a href="../modules.html#Callback" class="tsd-signature-type" data-tsd-kind="Type alias">Callback</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../modules.html#UnregisterCallback" class="tsd-signature-type" data-tsd-kind="Type alias">UnregisterCallback</a></li>
+						<li class="tsd-signature tsd-kind-icon">on<wbr>Sysex<span class="tsd-signature-symbol">(</span>callback<span class="tsd-signature-symbol">: </span><a href="../modules.html#Callback" class="tsd-signature-type" data-tsd-kind="Type alias">Callback</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">Uint8Array</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../modules.html#UnregisterCallback" class="tsd-signature-type" data-tsd-kind="Type alias">UnregisterCallback</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/midival/core/blob/0e81004/src/MIDIValInput.ts#L183">MIDIValInput.ts:183</a></li>
+									<li>Defined in <a href="https://github.com/midival/core/blob/42955e4/src/MIDIValInput.ts#L243">MIDIValInput.ts:243</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Registers callback on sysex message</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>callback: <a href="../modules.html#Callback" class="tsd-signature-type" data-tsd-kind="Type alias">Callback</a></h5>
+									<h5>callback: <a href="../modules.html#Callback" class="tsd-signature-type" data-tsd-kind="Type alias">Callback</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">Uint8Array</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Callback to be called</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="../modules.html#UnregisterCallback" class="tsd-signature-type" data-tsd-kind="Type alias">UnregisterCallback</a></h4>
+							<p>Unregister callback</p>
 						</li>
 					</ul>
 				</section>
@@ -550,7 +679,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/midival/core/blob/0e81004/src/MIDIValInput.ts#L40">MIDIValInput.ts:40</a></li>
+									<li>Defined in <a href="https://github.com/midival/core/blob/42955e4/src/MIDIValInput.ts#L51">MIDIValInput.ts:51</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -582,7 +711,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/midival/core/blob/0e81004/src/MIDIValInput.ts#L49">MIDIValInput.ts:49</a></li>
+									<li>Defined in <a href="https://github.com/midival/core/blob/42955e4/src/MIDIValInput.ts#L60">MIDIValInput.ts:60</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -691,7 +820,7 @@
 					<li class=" tsd-kind-interface">
 						<a href="../interfaces/IMIDIOutput.html" class="tsd-kind-icon">IMIDIOutput</a>
 					</li>
-					<li class=" tsd-kind-type-alias">
+					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
 						<a href="../modules.html#Callback" class="tsd-kind-icon">Callback</a>
 					</li>
 					<li class=" tsd-kind-type-alias">
