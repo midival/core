@@ -5,25 +5,36 @@ import toMidiMessage, {
   COMMAND,
   CHANNEL_MODE,
   isChannelMode,
+  MidiMessage,
 } from "./utils/MIDIMessageConvert";
 import IMIDIInput from "./wrappers/inputs/IMIDIInput";
 import MIDIVal from "./index";
 import IMIDIAccess from "./wrappers/access/IMIDIAccess";
 
+interface Buses {
+  noteOn: MultiMessageBus<number, [MidiMessage]>,
+  noteOff: MultiMessageBus<number, [MidiMessage]>,
+  controlChange: MultiMessageBus<number, [MidiMessage]>,
+  programChange: MultiMessageBus<number, [MidiMessage]>,
+  polyKeyPressure: MultiMessageBus<number, [MidiMessage]>,
+  channelPressure: MessageBus<[MidiMessage]>,
+  sysex: MessageBus<[Uint8Array]>
+}
+
 export default class MIDIValInput {
   private midiInput: IMIDIInput;
   private unregisterInput: UnregisterCallback;
-  private buses: any;
+  private buses: Buses;
 
   private buildBuses(): void {
     this.buses = {
-      noteOn: new MultiMessageBus("noteOn"),
-      noteOff: new MultiMessageBus("noteOff"),
-      controlChange: new MultiMessageBus("controlChange"),
-      programChange: new MultiMessageBus("programChange"),
-      polyKeyPressure: new MultiMessageBus("polyKeyPressure"),
-      channelPressure: new MessageBus("channelPressure"),
-      sysex: new MessageBus("sysex"),
+      noteOn: new MultiMessageBus<number, [MidiMessage]>("noteOn"),
+      noteOff: new MultiMessageBus<number, [MidiMessage]>("noteOff"),
+      controlChange: new MultiMessageBus<number, [MidiMessage]>("controlChange"),
+      programChange: new MultiMessageBus<number, [MidiMessage]>("programChange"),
+      polyKeyPressure: new MultiMessageBus<number, [MidiMessage]>("polyKeyPressure"),
+      channelPressure: new MessageBus<[MidiMessage]>("channelPressure"),
+      sysex: new MessageBus<[Uint8Array]>("sysex"),
     };
   }
 
@@ -74,31 +85,31 @@ export default class MIDIValInput {
         switch (midiMessage.command) {
           case COMMAND.NOTE_ON:
             this.buses.noteOn.trigger(
-              midiMessage.data1.toString(),
+              midiMessage.data1,
               midiMessage
             );
             break;
           case COMMAND.NOTE_OFF:
             this.buses.noteOff.trigger(
-              midiMessage.data1.toString(),
+              midiMessage.data1,
               midiMessage
             );
             break;
           case COMMAND.CONTROL_CHANGE:
             this.buses.controlChange.trigger(
-              midiMessage.data1.toString(),
+              midiMessage.data1,
               midiMessage
             );
             break;
           case COMMAND.PROGRAM_CHANGE:
             this.buses.programChange.trigger(
-              midiMessage.data1.toString(),
+              midiMessage.data1,
               midiMessage
             );
             break;
           case COMMAND.POLY_KEY_PRESSURE:
             this.buses.polyKeyPressure.trigger(
-              midiMessage.data1.toString(),
+              midiMessage.data1,
               midiMessage
             );
             break;
@@ -128,87 +139,156 @@ export default class MIDIValInput {
    * @param callback Callback that will get called on each note on event. 
    * @returns Callback to unregister.
    */
-  onAllNoteOn(callback: Callback): UnregisterCallback {
+  onAllNoteOn(callback: Callback<[number, MidiMessage]>): UnregisterCallback {
     return this.buses.noteOn.onAll(callback);
   }
 
   /**
    * Registers new callback on specific note on event.
-   * @param key string representation of the key number (To be reworked to number in future version)
+   * @param key the key number
    * @param callback Callback that gets called on every note on on this specific key
    * @returns Callback to unregister.
    */
-  onNoteOn(key: string, callback: Callback): UnregisterCallback {
+  onNoteOn(key: number, callback: Callback<[MidiMessage]>): UnregisterCallback {
     return this.buses.noteOn.on(key, callback);
   }
 
-  onAllNoteOff(callback: Callback): UnregisterCallback {
+  /**
+   * Registers new callback on all notes off.
+   * @param callback Callback that gets called on every note off.
+   * @returns Unregister callback
+   */
+  onAllNoteOff(callback: Callback<[number, MidiMessage]>): UnregisterCallback {
     return this.buses.noteOff.onAll(callback);
   }
 
-  onNoteOff(key: string, callback: Callback): UnregisterCallback {
+  /**
+   * Registers new callback on specific note off.
+   * @param key key number
+   * @param callback Callback that gets called on every note off on this specific key
+   * @returns Unregister callback
+   */
+  onNoteOff(key: number, callback: Callback<[MidiMessage]>): UnregisterCallback {
     return this.buses.noteOff.on(key, callback);
   }
 
-  onAllControlChange(callback: Callback): UnregisterCallback {
+  /**
+   * Registers callback on every control change message
+   * @param callback Callback that will get called on control change.
+   * @returns Unregister callback.
+   */
+  onAllControlChange(callback: Callback<[number, MidiMessage]>): UnregisterCallback {
     return this.buses.controlChange.onAll(callback);
   }
 
-  onControlChange(key: number, callback: Callback): UnregisterCallback {
+  /**
+   * Registers callback on specific control change key.
+   * @param key Control change key value
+   * @param callback Callback to be called
+   * @returns Unregister function
+   */
+  onControlChange(key: number, callback: Callback<[MidiMessage]>): UnregisterCallback {
     if (isChannelMode(key)) {
       console.warn(
         "use designated Channel Mode callback instead of onControlChange for " +
           key
       );
     }
-    return this.buses.controlChange.on(String(key), callback);
+    return this.buses.controlChange.on(key, callback);
   }
 
-  onAllProgramChange(callback: Callback): UnregisterCallback {
+  /**
+   * Registers callback to be called on every program change event
+   * @param callback Callback to be called
+   * @returns Unregister function.
+   */
+  onAllProgramChange(callback: Callback<[number, MidiMessage]>): UnregisterCallback {
     return this.buses.programChange.onAll(callback);
   }
 
-  onProgramChange(key: string, callback: Callback): UnregisterCallback {
+  /**
+   * Registers callback to be called on specific program change
+   * @param key Program value for key change
+   * @param callback Callback to be called
+   * @returns Unregister function
+   */
+  onProgramChange(key: number, callback: Callback<[MidiMessage]>): UnregisterCallback {
     return this.buses.programChange.on(key, callback);
   }
 
-  onAllPolyKeyPressure(callback: Callback): UnregisterCallback {
+  /**
+   * Registers callback on all poly key pressure events
+   * @param callback Callback to be called
+   * @returns Unregister function
+   */
+  onAllPolyKeyPressure(callback: Callback<[number, MidiMessage]>): UnregisterCallback {
     return this.buses.polyKeyPressure.onAll(callback);
   }
 
-  onPolyKeyPressure(key: string, callback: Callback): UnregisterCallback {
+  /**
+   * Registers callback on specific poly key pressure event
+   * @param key Key for poly key pressure
+   * @param callback Callback to be called
+   * @returns Unregister function
+   */
+  onPolyKeyPressure(key: number, callback: Callback<[MidiMessage]>): UnregisterCallback {
     return this.buses.polyKeyPressure.on(key, callback);
   }
 
-  onSysex(callback: Callback): UnregisterCallback {
+  /**
+   * Registers callback on sysex message
+   * @param callback Callback to be called
+   * @returns Unregister callback
+   */
+  onSysex(callback: Callback<[Uint8Array]>): UnregisterCallback {
     return this.buses.sysex.on(callback);
   }
 
-  onAllSoundsOff(callback: Callback): UnregisterCallback {
+  /**
+   * Registers callback on all sounds off event
+   * @param callback Callback to be called
+   * @returns Unregister callback
+   */
+  onAllSoundsOff(callback: Callback<[MidiMessage]>): UnregisterCallback {
     return this.buses.controlChange.on(
-      String(CHANNEL_MODE.ALL_SOUND_OFF),
+      CHANNEL_MODE.ALL_SOUND_OFF,
       callback
     );
   }
 
-  onResetAllControllers(callback: Callback): UnregisterCallback {
+  /**
+   * Registers callback on reset all controllers event
+   * @param callback Callback to be called
+   * @returns Unregister callback
+   */
+  onResetAllControllers(callback: Callback<[MidiMessage]>): UnregisterCallback {
     return this.buses.controlChange.on(
-      String(CHANNEL_MODE.RESET_ALL_CONTROLLERS),
+      CHANNEL_MODE.RESET_ALL_CONTROLLERS,
       callback
     );
   }
 
-  // FIXME: Maybe split this into two separate callbacks?
-  onLocalControlChange(callback: Callback): UnregisterCallback {
+  /**
+   * Registers callback on local control change event
+   * @param callback Callback to be called
+   * @returns Unregister event
+   */
+  onLocalControlChange(callback: Callback<[MidiMessage]>): UnregisterCallback {
+    // FIXME: Maybe split this into two separate callbacks?
     return this.buses.controlChange.on(
-      String(CHANNEL_MODE.LOCAL_CONTROL),
+      CHANNEL_MODE.LOCAL_CONTROL,
       callback
     );
   }
 
-  onAllNotesOff(callback: Callback): UnregisterCallback {
+  /**
+   * Registers callback on all notes off
+   * @param callback Callback to be called
+   * @returns Unregister callback
+   */
+  onAllNotesOff(callback: Callback<[MidiMessage]>): UnregisterCallback {
     return this.buses.controlChange.on(
-      String(CHANNEL_MODE.ALL_NOTES_OFF),
+      CHANNEL_MODE.ALL_NOTES_OFF,
       callback
     );
   }

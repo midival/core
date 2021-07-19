@@ -31,8 +31,8 @@ describe("MIDIValInput", () => {
     const note66Callback = jest.fn();
 
     input.onAllNoteOn(allCallback);
-    input.onNoteOn("65", note65Callback);
-    input.onNoteOn("66", note66Callback);
+    input.onNoteOn(65, note65Callback);
+    input.onNoteOn(66, note66Callback);
 
     mock.sendMessage(
       makeMessage({
@@ -62,8 +62,8 @@ describe("MIDIValInput", () => {
     const note50Callback = jest.fn();
 
     input.onAllNoteOff(allCallback);
-    input.onNoteOff("20", note20Callback);
-    input.onNoteOff("50", note50Callback);
+    input.onNoteOff(20, note20Callback);
+    input.onNoteOff(50, note50Callback);
 
     mock.sendMessage(
       makeMessage({
@@ -124,8 +124,8 @@ describe("MIDIValInput", () => {
     const program21Change = jest.fn();
 
     input.onAllProgramChange(allCallback);
-    input.onProgramChange("20", program20Change);
-    input.onProgramChange("21", program21Change);
+    input.onProgramChange(20, program20Change);
+    input.onProgramChange(21, program21Change);
 
     mock.sendMessage(
       makeMessage({
