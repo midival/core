@@ -13,10 +13,6 @@ export class BrowserMIDIInput implements IMIDIInput {
 
     const f = (e: WebMidi.MIDIMessageEvent) => fn(e);
 
-    // this.input.onmidimessage = function (e) {
-    //   fn(e);
-    // };
-
     this.input.addEventListener("midimessage", f);
 
     return () => {

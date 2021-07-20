@@ -5,6 +5,7 @@ import {
 } from "./IMIDIAccess";
 import {MockMIDIOutput} from "../outputs/MockMIDIOutput";
 import {MockMIDIInput} from "../inputs/MockMIDIInput";
+import { UnregisterCallback } from "../..";
 
 export class MockMIDIAccess implements IMIDIAccess {
   private mockInputs: MockMIDIInput[];
@@ -13,6 +14,18 @@ export class MockMIDIAccess implements IMIDIAccess {
   constructor() {
     this.mockInputs = [];
     this.mockOutputs = [];
+  }
+  onInputConnected(callback: InputStateChangeCallback): UnregisterCallback {
+    throw new Error("Method not implemented.");
+  }
+  onInputDisconnected(callback: InputStateChangeCallback): UnregisterCallback {
+    throw new Error("Method not implemented.");
+  }
+  onOutputConnected(callback: OutputStateChangeCallback): UnregisterCallback {
+    throw new Error("Method not implemented.");
+  }
+  onOutputDisconnected(callback: OutputStateChangeCallback): UnregisterCallback {
+    throw new Error("Method not implemented.");
   }
 
   async connect(): Promise<WebMidi.MIDIAccess> {
@@ -38,13 +51,5 @@ export class MockMIDIAccess implements IMIDIAccess {
     const output = new MockMIDIOutput(id, name);
     this.mockOutputs.push(output);
     return output;
-  }
-
-  onInputStateChange(callback: InputStateChangeCallback): void {
-    throw new Error("Method not implemented.");
-  }
-
-  onOutputStateChange(callback: OutputStateChangeCallback): void {
-    throw new Error("Method not implemented.");
   }
 }

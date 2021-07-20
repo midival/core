@@ -6,6 +6,7 @@ import {
 import {BrowserMIDIAccess} from "./BrowserMIDIAccess";
 import {IMIDIOutput} from "../outputs/IMIDIOutput";
 import {IMIDIInput} from "../inputs/IMIDIInput";
+import { UnregisterCallback } from "../../MessageBus";
 
 export class MIDIAccess implements IMIDIAccess {
   private access: IMIDIAccess;
@@ -15,6 +16,19 @@ export class MIDIAccess implements IMIDIAccess {
     } else {
       this.access = new constructor();
     }
+  }
+
+  onInputConnected(callback: InputStateChangeCallback): UnregisterCallback {
+    return this.access.onInputConnected(callback);
+  }
+  onInputDisconnected(callback: InputStateChangeCallback): UnregisterCallback {
+    return this.access.onInputDisconnected(callback);
+  }
+  onOutputConnected(callback: OutputStateChangeCallback): UnregisterCallback {
+    return this.access.onOutputConnected(callback);
+  }
+  onOutputDisconnected(callback: OutputStateChangeCallback): UnregisterCallback {
+    return this.access.onOutputDisconnected(callback);
   }
 
   static async connect(): Promise<MIDIAccess> {
@@ -33,12 +47,5 @@ export class MIDIAccess implements IMIDIAccess {
 
   get inputs(): IMIDIInput[] {
     return this.access.inputs;
-  }
-
-  onInputStateChange(callback: InputStateChangeCallback): void {
-    this.access.onInputStateChange(callback);
-  }
-  onOutputStateChange(callback: OutputStateChangeCallback): void {
-    this.access.onOutputStateChange(callback);
   }
 }
