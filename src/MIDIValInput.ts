@@ -1,15 +1,16 @@
-import MessageBus, { Callback, UnregisterCallback } from "./MessageBus";
-import MultiMessageBus from "./MultiMessageBus";
-import toMidiMessage, {
+import { MessageBus, Callback, UnregisterCallback } from "./MessageBus";
+import {MultiMessageBus} from "./MultiMessageBus";
+import {
+  toMidiMessage,
   logMessage,
   COMMAND,
   CHANNEL_MODE,
   isChannelMode,
   MidiMessage,
 } from "./utils/MIDIMessageConvert";
-import IMIDIInput from "./wrappers/inputs/IMIDIInput";
-import MIDIVal from "./index";
-import IMIDIAccess from "./wrappers/access/IMIDIAccess";
+import {IMIDIInput} from "./wrappers/inputs/IMIDIInput";
+import {MIDIVal} from "./index";
+import {IMIDIAccess} from "./wrappers/access/IMIDIAccess";
 
 interface Buses {
   noteOn: MultiMessageBus<number, [MidiMessage]>,
@@ -21,7 +22,7 @@ interface Buses {
   sysex: MessageBus<[Uint8Array]>
 }
 
-export default class MIDIValInput {
+export class MIDIValInput {
   private midiInput: IMIDIInput;
   private unregisterInput: UnregisterCallback;
   private buses: Buses;

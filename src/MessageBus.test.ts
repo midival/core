@@ -1,4 +1,4 @@
-import MessageBus from "./MessageBus";
+import {MessageBus} from "./MessageBus";
 
 describe("MessageBus", () => {
   it("should correctly register and trigger the message", () => {

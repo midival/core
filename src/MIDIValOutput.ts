@@ -2,11 +2,11 @@ import {
   COMMAND,
   CHANNEL_MODE,
 } from "./utils/MIDIMessageConvert";
-import IMIDIOutput from "./wrappers/outputs/IMIDIOutput";
-import MIDIVal from "./index";
-import IMIDIAccess from "./wrappers/access/IMIDIAccess";
+import {IMIDIOutput} from "./wrappers/outputs/IMIDIOutput";
+import {MIDIVal} from "./index";
+import {IMIDIAccess} from "./wrappers/access/IMIDIAccess";
 
-export default class MIDIValOutput {
+export class MIDIValOutput {
   private midiOutput: IMIDIOutput;
   private defaultChannel: number;
   constructor(output: IMIDIOutput) {

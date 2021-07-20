@@ -1,9 +1,10 @@
-import IMIDIInput, {
+import {
+  IMIDIInput,
   OnMessageCallback,
   UnregisterCallback,
 } from "./IMIDIInput";
 
-export default class MockMIDIInput implements IMIDIInput {
+export class MockMIDIInput implements IMIDIInput {
   private _name: string;
   private _id: string;
   private _callback: OnMessageCallback;

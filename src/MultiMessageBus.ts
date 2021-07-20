@@ -1,10 +1,11 @@
-import MessageBus, {
+import {
+  MessageBus,
   Callback,
   IMessageBus,
   UnregisterCallback,
 } from "./MessageBus";
 
-export default class MultiMessageBus<Key, Args extends any[]> {
+export class MultiMessageBus<Key, Args extends any[]> {
   private name: string;
   private buses: Map<string, IMessageBus<Args>>;
   private allBus: IMessageBus<[Key, ...Args]>;

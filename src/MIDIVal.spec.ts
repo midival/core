@@ -1,5 +1,5 @@
-import MIDIVal from "./index";
-import MockMIDIAccess from "./wrappers/access/MockMIDIAccess";
+import {MIDIVal} from "./index";
+import {MockMIDIAccess} from "./wrappers/access/MockMIDIAccess";
 
 describe("MIDIVal", () => {
   beforeEach(() => {

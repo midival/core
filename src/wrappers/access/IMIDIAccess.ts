@@ -1,18 +1,21 @@
-import IMIDIInput from "../inputs/IMIDIInput";
-import IMIDIOutput from "../outputs/IMIDIOutput";
+import { Callback, UnregisterCallback } from "../../MessageBus";
+import {IMIDIInput} from "../inputs/IMIDIInput";
+import {IMIDIOutput} from "../outputs/IMIDIOutput";
 
 export enum STATUS {
   CONNECTED = "connected",
   DISCONNECTED = "disconnected",
 }
 
-export type InputStateChangeCallback = (input: IMIDIInput) => void;
-export type OutputStateChangeCallback = (output: IMIDIOutput) => void;
+export type InputStateChangeCallback = Callback<[IMIDIInput]>; 
+export type OutputStateChangeCallback = Callback<[IMIDIOutput]>;
 
-export default interface IMIDIAccess {
+export interface IMIDIAccess {
   connect(): Promise<WebMidi.MIDIAccess>;
   inputs: IMIDIInput[];
   outputs: IMIDIOutput[];
-  onInputStateChange(callback: InputStateChangeCallback): void;
-  onOutputStateChange(callback: OutputStateChangeCallback): void;
+  onInputConnected(callback: InputStateChangeCallback): UnregisterCallback;
+  onInputDisconnected(callback: InputStateChangeCallback): UnregisterCallback;
+  onOutputConnected(callback: OutputStateChangeCallback): UnregisterCallback;
+  onOutputDisconnected(callback: OutputStateChangeCallback): UnregisterCallback;
 }

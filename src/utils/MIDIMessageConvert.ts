@@ -83,7 +83,7 @@ export const makeMessage = ({
   return Uint8Array.from([command + (channel - 1), data1, data2]);
 };
 
-export default ([status, data1, data2]: MidiData): MidiMessage => {
+export const toMidiMessage = ([status, data1, data2]: MidiData): MidiMessage => {
   const command: number = (status >> 4) << 4; // cleaning lower bits
   const channel: number = status - command + 1;
   return {

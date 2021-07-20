@@ -1,22 +1,43 @@
-import IMIDIAccess, { STATUS } from "./IMIDIAccess";
-import IMIDIOutput from "../outputs/IMIDIOutput";
-import BrowserMIDIOutput from "../outputs/BrowserMIDIOutput";
-import IMIDIInput from "../inputs/IMIDIInput";
-import BrowserMIDIInput from "../inputs/BrowserMIDIInput";
-import MessageBus from "../../MessageBus";
-import MIDIValOutput from "../../MIDIValOutput";
-import MIDIValInput from "../../MIDIValInput";
+import { IMIDIAccess, InputStateChangeCallback, OutputStateChangeCallback, STATUS } from "./IMIDIAccess";
+import {IMIDIOutput} from "../outputs/IMIDIOutput";
+import {BrowserMIDIOutput} from "../outputs/BrowserMIDIOutput";
+import {IMIDIInput} from "../inputs/IMIDIInput";
+import {BrowserMIDIInput} from "../inputs/BrowserMIDIInput";
+import {MessageBus, UnregisterCallback} from "../../MessageBus";
+import {MIDIValOutput} from "../../MIDIValOutput";
+import {MIDIValInput} from "../../MIDIValInput";
 
-export default class BrowserMIDIAccess implements IMIDIAccess {
+interface Buses {
+  inputConnected: MessageBus<[IMIDIInput]>,
+  inputDisconnected: MessageBus<[IMIDIInput]>,
+  outputConnected: MessageBus<[IMIDIOutput]>
+  outputDisconnected: MessageBus<[IMIDIOutput]>
+};
+
+export class BrowserMIDIAccess implements IMIDIAccess {
   private access: WebMidi.MIDIAccess;
 
-  private buses = {
-    inputStateChange: new MessageBus("inputStateChange"),
-    outputStateChange: new MessageBus("outputStateChange"),
+  private buses: Buses = {
+    inputConnected: new MessageBus<[IMIDIInput]>("inputStateChange"),
+    inputDisconnected: new MessageBus<[IMIDIInput]>("inputStateChange"),
+    outputConnected: new MessageBus<[IMIDIOutput]>("outputStateChange"),
+    outputDisconnected: new MessageBus<[IMIDIOutput]>("outputStateChange"),
   };
 
   constructor() {
     this.listenOnStateChange();
+  }
+  onInputConnected(callback: InputStateChangeCallback): UnregisterCallback {
+    return this.buses.inputConnected.on(callback);
+  }
+  onInputDisconnected(callback: InputStateChangeCallback): UnregisterCallback {
+    return this.buses.inputDisconnected.on(callback);
+  }
+  onOutputConnected(callback: OutputStateChangeCallback): UnregisterCallback {
+    return this.buses.outputConnected.on(callback);
+  }
+  onOutputDisconnected(callback: OutputStateChangeCallback): UnregisterCallback {
+    return this.buses.outputDisconnected.on(callback);
   }
 
   async connect(sysex: boolean = false): Promise<WebMidi.MIDIAccess> {
@@ -28,12 +49,14 @@ export default class BrowserMIDIAccess implements IMIDIAccess {
   }
 
   get outputs(): IMIDIOutput[] {
+    // FIXME: guard to be called after succesful connect.
     return Array.from(this.access.outputs).map(
       ([, output]) => new BrowserMIDIOutput(output)
     );
   }
 
   get inputs(): IMIDIInput[] {
+    // FIXME: guard to be called after succesful connect.
     return Array.from(this.access.inputs).map(
       ([, input]) => new BrowserMIDIInput(input)
     );
@@ -65,23 +88,31 @@ export default class BrowserMIDIAccess implements IMIDIAccess {
       "statechange",
       (e: WebMidi.MIDIConnectionEvent) => {
         if (e.port.type === "input") {
-          this.buses.inputStateChange.trigger(
-            new MIDIValInput(this.getInputById(e.port.id))
-          );
+          const input = this.getInputById(e.port.id);
+          switch (e.port.connection) {
+            case "closed":
+              this.buses.inputDisconnected.trigger(input);
+              break;
+            case "open":
+              this.buses.inputConnected.trigger(input);
+            case "pending":
+              console.log("Input pending.");
+              break;
+          }
         } else {
-          this.buses.outputStateChange.trigger(
-            new MIDIValOutput(this.getOutputById(e.port.id))
-          );
+          const output = this.getOutputById(e.port.id);
+          switch (e.port.connection) {
+            case "closed":
+              this.buses.outputDisconnected.trigger(output);
+              break;
+            case "open":
+              this.buses.outputConnected.trigger(output);
+            case "pending":
+              console.log("Output pending");
+              break;
+          }
         }
       }
     );
-  }
-
-  onInputStateChange(callback) {
-    this.buses.inputStateChange.on(callback);
-  }
-
-  onOutputStateChange(callback) {
-    this.buses.outputStateChange.on(callback);
   }
 }

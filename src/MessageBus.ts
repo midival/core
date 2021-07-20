@@ -33,7 +33,7 @@ export interface IMessageBus<T extends any[]> {
   trigger(...args: T): void;
 }
 
-export default class MessageBus<T extends any[]> implements IMessageBus<T> {
+export class MessageBus<T extends any[]> implements IMessageBus<T> {
   private bus: Callback<T>[];
   private name: string;
 
