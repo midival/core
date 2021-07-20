@@ -37,6 +37,7 @@ jobs:
     needs: build
     env:
       NPM_TOKEN: ${{secrets.NPM_TOKEN}}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
     - uses: actions/checkout@v1
     - name: Download math result for job 1
@@ -45,3 +46,5 @@ jobs:
         name: dist
     - name: Publish
       run: npm publish --access public
+    - name: Publish tag
+      run: hub release create -m "`node -p "require('./package.json').version"`" `node -p "require('./package.json').version"`
