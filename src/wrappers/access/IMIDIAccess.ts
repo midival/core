@@ -11,7 +11,7 @@ export type InputStateChangeCallback = Callback<[IMIDIInput]>;
 export type OutputStateChangeCallback = Callback<[IMIDIOutput]>;
 
 export interface IMIDIAccess {
-  connect(): Promise<WebMidi.MIDIAccess>;
+  connect(): Promise<void>;
   inputs: IMIDIInput[];
   outputs: IMIDIOutput[];
   onInputConnected(callback: InputStateChangeCallback): UnregisterCallback;

@@ -14,6 +14,11 @@ export class MIDIValOutput {
     this.defaultChannel = 1;
   }
 
+  /**
+   * Sends raw message to MIDI out
+   * @param msgs Message as an array of UInt8 values
+   * @returns 
+   */
   send(msgs: Uint8Array | number[]): void {
     if (!this.midiOutput) {
       return;
@@ -21,6 +26,10 @@ export class MIDIValOutput {
     this.midiOutput.send(msgs);
   }
 
+  /**
+   * Changes default channel the messages are sent on
+   * @param channel Channel value. Integer between 1 and 16
+   */
   setChannel(channel: number): void {
     this.defaultChannel = channel;
   }
@@ -32,6 +41,11 @@ export class MIDIValOutput {
     return channel - 1;
   }
 
+  /**
+   * Creates MIDIValOutput based on the interface name
+   * @param interfaceName Name of the interface
+   * @returns MIDIValOutput object
+   */
   public static async fromInterfaceName(
     interfaceName: string
   ): Promise<MIDIValOutput> {
@@ -50,8 +64,14 @@ export class MIDIValOutput {
     return midiAccess;
   }
 
-  // Note On and off
-  sendNoteOn(note: number, velocity: number, channel?: number) {
+  /**
+   * Sends note on message
+   * @param note Note key value to be sent.
+   * @param velocity Velocity - number between 0 and 128
+   * @param channel Channel. By default will use channel set by setChannel method
+   * @returns 
+   */
+  sendNoteOn(note: number, velocity: number, channel?: number): void {
     return this.send([
       COMMAND.NOTE_ON + this.getChannel(channel),
       note,

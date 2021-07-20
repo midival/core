@@ -37,7 +37,7 @@ export class MIDIAccess implements IMIDIAccess {
     return access;
   }
 
-  connect(): Promise<WebMidi.MIDIAccess> {
+  connect(): Promise<void> {
     return this.access.connect();
   }
 
