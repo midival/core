@@ -40,12 +40,11 @@ export class BrowserMIDIAccess implements IMIDIAccess {
     return this.buses.outputDisconnected.on(callback);
   }
 
-  async connect(sysex: boolean = false): Promise<WebMidi.MIDIAccess> {
+  async connect(sysex: boolean = false): Promise<void> {
     if (!navigator.requestMIDIAccess) {
       throw new Error("requestMIDIAccess not available, make sure you are using MIDI-compatible browser.");
     }
     this.access = await navigator.requestMIDIAccess({ sysex }); // FIXME: check.
-    return this.access;
   }
 
   get outputs(): IMIDIOutput[] {

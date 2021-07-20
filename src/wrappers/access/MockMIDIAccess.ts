@@ -28,9 +28,8 @@ export class MockMIDIAccess implements IMIDIAccess {
     throw new Error("Method not implemented.");
   }
 
-  async connect(): Promise<WebMidi.MIDIAccess> {
+  async connect(): Promise<void> {
     await Promise.resolve();
-    return {} as WebMidi.MIDIAccess;
   }
 
   get inputs(): MockMIDIInput[] {
