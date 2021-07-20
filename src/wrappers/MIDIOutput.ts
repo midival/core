@@ -1,4 +1,4 @@
-import IMIDIOutput from "./outputs/IMIDIOutput";
+import {IMIDIOutput} from "./outputs/IMIDIOutput";
 
 export default class MIDIOutput implements IMIDIOutput {
   send(data: Uint8Array | number[]): void {
