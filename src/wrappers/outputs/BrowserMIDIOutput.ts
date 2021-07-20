@@ -1,6 +1,6 @@
-import IMIDIOutput from "./IMIDIOutput";
+import {IMIDIOutput} from "./IMIDIOutput";
 
-export default class BrowserMIDIOutput implements IMIDIOutput {
+export class BrowserMIDIOutput implements IMIDIOutput {
   private output: WebMidi.MIDIOutput;
   constructor(output: WebMidi.MIDIOutput) {
     this.output = output;

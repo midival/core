@@ -1,8 +1,8 @@
-import IMIDIInput, { MIDIMessage, UnregisterCallback } from "./IMIDIInput";
+import { IMIDIInput, MIDIMessage, UnregisterCallback } from "./IMIDIInput";
 
 export type MidiMessageCallback = (e: WebMidi.MIDIMessageEvent) => void;
 
-export default class BrowserMIDIInput implements IMIDIInput {
+export class BrowserMIDIInput implements IMIDIInput {
   private input: WebMidi.MIDIInput;
   constructor(input: WebMidi.MIDIInput) {
     this.input = input;

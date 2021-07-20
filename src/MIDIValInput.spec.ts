@@ -1,6 +1,6 @@
-import MIDIVal from "./MIDIval";
-import MIDIValInput from "./MIDIValInput";
-import MockMIDIAccess from "./wrappers/access/MockMIDIAccess";
+import {MIDIVal} from "./MIDIval";
+import {MIDIValInput} from "./MIDIValInput";
+import {MockMIDIAccess} from "./wrappers/access/MockMIDIAccess";
 import {
   makeMessage,
   COMMAND,

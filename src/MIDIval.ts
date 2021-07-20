@@ -1,12 +1,12 @@
-import MessageBus, { Callback, UnregisterCallback } from "./MessageBus";
-import MIDIValInput from "./MIDIValInput";
-import MIDIValOutput from "./MIDIValOutput";
+import { MessageBus, Callback, UnregisterCallback } from "./MessageBus";
+import {MIDIValInput} from "./MIDIValInput";
+import {MIDIValOutput} from "./MIDIValOutput";
 
-import IMIDIInput from "./wrappers/inputs/IMIDIInput";
+import {IMIDIInput} from "./wrappers/inputs/IMIDIInput";
 
-import MIDIAccess from "./wrappers/access/MIDIAccess";
-import IMIDIOutput from "./wrappers/outputs/IMIDIOutput";
-import IMIDIAccess from "./wrappers/access/IMIDIAccess";
+import {MIDIAccess} from "./wrappers/access/MIDIAccess";
+import {IMIDIOutput} from "./wrappers/outputs/IMIDIOutput";
+import {IMIDIAccess} from "./wrappers/access/IMIDIAccess";
 
 type StaticBuses = {
   deviceConnected: MessageBus<any[]>;
@@ -17,7 +17,7 @@ type StaticBuses = {
   // deviceDisconnected: MessageBus;
 };
 
-export default class MIDIVal {
+export class MIDIVal {
   private static staticBuses: StaticBuses = {
     deviceConnected: new MessageBus("deviceConnected"),
     // inputDeviceConnected: new MessageBus("inputDeviceConnected"),

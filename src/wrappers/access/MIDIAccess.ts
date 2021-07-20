@@ -1,12 +1,13 @@
-import IMIDIAccess, {
+import {
+  IMIDIAccess,
   OutputStateChangeCallback,
   InputStateChangeCallback,
 } from "./IMIDIAccess";
-import BrowserMIDIAccess from "./BrowserMIDIAccess";
-import IMIDIOutput from "../outputs/IMIDIOutput";
-import IMIDIInput from "../inputs/IMIDIInput";
+import {BrowserMIDIAccess} from "./BrowserMIDIAccess";
+import {IMIDIOutput} from "../outputs/IMIDIOutput";
+import {IMIDIInput} from "../inputs/IMIDIInput";
 
-export default class MIDIAccess implements IMIDIAccess {
+export class MIDIAccess implements IMIDIAccess {
   private access: IMIDIAccess;
   constructor(constructor: new () => IMIDIAccess = null) {
     if (!constructor) {

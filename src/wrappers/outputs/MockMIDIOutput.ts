@@ -1,7 +1,7 @@
-import IMIDIOutput from "./IMIDIOutput";
+import {IMIDIOutput} from "./IMIDIOutput";
 import { OnMessageCallback } from "../inputs/IMIDIInput";
 
-export default class MockMIDIOutput implements IMIDIOutput {
+export class MockMIDIOutput implements IMIDIOutput {
   _id: string;
   _name: string;
   _callback: OnMessageCallback;

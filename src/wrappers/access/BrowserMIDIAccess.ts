@@ -1,13 +1,13 @@
-import IMIDIAccess, { STATUS } from "./IMIDIAccess";
-import IMIDIOutput from "../outputs/IMIDIOutput";
-import BrowserMIDIOutput from "../outputs/BrowserMIDIOutput";
-import IMIDIInput from "../inputs/IMIDIInput";
-import BrowserMIDIInput from "../inputs/BrowserMIDIInput";
-import MessageBus from "../../MessageBus";
-import MIDIValOutput from "../../MIDIValOutput";
-import MIDIValInput from "../../MIDIValInput";
+import { IMIDIAccess, STATUS } from "./IMIDIAccess";
+import {IMIDIOutput} from "../outputs/IMIDIOutput";
+import {BrowserMIDIOutput} from "../outputs/BrowserMIDIOutput";
+import {IMIDIInput} from "../inputs/IMIDIInput";
+import {BrowserMIDIInput} from "../inputs/BrowserMIDIInput";
+import {MessageBus} from "../../MessageBus";
+import {MIDIValOutput} from "../../MIDIValOutput";
+import {MIDIValInput} from "../../MIDIValInput";
 
-export default class BrowserMIDIAccess implements IMIDIAccess {
+export class BrowserMIDIAccess implements IMIDIAccess {
   private access: WebMidi.MIDIAccess;
 
   private buses = {

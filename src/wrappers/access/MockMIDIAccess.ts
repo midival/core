@@ -1,11 +1,12 @@
-import IMIDIAccess, {
+import {
+  IMIDIAccess,
   InputStateChangeCallback,
   OutputStateChangeCallback,
 } from "./IMIDIAccess";
-import MockMIDIOutput from "../outputs/MockMIDIOutput";
-import MockMIDIInput from "../inputs/MockMIDIInput";
+import {MockMIDIOutput} from "../outputs/MockMIDIOutput";
+import {MockMIDIInput} from "../inputs/MockMIDIInput";
 
-export default class MockMIDIAccess implements IMIDIAccess {
+export class MockMIDIAccess implements IMIDIAccess {
   private mockInputs: MockMIDIInput[];
   private mockOutputs: MockMIDIOutput[];
 
