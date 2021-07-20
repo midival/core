@@ -88,8 +88,10 @@
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="IMIDIAccess.html#connect" class="tsd-kind-icon">connect</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="IMIDIAccess.html#onInputStateChange" class="tsd-kind-icon">on<wbr>Input<wbr>State<wbr>Change</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="IMIDIAccess.html#onOutputStateChange" class="tsd-kind-icon">on<wbr>Output<wbr>State<wbr>Change</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="IMIDIAccess.html#onInputConnected" class="tsd-kind-icon">on<wbr>Input<wbr>Connected</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="IMIDIAccess.html#onInputDisconnected" class="tsd-kind-icon">on<wbr>Input<wbr>Disconnected</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="IMIDIAccess.html#onOutputConnected" class="tsd-kind-icon">on<wbr>Output<wbr>Connected</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="IMIDIAccess.html#onOutputDisconnected" class="tsd-kind-icon">on<wbr>Output<wbr>Disconnected</a></li>
 							</ul>
 						</section>
 					</div>
@@ -103,7 +105,7 @@
 					<div class="tsd-signature tsd-kind-icon">inputs<span class="tsd-signature-symbol">:</span> <a href="IMIDIInput.html" class="tsd-signature-type" data-tsd-kind="Interface">IMIDIInput</a><span class="tsd-signature-symbol">[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/midival/core/blob/42955e4/src/wrappers/access/IMIDIAccess.ts#L14">wrappers/access/IMIDIAccess.ts:14</a></li>
+							<li>Defined in <a href="https://github.com/midival/core/blob/ad9dad4/src/wrappers/access/IMIDIAccess.ts#L15">wrappers/access/IMIDIAccess.ts:15</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -113,7 +115,7 @@
 					<div class="tsd-signature tsd-kind-icon">outputs<span class="tsd-signature-symbol">:</span> <a href="IMIDIOutput.html" class="tsd-signature-type" data-tsd-kind="Interface">IMIDIOutput</a><span class="tsd-signature-symbol">[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/midival/core/blob/42955e4/src/wrappers/access/IMIDIAccess.ts#L15">wrappers/access/IMIDIAccess.ts:15</a></li>
+							<li>Defined in <a href="https://github.com/midival/core/blob/ad9dad4/src/wrappers/access/IMIDIAccess.ts#L16">wrappers/access/IMIDIAccess.ts:16</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -130,7 +132,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/midival/core/blob/42955e4/src/wrappers/access/IMIDIAccess.ts#L13">wrappers/access/IMIDIAccess.ts:13</a></li>
+									<li>Defined in <a href="https://github.com/midival/core/blob/ad9dad4/src/wrappers/access/IMIDIAccess.ts#L14">wrappers/access/IMIDIAccess.ts:14</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">MIDIAccess</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -138,16 +140,16 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
-					<a name="onInputStateChange" class="tsd-anchor"></a>
-					<h3>on<wbr>Input<wbr>State<wbr>Change</h3>
+					<a name="onInputConnected" class="tsd-anchor"></a>
+					<h3>on<wbr>Input<wbr>Connected</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">on<wbr>Input<wbr>State<wbr>Change<span class="tsd-signature-symbol">(</span>callback<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">InputStateChangeCallback</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">on<wbr>Input<wbr>Connected<span class="tsd-signature-symbol">(</span>callback<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">InputStateChangeCallback</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../modules.html#UnregisterCallback" class="tsd-signature-type" data-tsd-kind="Type alias">UnregisterCallback</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/midival/core/blob/42955e4/src/wrappers/access/IMIDIAccess.ts#L16">wrappers/access/IMIDIAccess.ts:16</a></li>
+									<li>Defined in <a href="https://github.com/midival/core/blob/ad9dad4/src/wrappers/access/IMIDIAccess.ts#L17">wrappers/access/IMIDIAccess.ts:17</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -156,21 +158,44 @@
 									<h5>callback: <span class="tsd-signature-type">InputStateChangeCallback</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="../modules.html#UnregisterCallback" class="tsd-signature-type" data-tsd-kind="Type alias">UnregisterCallback</a></h4>
 						</li>
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
-					<a name="onOutputStateChange" class="tsd-anchor"></a>
-					<h3>on<wbr>Output<wbr>State<wbr>Change</h3>
+					<a name="onInputDisconnected" class="tsd-anchor"></a>
+					<h3>on<wbr>Input<wbr>Disconnected</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">on<wbr>Output<wbr>State<wbr>Change<span class="tsd-signature-symbol">(</span>callback<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">OutputStateChangeCallback</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">on<wbr>Input<wbr>Disconnected<span class="tsd-signature-symbol">(</span>callback<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">InputStateChangeCallback</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../modules.html#UnregisterCallback" class="tsd-signature-type" data-tsd-kind="Type alias">UnregisterCallback</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/midival/core/blob/42955e4/src/wrappers/access/IMIDIAccess.ts#L17">wrappers/access/IMIDIAccess.ts:17</a></li>
+									<li>Defined in <a href="https://github.com/midival/core/blob/ad9dad4/src/wrappers/access/IMIDIAccess.ts#L18">wrappers/access/IMIDIAccess.ts:18</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>callback: <span class="tsd-signature-type">InputStateChangeCallback</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="../modules.html#UnregisterCallback" class="tsd-signature-type" data-tsd-kind="Type alias">UnregisterCallback</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
+					<a name="onOutputConnected" class="tsd-anchor"></a>
+					<h3>on<wbr>Output<wbr>Connected</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
+						<li class="tsd-signature tsd-kind-icon">on<wbr>Output<wbr>Connected<span class="tsd-signature-symbol">(</span>callback<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">OutputStateChangeCallback</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../modules.html#UnregisterCallback" class="tsd-signature-type" data-tsd-kind="Type alias">UnregisterCallback</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/midival/core/blob/ad9dad4/src/wrappers/access/IMIDIAccess.ts#L19">wrappers/access/IMIDIAccess.ts:19</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -179,7 +204,30 @@
 									<h5>callback: <span class="tsd-signature-type">OutputStateChangeCallback</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="../modules.html#UnregisterCallback" class="tsd-signature-type" data-tsd-kind="Type alias">UnregisterCallback</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
+					<a name="onOutputDisconnected" class="tsd-anchor"></a>
+					<h3>on<wbr>Output<wbr>Disconnected</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
+						<li class="tsd-signature tsd-kind-icon">on<wbr>Output<wbr>Disconnected<span class="tsd-signature-symbol">(</span>callback<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">OutputStateChangeCallback</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../modules.html#UnregisterCallback" class="tsd-signature-type" data-tsd-kind="Type alias">UnregisterCallback</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/midival/core/blob/ad9dad4/src/wrappers/access/IMIDIAccess.ts#L20">wrappers/access/IMIDIAccess.ts:20</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>callback: <span class="tsd-signature-type">OutputStateChangeCallback</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="../modules.html#UnregisterCallback" class="tsd-signature-type" data-tsd-kind="Type alias">UnregisterCallback</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -195,9 +243,6 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-reference">
-						<a href="../modules.html#default" class="tsd-kind-icon">default</a>
-					</li>
 					<li class=" tsd-kind-class">
 						<a href="../classes/MIDIVal.html" class="tsd-kind-icon">MIDIVal</a>
 					</li>
@@ -222,10 +267,16 @@
 								<a href="IMIDIAccess.html#connect" class="tsd-kind-icon">connect</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface">
-								<a href="IMIDIAccess.html#onInputStateChange" class="tsd-kind-icon">on<wbr>Input<wbr>State<wbr>Change</a>
+								<a href="IMIDIAccess.html#onInputConnected" class="tsd-kind-icon">on<wbr>Input<wbr>Connected</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface">
-								<a href="IMIDIAccess.html#onOutputStateChange" class="tsd-kind-icon">on<wbr>Output<wbr>State<wbr>Change</a>
+								<a href="IMIDIAccess.html#onInputDisconnected" class="tsd-kind-icon">on<wbr>Input<wbr>Disconnected</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-interface">
+								<a href="IMIDIAccess.html#onOutputConnected" class="tsd-kind-icon">on<wbr>Output<wbr>Connected</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-interface">
+								<a href="IMIDIAccess.html#onOutputDisconnected" class="tsd-kind-icon">on<wbr>Output<wbr>Disconnected</a>
 							</li>
 						</ul>
 					</li>
