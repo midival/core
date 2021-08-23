@@ -37,4 +37,7 @@ export class MockMIDIInput implements IMIDIInput {
   get id(): string {
     return this._id;
   }
+  get manufacturer(): string {
+    return "MIDIVAL";
+  }
 }

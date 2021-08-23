@@ -19,6 +19,10 @@ export class MockMIDIOutput implements IMIDIOutput {
     return this._name;
   }
 
+  get manufacturer(): string {
+    return "MIDIVAL";
+  }
+
   onMessage(callback: OnMessageCallback) {
     this._callback = callback;
   }

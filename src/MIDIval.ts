@@ -15,6 +15,22 @@ type StaticBuses = {
   outputDeviceDisconnected: MessageBus<[IMIDIOutput]>;
 };
 
+export interface ConfigScheme {
+  name?: string | RegExp,
+  manufacturer?: string | RegExp,
+}
+
+const matchesConfig = (input: IMIDIInput | IMIDIOutput, scheme: ConfigScheme): boolean => {
+  return !Object.keys(scheme).filter(key => {
+    const val = scheme[key] as string | RegExp;
+    if (typeof val === "string") {
+      return input[key] === val;
+    } else {
+      return val.test(input[key]);
+    }
+  }).some(x => !x);
+}
+
 export class MIDIVal {
   private static staticBuses: StaticBuses = {
     inputDeviceConnected: new MessageBus<[IMIDIInput]>("inputDeviceConnected"),
@@ -55,6 +71,33 @@ export class MIDIVal {
     }
 
     return unregister;
+  }
+/**
+ * Listens to all input devices with a certain config (like name or manufacturer). Configuration can be provided as a string or regex. The callback unlike `onInputDeviceConnected` accepts MIDIValInput. `onInputDeviceConnected` is suitable when you want to filter devices yourself, beyond this configuration object so it does not instantiate objects.
+ * @param config Configuration object used to match with device connected
+ * @param fn Callback on connection. Connection is already wrapped in MIDIValInput object
+ * @returns Promise for Unregister Callback
+ */
+  public static async onInputDeviceWithConfigConnected(config: ConfigScheme, fn: (input: MIDIValInput) => void): Promise<UnregisterCallback> {
+    return this.onInputDeviceConnected((input) => {
+      if (matchesConfig(input, config)) {
+        fn(new MIDIValInput(input));
+      }
+    });
+  }
+  
+/**
+ * Listens to all output devices with a certain config (like name or manufacturer). Configuration can be provided as a string or regex. The callback unlike `onOutputDeviceConnected` accepts MIDIValOutput. `onOutputDeviceConnected` is suitable when you want to filter devices yourself, beyond this configuration object so it does not instantiate objects.
+ * @param config Configuration object used to match with device connected
+ * @param fn Callback on connection. Connection is already wrapped in MIDIValOutput object
+ * @returns Promise for Unregister Callback
+ */
+  public static async onOutputDeviceWithConfigConnected(config: ConfigScheme, fn: (output: MIDIValOutput) => void): Promise<UnregisterCallback> {
+    return this.onOutputDeviceConnected((output) => {
+      if (matchesConfig(output, config)) {
+        fn(new MIDIValOutput(output));
+      }
+    });
   }
 
   /**

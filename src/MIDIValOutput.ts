@@ -79,6 +79,12 @@ export class MIDIValOutput {
     ]);
   }
 
+  /**
+   * Sends note off message.
+   * @param note Note key to be set off
+   * @param channel Channel. By default will use channel set by setChannel method
+   * @returns 
+   */
   sendNoteOff(note: number, channel?: number): void {
     return this.send([COMMAND.NOTE_OFF + this.getChannel(channel), note, 0]);
   }
