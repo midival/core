@@ -1,3 +1,4 @@
+// Based on https://sites.uci.edu/camp2014/2014/04/30/managing-midi-pitchbend-messages/
 export const fractionToPitchBend = (n: number): number => {
     if (n < -1.0 || n > 1.0) {
         throw new Error("Pitch bend value outside the range");
