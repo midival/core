@@ -11,7 +11,7 @@ import {
 import {IMIDIInput} from "./wrappers/inputs/IMIDIInput";
 import {MIDIVal} from "./index";
 import {IMIDIAccess} from "./wrappers/access/IMIDIAccess";
-import { uIntsIntoNumber } from "./utils/pitchBen";
+import { splitValueIntoFraction } from "./utils/pitchBen";
 
 interface Buses {
   noteOn: MultiMessageBus<number, [MidiMessage]>,
@@ -119,7 +119,7 @@ export class MIDIValInput {
             break;
           case COMMAND.PITCH_BEND:
             this.buses.pitchBend.trigger(
-              uIntsIntoNumber(new Uint8Array([midiMessage.data1, midiMessage.data2]))
+              splitValueIntoFraction([midiMessage.data1, midiMessage.data2])
             )
 
           default:

@@ -1,4 +1,4 @@
-import { fractionToPitchBend, splitNumberIntoUInt8s, uIntsIntoNumber } from "./pitchBen";
+import { fractionToPitchBend, fractionToPitchBendAsUints, splitNumberIntoUInt8s, splitValueIntoFraction, uIntsIntoNumber } from "./pitchBen";
 
 describe("Pitch bend utils", () => {
     it("should properly transform fraction to pitch bend value", () => {
@@ -19,6 +19,13 @@ describe("Pitch bend utils", () => {
     });
 
     it("should properly transform array back to number", () => {
-        expect(uIntsIntoNumber(new Uint8Array([120, 95]))).toEqual(12280);
+        expect(uIntsIntoNumber([120, 95])).toEqual(12280);
+    });
+
+    it("should properly transform array to value from range -1 - 1.0", () => {
+        expect(splitValueIntoFraction([120, 95])).toBeCloseTo(0.5);
+        expect(splitValueIntoFraction([0, 0])).toBeCloseTo(-1);
+        expect(splitValueIntoFraction(fractionToPitchBendAsUints(0))).toBeCloseTo(0);
+        expect(splitValueIntoFraction(fractionToPitchBendAsUints(1))).toBeCloseTo(1);
     });
 });
