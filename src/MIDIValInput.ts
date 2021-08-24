@@ -11,6 +11,7 @@ import {
 import {IMIDIInput} from "./wrappers/inputs/IMIDIInput";
 import {MIDIVal} from "./index";
 import {IMIDIAccess} from "./wrappers/access/IMIDIAccess";
+import { uIntsIntoNumber } from "./utils/pitchBen";
 
 interface Buses {
   noteOn: MultiMessageBus<number, [MidiMessage]>,
@@ -19,6 +20,7 @@ interface Buses {
   programChange: MultiMessageBus<number, [MidiMessage]>,
   polyKeyPressure: MultiMessageBus<number, [MidiMessage]>,
   channelPressure: MessageBus<[MidiMessage]>,
+  pitchBend: MessageBus<[number]>,
   sysex: MessageBus<[Uint8Array]>
 }
 
@@ -35,6 +37,7 @@ export class MIDIValInput {
       programChange: new MultiMessageBus<number, [MidiMessage]>("programChange"),
       polyKeyPressure: new MultiMessageBus<number, [MidiMessage]>("polyKeyPressure"),
       channelPressure: new MessageBus<[MidiMessage]>("channelPressure"),
+      pitchBend: new MessageBus<[number]>("pitchBend"),
       sysex: new MessageBus<[Uint8Array]>("sysex"),
     };
   }
@@ -114,6 +117,10 @@ export class MIDIValInput {
               midiMessage
             );
             break;
+          case COMMAND.PITCH_BEND:
+            this.buses.pitchBend.trigger(
+              uIntsIntoNumber(new Uint8Array([midiMessage.data1, midiMessage.data2]))
+            )
 
           default:
             // TODO: Unknown message.
@@ -161,6 +168,15 @@ export class MIDIValInput {
    */
   onAllNoteOff(callback: Callback<[number, MidiMessage]>): UnregisterCallback {
     return this.buses.noteOff.onAll(callback);
+  }
+
+  /**
+   * Registers new callback on pitch bend message
+   * @param callback Callback that gets called on every pitch bend message. It gets value of the bend in the range of -1.0 to 1.0 using 16-bit precision (if supported by sending device).
+   * @returns Unregister callback.
+   */
+  onPitchBend(callback: Callback<[number]>): UnregisterCallback {
+    return this.buses.pitchBend.on(callback);
   }
 
   /**

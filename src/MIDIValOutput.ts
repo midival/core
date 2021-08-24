@@ -5,6 +5,7 @@ import {
 import {IMIDIOutput} from "./wrappers/outputs/IMIDIOutput";
 import {MIDIVal} from "./index";
 import {IMIDIAccess} from "./wrappers/access/IMIDIAccess";
+import { fractionToPitchBendAsUints } from "./utils/pitchBen";
 
 export class MIDIValOutput {
   private midiOutput: IMIDIOutput;
@@ -120,12 +121,18 @@ export class MIDIValOutput {
     ]);
   }
 
+  /**
+   * Sends pitch bend value.
+   * @param bendValue Ben value ranging from -1.0 to 1.0.
+   * @param channel Optional channel on which bend should be sent on
+   * @returns
+   * @throws Throws exception if bendValue is outside the range.
+   */
   sendPitchBend(bendValue: number, channel?: number): void {
-    // Pitch bend destructuring here.
-    if (bendValue > (1 << 16) - 1) {
-      throw new Error("bendValue too big");
-    }
-    // FIXME: finish.
+    return this.send(new Uint8Array([
+      COMMAND.PITCH_BEND + this.getChannel(channel),
+      ...fractionToPitchBendAsUints(bendValue),
+    ]));
   }
 
   // Special Channel Modes
