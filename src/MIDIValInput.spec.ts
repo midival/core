@@ -3,10 +3,9 @@ import {MIDIValInput} from "./MIDIValInput";
 import {MockMIDIAccess} from "./wrappers/access/MockMIDIAccess";
 import {
   makeMessage,
-  COMMAND,
-  commandToString,
-  CHANNEL_MODE,
 } from "./utils/MIDIMessageConvert";
+import { MidiCommand } from "./utils/midiCommands";
+import { MidiControlChange } from "./utils/midiControlChanges";
 
 const createInput = async (id, name) => {
   const access = <MockMIDIAccess>await MIDIVal.connect();
@@ -37,7 +36,7 @@ describe("MIDIValInput", () => {
     mock.sendMessage(
       makeMessage({
         channel: 1,
-        command: COMMAND.NOTE_ON,
+        command: MidiCommand.NoteOn,
         data1: 65,
         data2: 128,
       })
@@ -48,7 +47,7 @@ describe("MIDIValInput", () => {
     expect(note66Callback).toBeCalledTimes(0);
 
     expect(allCallback.mock.calls[0][1]).toEqual({
-      command: COMMAND.NOTE_ON,
+      command: MidiCommand.NoteOn,
       channel: 1,
       data1: 65,
       data2: 128,
@@ -68,7 +67,7 @@ describe("MIDIValInput", () => {
     mock.sendMessage(
       makeMessage({
         channel: 1,
-        command: COMMAND.NOTE_OFF,
+        command: MidiCommand.NoteOff,
         data1: 20,
         data2: 0, // velocity is usually ignored
       })
@@ -79,7 +78,7 @@ describe("MIDIValInput", () => {
     expect(note50Callback).toBeCalledTimes(0);
 
     expect(allCallback.mock.calls[0][1]).toEqual({
-      command: COMMAND.NOTE_OFF,
+      command: MidiCommand.NoteOff,
       channel: 1,
       data1: 20,
       data2: 0,
@@ -99,7 +98,7 @@ describe("MIDIValInput", () => {
     mock.sendMessage(
       makeMessage({
         channel: 1,
-        command: COMMAND.CONTROL_CHANGE,
+        command: MidiCommand.ControlChange,
         data1: 20,
         data2: 0,
       })
@@ -110,7 +109,7 @@ describe("MIDIValInput", () => {
     expect(control21Change).toBeCalledTimes(0);
 
     expect(allCallback.mock.calls[0][1]).toEqual({
-      command: COMMAND.CONTROL_CHANGE,
+      command: MidiCommand.ControlChange,
       channel: 1,
       data1: 20,
       data2: 0,
@@ -129,7 +128,7 @@ describe("MIDIValInput", () => {
 
     mock.sendMessage(
       makeMessage({
-        command: COMMAND.PROGRAM_CHANGE,
+        command: MidiCommand.ProgramChange,
         channel: 1,
         data1: 20,
         data2: 23,
@@ -141,26 +140,58 @@ describe("MIDIValInput", () => {
     expect(program21Change).toBeCalledTimes(0);
 
     expect(allCallback.mock.calls[0][1]).toEqual({
-      command: COMMAND.PROGRAM_CHANGE,
+      command: MidiCommand.ProgramChange,
       channel: 1,
       data1: 20,
       data2: 23,
     });
   });
 
-  it.skip(".onAllSoundsOff", async () => {
+  it(".onAllSoundsOff", async () => {
     const { input, mock } = await createInput("1", "Input");
     const callback = jest.fn();
+    const callback2 = jest.fn();
+    const callback3 = jest.fn();
+
     input.onAllSoundsOff(callback);
+    input.onControlChange(MidiControlChange.AllSoundsOff, callback2);
+    input.onAllControlChange(callback3);
+    
     mock.sendMessage(
       makeMessage({
         channel: 1,
-        command: COMMAND.CONTROL_CHANGE,
-        data1: CHANNEL_MODE.ALL_NOTES_OFF,
+        command: MidiCommand.ControlChange,
+        data1: MidiControlChange.AllSoundsOff,
         data2: null,
       })
     );
-
+    expect(callback3).toBeCalledTimes(1);
+    expect(callback2).toBeCalledTimes(1);
     expect(callback).toBeCalledTimes(1);
   });
+
+  it(".onLocalControlChange", async () => {
+    const {input, mock } = await createInput("1", "Input");
+    const callback = jest.fn();
+    input.onLocalControlChange(callback);
+    let msg = {
+      channel: 1,
+      command: MidiCommand.ControlChange,
+      data1: MidiControlChange.LocalControlOnOff,
+      data2: 127, // ON
+    };
+    mock.sendMessage(makeMessage(msg));
+    expect(callback).toBeCalledTimes(1);
+    expect(callback).toHaveBeenLastCalledWith(true, msg);
+
+    let msg2 = {
+      channel: 1,
+      command: MidiCommand.ControlChange,
+      data1: MidiControlChange.LocalControlOnOff,
+      data2: 0, // OFF
+    };
+    mock.sendMessage(makeMessage(msg2));
+    expect(callback).toBeCalledTimes(2);
+    expect(callback).toHaveBeenLastCalledWith(false, msg2);
+  })
 });

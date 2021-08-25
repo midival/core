@@ -2,9 +2,6 @@ import { MessageBus, Callback, UnregisterCallback } from "./MessageBus";
 import {MultiMessageBus} from "./MultiMessageBus";
 import {
   toMidiMessage,
-  logMessage,
-  COMMAND,
-  CHANNEL_MODE,
   isChannelMode,
   MidiMessage,
 } from "./utils/MIDIMessageConvert";
@@ -12,6 +9,8 @@ import {IMIDIInput} from "./wrappers/inputs/IMIDIInput";
 import {MIDIVal} from "./index";
 import {IMIDIAccess} from "./wrappers/access/IMIDIAccess";
 import { splitValueIntoFraction } from "./utils/pitchBen";
+import { MidiCommand } from "./utils/midiCommands";
+import { MidiControlChange } from "./utils/midiControlChanges";
 
 interface Buses {
   noteOn: MultiMessageBus<number, [MidiMessage]>,
@@ -79,7 +78,6 @@ export class MIDIValInput {
     this.midiInput = input;
     this.unregisterInput = await input.onMessage(
       (e: WebMidi.MIDIMessageEvent) => {
-        logMessage(toMidiMessage(e.data));
         if (e.data[0] === 0xf0) {
           // sysex
           this.buses.sysex.trigger(e.data);
@@ -87,37 +85,37 @@ export class MIDIValInput {
         }
         const midiMessage = toMidiMessage(e.data);
         switch (midiMessage.command) {
-          case COMMAND.NOTE_ON:
+          case MidiCommand.NoteOn:
             this.buses.noteOn.trigger(
               midiMessage.data1,
               midiMessage
             );
             break;
-          case COMMAND.NOTE_OFF:
+          case MidiCommand.NoteOff:
             this.buses.noteOff.trigger(
               midiMessage.data1,
               midiMessage
             );
             break;
-          case COMMAND.CONTROL_CHANGE:
+          case MidiCommand.ControlChange:
             this.buses.controlChange.trigger(
               midiMessage.data1,
               midiMessage
             );
             break;
-          case COMMAND.PROGRAM_CHANGE:
+          case MidiCommand.ProgramChange:
             this.buses.programChange.trigger(
               midiMessage.data1,
               midiMessage
             );
             break;
-          case COMMAND.POLY_KEY_PRESSURE:
+          case MidiCommand.PolyKeyPressure:
             this.buses.polyKeyPressure.trigger(
               midiMessage.data1,
               midiMessage
             );
             break;
-          case COMMAND.PITCH_BEND:
+          case MidiCommand.PitchBend:
             this.buses.pitchBend.trigger(
               splitValueIntoFraction([midiMessage.data1, midiMessage.data2])
             )
@@ -268,7 +266,7 @@ export class MIDIValInput {
    */
   onAllSoundsOff(callback: Callback<[MidiMessage]>): UnregisterCallback {
     return this.buses.controlChange.on(
-      CHANNEL_MODE.ALL_SOUND_OFF,
+      MidiControlChange.AllSoundsOff,
       callback
     );
   }
@@ -280,21 +278,20 @@ export class MIDIValInput {
    */
   onResetAllControllers(callback: Callback<[MidiMessage]>): UnregisterCallback {
     return this.buses.controlChange.on(
-      CHANNEL_MODE.RESET_ALL_CONTROLLERS,
+      MidiControlChange.ResetAllControllers,
       callback
     );
   }
 
   /**
    * Registers callback on local control change event
-   * @param callback Callback to be called
+   * @param callback Callback to be called: first argument to the callback is a boolean representing if the local control was set on or off
    * @returns Unregister event
    */
-  onLocalControlChange(callback: Callback<[MidiMessage]>): UnregisterCallback {
-    // FIXME: Maybe split this into two separate callbacks?
+  onLocalControlChange(callback: Callback<[boolean, MidiMessage]>): UnregisterCallback {
     return this.buses.controlChange.on(
-      CHANNEL_MODE.LOCAL_CONTROL,
-      callback
+      MidiControlChange.LocalControlOnOff,
+      (message) => callback(message.data2 === 127, message)
     );
   }
 
@@ -305,16 +302,36 @@ export class MIDIValInput {
    */
   onAllNotesOff(callback: Callback<[MidiMessage]>): UnregisterCallback {
     return this.buses.controlChange.on(
-      CHANNEL_MODE.ALL_NOTES_OFF,
+      MidiControlChange.AllNotesOff,
       callback
     );
   }
 
-  // OMNI MODE Off
+  onOmniModeOff(callback: Callback<[MidiMessage]>): UnregisterCallback {
+    return this.buses.controlChange.on(
+      MidiControlChange.OmniModeOff,
+      callback,
+    );
+  }
 
-  // OMNI MODE ON
+  onOmniModeOn(callback: Callback<[MidiMessage]>): UnregisterCallback {
+    return this.buses.controlChange.on(
+      MidiControlChange.OmniModeOn,
+      callback
+    );
+  }
 
-  // MONO_MODE_ON
+  onMonoModeOn(callback: Callback<[MidiMessage]>): UnregisterCallback {
+    return this.buses.controlChange.on(
+      MidiControlChange.MonoModeOn,
+      callback
+    );
+  }
 
-  // Poly ON
+  onPolyModeOn(callback: Callback<[MidiMessage]>): UnregisterCallback {
+    return this.buses.controlChange.on(
+      MidiControlChange.PolyModeOn,
+      callback
+    );
+  }
 }

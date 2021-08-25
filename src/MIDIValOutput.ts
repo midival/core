@@ -1,11 +1,9 @@
-import {
-  COMMAND,
-  CHANNEL_MODE,
-} from "./utils/MIDIMessageConvert";
 import {IMIDIOutput} from "./wrappers/outputs/IMIDIOutput";
 import {MIDIVal} from "./index";
 import {IMIDIAccess} from "./wrappers/access/IMIDIAccess";
 import { fractionToPitchBendAsUints } from "./utils/pitchBen";
+import { MidiCommand } from "./utils/midiCommands";
+import { MidiControlChange } from "./utils/midiControlChanges";
 
 export class MIDIValOutput {
   private midiOutput: IMIDIOutput;
@@ -74,7 +72,7 @@ export class MIDIValOutput {
    */
   sendNoteOn(note: number, velocity: number, channel?: number): void {
     return this.send([
-      COMMAND.NOTE_ON + this.getChannel(channel),
+      MidiCommand.NoteOn + this.getChannel(channel),
       note,
       velocity,
     ]);
@@ -87,12 +85,16 @@ export class MIDIValOutput {
    * @returns 
    */
   sendNoteOff(note: number, channel?: number): void {
-    return this.send([COMMAND.NOTE_OFF + this.getChannel(channel), note, 0]);
+    return this.send([
+      MidiCommand.NoteOff + this.getChannel(channel),
+      note,
+      0
+    ]);
   }
 
   sendPolyKeyPressure(key: number, velocity: number, channel?: number): void {
     return this.send([
-      COMMAND.POLY_KEY_PRESSURE + this.getChannel(channel),
+      MidiCommand.PolyKeyPressure + this.getChannel(channel),
       key,
       velocity,
     ]);
@@ -101,7 +103,7 @@ export class MIDIValOutput {
   sendControlChange(controller: number, value: number, channel?: number): void {
     // FIXME: channel mode check here
     return this.send([
-      COMMAND.CONTROL_CHANGE + this.getChannel(channel),
+      MidiCommand.ControlChange + this.getChannel(channel),
       controller,
       value,
     ]);
@@ -109,14 +111,14 @@ export class MIDIValOutput {
 
   sendProgramChange(program: number, channel?: number): void {
     return this.send([
-      COMMAND.PROGRAM_CHANGE + this.getChannel(channel),
+      MidiCommand.ProgramChange + this.getChannel(channel),
       program,
     ]);
   }
 
   sendChannelPressure(velocity: number, channel?: number): void {
     return this.send([
-      COMMAND.CHANNEL_PRESSURE + this.getChannel(channel),
+      MidiCommand.ChannelPressure + this.getChannel(channel),
       velocity,
     ]);
   }
@@ -130,7 +132,7 @@ export class MIDIValOutput {
    */
   sendPitchBend(bendValue: number, channel?: number): void {
     return this.send(new Uint8Array([
-      COMMAND.PITCH_BEND + this.getChannel(channel),
+      MidiCommand.PitchBend + this.getChannel(channel),
       ...fractionToPitchBendAsUints(bendValue),
     ]));
   }
@@ -138,8 +140,8 @@ export class MIDIValOutput {
   // Special Channel Modes
   sendAllSoundOff(channel?: number): void {
     return this.send([
-      COMMAND.CONTROL_CHANGE + this.getChannel(channel),
-      CHANNEL_MODE.ALL_SOUND_OFF,
+      MidiCommand.ControlChange + this.getChannel(channel),
+      MidiControlChange.AllSoundsOff,
       0,
     ]);
   }
@@ -147,32 +149,32 @@ export class MIDIValOutput {
   sendResetAllControllers(channel?: number): void {
     // v = x: Value must only be zero unless otherwise allowed in a specific Recommended Practice.
     return this.send([
-      COMMAND.CONTROL_CHANGE + this.getChannel(channel),
-      CHANNEL_MODE.RESET_ALL_CONTROLLERS,
+      MidiCommand.ControlChange + this.getChannel(channel),
+      MidiControlChange.ResetAllControllers,
       0,
     ]);
   }
 
   sendLocalControlOff(channel?: number): void {
     return this.send([
-      COMMAND.CONTROL_CHANGE + this.getChannel(channel),
-      CHANNEL_MODE.LOCAL_CONTROL,
+      MidiCommand.ControlChange + this.getChannel(channel),
+      MidiControlChange.LocalControlOnOff,
       0,
     ]);
   }
 
   sendLocalControlOn(channel?: number): void {
     return this.send([
-      COMMAND.CONTROL_CHANGE + this.getChannel(channel),
-      CHANNEL_MODE.LOCAL_CONTROL,
+      MidiCommand.ControlChange + this.getChannel(channel),
+      MidiControlChange.LocalControlOnOff,
       127,
     ]);
   }
 
   sendAllNotesOff(channel?: number): void {
     return this.send([
-      COMMAND.CONTROL_CHANGE + this.getChannel(channel),
-      CHANNEL_MODE.ALL_NOTES_OFF,
+      MidiCommand.ControlChange + this.getChannel(channel),
+      MidiControlChange.AllNotesOff,
       0,
     ]);
   }

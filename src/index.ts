@@ -5,6 +5,7 @@ import {IMIDIInput} from "./wrappers/inputs/IMIDIInput";
 import {IMIDIOutput} from "./wrappers/outputs/IMIDIOutput";
 import {IMIDIAccess} from "./wrappers/access/IMIDIAccess";
 import { Callback, UnregisterCallback } from "./MessageBus";
+import { MidiControlChange } from "./utils/midiControlChanges";
 
 export {
   MIDIVal,
@@ -14,5 +15,6 @@ export {
   IMIDIOutput,
   IMIDIAccess,
   Callback,
-  UnregisterCallback
+  UnregisterCallback,
+  MidiControlChange,
 };
