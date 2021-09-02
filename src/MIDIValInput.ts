@@ -8,7 +8,7 @@ import {
 import {IMIDIInput} from "./wrappers/inputs/IMIDIInput";
 import {MIDIVal} from "./index";
 import {IMIDIAccess} from "./wrappers/access/IMIDIAccess";
-import { splitValueIntoFraction } from "./utils/pitchBen";
+import { splitValueIntoFraction } from "./utils/pitchBend";
 import { MidiCommand } from "./utils/midiCommands";
 import { MidiControlChange } from "./utils/midiControlChanges";
 

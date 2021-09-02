@@ -10,7 +10,6 @@
     - `.onOmniModeOn`
     - `.onMonoModeOn`
     - `.onPolyModeOn`
-- Exporting `MidiControlChange` enum publically.
 
 ## [0.0.13]
 First public (alpha) version.

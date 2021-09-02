@@ -1,7 +1,7 @@
 import {IMIDIOutput} from "./wrappers/outputs/IMIDIOutput";
 import {MIDIVal} from "./index";
 import {IMIDIAccess} from "./wrappers/access/IMIDIAccess";
-import { fractionToPitchBendAsUints } from "./utils/pitchBen";
+import { fractionToPitchBendAsUints } from "./utils/pitchBend";
 import { MidiCommand } from "./utils/midiCommands";
 import { MidiControlChange } from "./utils/midiControlChanges";
 

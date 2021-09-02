@@ -1,4 +1,4 @@
-import { fractionToPitchBend, fractionToPitchBendAsUints, splitNumberIntoUInt8s, splitValueIntoFraction, uIntsIntoNumber } from "./pitchBen";
+import { fractionToPitchBend, fractionToPitchBendAsUints, splitNumberIntoUInt8s, splitValueIntoFraction, uIntsIntoNumber } from "./pitchBend";
 
 describe("Pitch bend utils", () => {
     it("should properly transform fraction to pitch bend value", () => {
