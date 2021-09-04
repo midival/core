@@ -20,15 +20,15 @@ export interface ConfigScheme {
   manufacturer?: string | RegExp,
 }
 
-const matchesConfig = (input: IMIDIInput | IMIDIOutput, scheme: ConfigScheme): boolean => {
-  return !Object.keys(scheme).filter(key => {
+export const matchesConfig = (input: IMIDIInput | IMIDIOutput, scheme: ConfigScheme): boolean => {
+  return Object.keys(scheme).reduce((acc, key) => {
     const val = scheme[key] as string | RegExp;
     if (typeof val === "string") {
-      return input[key] === val;
+      return acc && input[key] === val;
     } else {
-      return val.test(input[key]);
+      return acc && val.test(input[key]);
     }
-  }).some(x => !x);
+  }, true);
 }
 
 export class MIDIVal {
@@ -78,12 +78,12 @@ export class MIDIVal {
  * @param fn Callback on connection. Connection is already wrapped in MIDIValInput object
  * @returns Promise for Unregister Callback
  */
-  public static async onInputDeviceWithConfigConnected(config: ConfigScheme, fn: (input: MIDIValInput) => void): Promise<UnregisterCallback> {
+  public static async onInputDeviceWithConfigConnected(config: ConfigScheme, fn: (input: MIDIValInput) => void, callOnAlreadyConnected: boolean = false): Promise<UnregisterCallback> {
     return this.onInputDeviceConnected((input) => {
       if (matchesConfig(input, config)) {
         fn(new MIDIValInput(input));
       }
-    });
+    }, callOnAlreadyConnected);
   }
   
 /**
@@ -92,12 +92,12 @@ export class MIDIVal {
  * @param fn Callback on connection. Connection is already wrapped in MIDIValOutput object
  * @returns Promise for Unregister Callback
  */
-  public static async onOutputDeviceWithConfigConnected(config: ConfigScheme, fn: (output: MIDIValOutput) => void): Promise<UnregisterCallback> {
+  public static async onOutputDeviceWithConfigConnected(config: ConfigScheme, fn: (output: MIDIValOutput) => void, callOnAlreadyConnected: boolean = false): Promise<UnregisterCallback> {
     return this.onOutputDeviceConnected((output) => {
       if (matchesConfig(output, config)) {
         fn(new MIDIValOutput(output));
       }
-    });
+    }, callOnAlreadyConnected);
   }
 
   /**

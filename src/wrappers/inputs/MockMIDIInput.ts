@@ -4,14 +4,22 @@ import {
   UnregisterCallback,
 } from "./IMIDIInput";
 
+export interface MidiDeviceProps {
+  id: string;
+  name: string;
+  manufacturer: string;
+}
+
 export class MockMIDIInput implements IMIDIInput {
   private _name: string;
   private _id: string;
+  private _manufacturer: string;
   private _callback: OnMessageCallback;
 
-  constructor(id: string, name: string) {
+  constructor({ id, name, manufacturer }: MidiDeviceProps) {
     this._id = id;
     this._name = name;
+    this._manufacturer = manufacturer;
   }
 
   onMessage(callback: OnMessageCallback): Promise<UnregisterCallback> {
@@ -38,6 +46,6 @@ export class MockMIDIInput implements IMIDIInput {
     return this._id;
   }
   get manufacturer(): string {
-    return "MIDIVAL";
+    return this._manufacturer;
   }
 }

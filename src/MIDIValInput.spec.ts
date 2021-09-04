@@ -6,10 +6,11 @@ import {
 } from "./utils/MIDIMessageConvert";
 import { MidiCommand } from "./utils/midiCommands";
 import { MidiControlChange } from "./utils/midiControlChanges";
+import { MidiDeviceProps } from "./wrappers/inputs/MockMIDIInput";
 
-const createInput = async (id, name) => {
+const createInput = async (props: MidiDeviceProps) => {
   const access = <MockMIDIAccess>await MIDIVal.connect();
-  const input = access.addInput(id, name);
+  const input = access.addInput(props);
   return { input: new MIDIValInput(input), mock: input };
 };
 
@@ -19,12 +20,12 @@ describe("MIDIValInput", () => {
   });
 
   it("should properly instantiate MIDIValInput object", async () => {
-    const { input } = await createInput("1", "Input");
+    const { input } = await createInput({ id: "1", name: "Input", manufacturer: "MIDIVal" });
     expect(input.constructor).toEqual(MIDIValInput);
   });
 
   it(".noteOn", async () => {
-    const { input, mock } = await createInput("1", "Input");
+    const { input, mock } = await createInput({ id: "1", name: "Input", manufacturer: "MIDIVal" });
     const allCallback = jest.fn();
     const note65Callback = jest.fn();
     const note66Callback = jest.fn();
@@ -55,7 +56,7 @@ describe("MIDIValInput", () => {
   });
 
   it(".noteOff", async () => {
-    const { input, mock } = await createInput("1", "Input");
+    const { input, mock } = await createInput({ id: "1", name: "Input", manufacturer: "MIDIVal" });
     const allCallback = jest.fn();
     const note20Callback = jest.fn();
     const note50Callback = jest.fn();
@@ -86,7 +87,7 @@ describe("MIDIValInput", () => {
   });
 
   it(".onControlChange", async () => {
-    const { input, mock } = await createInput("1", "Input");
+    const { input, mock } = await createInput({ id: "1", name: "Input", manufacturer: "MIDIVal" });
     const allCallback = jest.fn();
     const control20Change = jest.fn();
     const control21Change = jest.fn();
@@ -117,7 +118,7 @@ describe("MIDIValInput", () => {
   });
 
   it(".onProgramChange", async () => {
-    const { input, mock } = await createInput("1", "Input");
+    const { input, mock } = await createInput({ id: "1", name: "Input", manufacturer: "MIDIVal" });
     const allCallback = jest.fn();
     const program20Change = jest.fn();
     const program21Change = jest.fn();
@@ -148,7 +149,7 @@ describe("MIDIValInput", () => {
   });
 
   it(".onAllSoundsOff", async () => {
-    const { input, mock } = await createInput("1", "Input");
+    const { input, mock } = await createInput({ id: "1", name: "Input", manufacturer: "MIDIVal" });
     const callback = jest.fn();
     const callback2 = jest.fn();
     const callback3 = jest.fn();
@@ -171,7 +172,7 @@ describe("MIDIValInput", () => {
   });
 
   it(".onLocalControlChange", async () => {
-    const {input, mock } = await createInput("1", "Input");
+    const {input, mock } = await createInput({ id: "1", name: "Input", manufacturer: "MIDIVal" });
     const callback = jest.fn();
     input.onLocalControlChange(callback);
     let msg = {

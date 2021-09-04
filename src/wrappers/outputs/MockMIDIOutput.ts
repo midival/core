@@ -1,14 +1,17 @@
 import {IMIDIOutput} from "./IMIDIOutput";
 import { OnMessageCallback } from "../inputs/IMIDIInput";
+import { MidiDeviceProps } from "../inputs/MockMIDIInput";
 
 export class MockMIDIOutput implements IMIDIOutput {
   _id: string;
   _name: string;
+  _manufacturer: string;
   _callback: OnMessageCallback;
 
-  constructor(id: string, name: string) {
+  constructor({ id, name, manufacturer }: MidiDeviceProps) {
     this._id = id;
     this._name = name;
+    this._manufacturer = manufacturer;
   }
 
   get id(): string {
@@ -20,7 +23,7 @@ export class MockMIDIOutput implements IMIDIOutput {
   }
 
   get manufacturer(): string {
-    return "MIDIVAL";
+    return this._manufacturer;
   }
 
   onMessage(callback: OnMessageCallback) {

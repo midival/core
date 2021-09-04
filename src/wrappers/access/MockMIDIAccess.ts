@@ -4,7 +4,7 @@ import {
   OutputStateChangeCallback,
 } from "./IMIDIAccess";
 import {MockMIDIOutput} from "../outputs/MockMIDIOutput";
-import {MockMIDIInput} from "../inputs/MockMIDIInput";
+import { MidiDeviceProps, MockMIDIInput } from "../inputs/MockMIDIInput";
 import { UnregisterCallback } from "../..";
 
 export class MockMIDIAccess implements IMIDIAccess {
@@ -40,14 +40,14 @@ export class MockMIDIAccess implements IMIDIAccess {
     return this.mockOutputs;
   }
 
-  addInput(id: string, name: string): MockMIDIInput {
-    const input = new MockMIDIInput(id, name);
+  addInput(props: MidiDeviceProps): MockMIDIInput {
+    const input = new MockMIDIInput(props);
     this.mockInputs.push(input);
     return input;
   }
 
-  addOutput(id: string, name: string): MockMIDIOutput {
-    const output = new MockMIDIOutput(id, name);
+  addOutput(props: MidiDeviceProps): MockMIDIOutput {
+    const output = new MockMIDIOutput(props);
     this.mockOutputs.push(output);
     return output;
   }
