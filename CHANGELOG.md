@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.0.14] In progress
+## [0.0.14] 2021-09-06
 - Added manufacturer field in IMIDIInput and IMIDIOutput interfaces.
 - Ability to listen to only specific devices (based on name / manufacturer).
 - Added pitch bend methods for both input and output.
