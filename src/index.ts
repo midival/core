@@ -14,5 +14,5 @@ export {
   IMIDIOutput,
   IMIDIAccess,
   Callback,
-  UnregisterCallback
+  UnregisterCallback,
 };

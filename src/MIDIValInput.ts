@@ -2,15 +2,15 @@ import { MessageBus, Callback, UnregisterCallback } from "./MessageBus";
 import {MultiMessageBus} from "./MultiMessageBus";
 import {
   toMidiMessage,
-  logMessage,
-  COMMAND,
-  CHANNEL_MODE,
   isChannelMode,
   MidiMessage,
 } from "./utils/MIDIMessageConvert";
 import {IMIDIInput} from "./wrappers/inputs/IMIDIInput";
 import {MIDIVal} from "./index";
 import {IMIDIAccess} from "./wrappers/access/IMIDIAccess";
+import { splitValueIntoFraction } from "./utils/pitchBend";
+import { MidiCommand } from "./utils/midiCommands";
+import { MidiControlChange } from "./utils/midiControlChanges";
 
 interface Buses {
   noteOn: MultiMessageBus<number, [MidiMessage]>,
@@ -19,6 +19,7 @@ interface Buses {
   programChange: MultiMessageBus<number, [MidiMessage]>,
   polyKeyPressure: MultiMessageBus<number, [MidiMessage]>,
   channelPressure: MessageBus<[MidiMessage]>,
+  pitchBend: MessageBus<[number]>,
   sysex: MessageBus<[Uint8Array]>
 }
 
@@ -35,6 +36,7 @@ export class MIDIValInput {
       programChange: new MultiMessageBus<number, [MidiMessage]>("programChange"),
       polyKeyPressure: new MultiMessageBus<number, [MidiMessage]>("polyKeyPressure"),
       channelPressure: new MessageBus<[MidiMessage]>("channelPressure"),
+      pitchBend: new MessageBus<[number]>("pitchBend"),
       sysex: new MessageBus<[Uint8Array]>("sysex"),
     };
   }
@@ -76,7 +78,6 @@ export class MIDIValInput {
     this.midiInput = input;
     this.unregisterInput = await input.onMessage(
       (e: WebMidi.MIDIMessageEvent) => {
-        logMessage(toMidiMessage(e.data));
         if (e.data[0] === 0xf0) {
           // sysex
           this.buses.sysex.trigger(e.data);
@@ -84,36 +85,40 @@ export class MIDIValInput {
         }
         const midiMessage = toMidiMessage(e.data);
         switch (midiMessage.command) {
-          case COMMAND.NOTE_ON:
+          case MidiCommand.NoteOn:
             this.buses.noteOn.trigger(
               midiMessage.data1,
               midiMessage
             );
             break;
-          case COMMAND.NOTE_OFF:
+          case MidiCommand.NoteOff:
             this.buses.noteOff.trigger(
               midiMessage.data1,
               midiMessage
             );
             break;
-          case COMMAND.CONTROL_CHANGE:
+          case MidiCommand.ControlChange:
             this.buses.controlChange.trigger(
               midiMessage.data1,
               midiMessage
             );
             break;
-          case COMMAND.PROGRAM_CHANGE:
+          case MidiCommand.ProgramChange:
             this.buses.programChange.trigger(
               midiMessage.data1,
               midiMessage
             );
             break;
-          case COMMAND.POLY_KEY_PRESSURE:
+          case MidiCommand.PolyKeyPressure:
             this.buses.polyKeyPressure.trigger(
               midiMessage.data1,
               midiMessage
             );
             break;
+          case MidiCommand.PitchBend:
+            this.buses.pitchBend.trigger(
+              splitValueIntoFraction([midiMessage.data1, midiMessage.data2])
+            )
 
           default:
             // TODO: Unknown message.
@@ -161,6 +166,15 @@ export class MIDIValInput {
    */
   onAllNoteOff(callback: Callback<[number, MidiMessage]>): UnregisterCallback {
     return this.buses.noteOff.onAll(callback);
+  }
+
+  /**
+   * Registers new callback on pitch bend message
+   * @param callback Callback that gets called on every pitch bend message. It gets value of the bend in the range of -1.0 to 1.0 using 16-bit precision (if supported by sending device).
+   * @returns Unregister callback.
+   */
+  onPitchBend(callback: Callback<[number]>): UnregisterCallback {
+    return this.buses.pitchBend.on(callback);
   }
 
   /**
@@ -252,7 +266,7 @@ export class MIDIValInput {
    */
   onAllSoundsOff(callback: Callback<[MidiMessage]>): UnregisterCallback {
     return this.buses.controlChange.on(
-      CHANNEL_MODE.ALL_SOUND_OFF,
+      MidiControlChange.AllSoundsOff,
       callback
     );
   }
@@ -264,21 +278,20 @@ export class MIDIValInput {
    */
   onResetAllControllers(callback: Callback<[MidiMessage]>): UnregisterCallback {
     return this.buses.controlChange.on(
-      CHANNEL_MODE.RESET_ALL_CONTROLLERS,
+      MidiControlChange.ResetAllControllers,
       callback
     );
   }
 
   /**
    * Registers callback on local control change event
-   * @param callback Callback to be called
+   * @param callback Callback to be called: first argument to the callback is a boolean representing if the local control was set on or off
    * @returns Unregister event
    */
-  onLocalControlChange(callback: Callback<[MidiMessage]>): UnregisterCallback {
-    // FIXME: Maybe split this into two separate callbacks?
+  onLocalControlChange(callback: Callback<[boolean, MidiMessage]>): UnregisterCallback {
     return this.buses.controlChange.on(
-      CHANNEL_MODE.LOCAL_CONTROL,
-      callback
+      MidiControlChange.LocalControlOnOff,
+      (message) => callback(message.data2 === 127, message)
     );
   }
 
@@ -289,16 +302,36 @@ export class MIDIValInput {
    */
   onAllNotesOff(callback: Callback<[MidiMessage]>): UnregisterCallback {
     return this.buses.controlChange.on(
-      CHANNEL_MODE.ALL_NOTES_OFF,
+      MidiControlChange.AllNotesOff,
       callback
     );
   }
 
-  // OMNI MODE Off
+  onOmniModeOff(callback: Callback<[MidiMessage]>): UnregisterCallback {
+    return this.buses.controlChange.on(
+      MidiControlChange.OmniModeOff,
+      callback,
+    );
+  }
 
-  // OMNI MODE ON
+  onOmniModeOn(callback: Callback<[MidiMessage]>): UnregisterCallback {
+    return this.buses.controlChange.on(
+      MidiControlChange.OmniModeOn,
+      callback
+    );
+  }
 
-  // MONO_MODE_ON
+  onMonoModeOn(callback: Callback<[MidiMessage]>): UnregisterCallback {
+    return this.buses.controlChange.on(
+      MidiControlChange.MonoModeOn,
+      callback
+    );
+  }
 
-  // Poly ON
+  onPolyModeOn(callback: Callback<[MidiMessage]>): UnregisterCallback {
+    return this.buses.controlChange.on(
+      MidiControlChange.PolyModeOn,
+      callback
+    );
+  }
 }

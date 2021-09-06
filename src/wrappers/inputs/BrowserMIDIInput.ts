@@ -27,4 +27,8 @@ export class BrowserMIDIInput implements IMIDIInput {
   get name(): string {
     return this.input.name;
   }
+
+  get manufacturer(): string {
+    return this.input.manufacturer;
+  }
 }

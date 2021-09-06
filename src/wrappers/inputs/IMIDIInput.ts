@@ -8,4 +8,5 @@ export interface IMIDIInput {
   onMessage(callback: OnMessageCallback): Promise<UnregisterCallback>;
   id: string;
   name: string;
+  manufacturer: string;
 }
