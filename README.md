@@ -61,16 +61,16 @@ Once you obtain access to the MIDI Input you can interact with it.
 You can subscribe to note on.
 
 ```javascript
-input.onAllNoteOn((key, midiMessage) => {
-    console.log("Note On:", key, "velocity:", cmidiMessage.data2);
+input.onAllNoteOn(({ note, velocity }) => {
+    console.log("Note On:", note, "velocity:", velocity);
 });
 ```
 
 You can also subscribe to a specific key:
 
 ```javascript
-input.onNoteOn(60, (midiMessage) => {
-    console.log("C pressed with velocity", midiMessage.data2);
+input.onNoteOn(60, ({ velocity }) => {
+    console.log("C pressed with velocity", velocity);
 });
 ```
 
@@ -79,15 +79,15 @@ input.onNoteOn(60, (midiMessage) => {
 You can subscribe to note off. The note off takes into account both Note Off message as well as Note On with Velocity 0.
 
 ```javascript
-input.onAllNoteOff((key, midiMessage) => {
-    console.log("Note Off:", key);
+input.onAllNoteOff(({ note }) => {
+    console.log("Note Off:", note);
 });
 ```
 
 You can also subscribe to a specific key:
 ```javascript
-input.onNoteOff(60, (midiMessage) => {
-    console.log("C depressed with velocity", midiMessage.data2); // velocity should be 0.
+input.onNoteOff(60, ({ velocity }) => {
+    console.log("C depressed with velocity", velocity); // velocity should be 0.
 });
 ```
 
@@ -96,20 +96,20 @@ input.onNoteOff(60, (midiMessage) => {
 To listen to Control Change (MIDI CC) messages like modulation, synth parameter change and more, you can do the following:
 
 ```javascript
-input.onAllControlChange((param, midiMessage => {
-    console.log(`Param: ${param}, value: ${midiMessage.data2}`);
-}));
+input.onAllControlChange(({ control, value}) => {
+    console.log(`Param: ${control}, value: ${value}`);
+});
 ```
 
 You can also listen to the single control parameter (like Modulation wheel, Volume or Pan only). The full table with MIDI CC messages can be found in [the official MIDI CC documentation](https://www.midi.org/specifications-old/item/table-3-control-change-messages-data-bytes-2). 
 
 ```javascript
-input.onControlChange(7, (midiMessage) => {
-    console.log('Volume change to value:', midiMessage.data2));
+input.onControlChange(7, ({value}) => {
+    console.log('Volume change to value:', value));
 });
 
-input.onControlChange(1, (midiMessage) => {
-    console.log('Modulation Wheel value changed to:', midiMessage.data2);
+input.onControlChange(1, ({value}) => {
+    console.log('Modulation Wheel value changed to:', value);
 })
 ```
 
@@ -118,16 +118,16 @@ input.onControlChange(1, (midiMessage) => {
 You can listen to program change messages:
 
 ```javascript
-input.onAllProgramChange((program, midiMessage) => {
-    console.log(`Program ${program} changed to: ${midiMessage.data2}`);
+input.onAllProgramChange(({ program, value }) => {
+    console.log(`Program ${program} changed to: ${value}`);
 });
 ```
 
 You can also listen to a single program channel:
 
 ```javascript
-input.onProgramChange(1, (midiMessage) => {
-    console.log(`Program 1 changed to:`, midiMessage.data2);
+input.onProgramChange(1, ({value}) => {
+    console.log(`Program 1 changed to:`, value);
 });
 ```
 
@@ -136,7 +136,7 @@ input.onProgramChange(1, (midiMessage) => {
 You can listen to Poly Key Pressure:
 
 ```javascript
-input.onAllPolyKeyPressure((key, midiMessage) => {});
+input.onAllPolyKeyPressure((midiMessage) => {});
 ```
 
 you can listen to a specific key:
@@ -197,6 +197,8 @@ If you want to stop listening to all the messages and unregister all callbacks s
 input.disconnect();
 ```
 
-## MIDI Outputs
+## Changelog and migration guide
 
-Under construction.
+For changelog see [CHANGELOG.md](./CHANGELOG.md).
+
+For migration guide see [MIGRATION.md](./MIGRATION.md).

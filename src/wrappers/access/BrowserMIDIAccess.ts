@@ -3,41 +3,35 @@ import {IMIDIOutput} from "../outputs/IMIDIOutput";
 import {BrowserMIDIOutput} from "../outputs/BrowserMIDIOutput";
 import {IMIDIInput} from "../inputs/IMIDIInput";
 import {BrowserMIDIInput} from "../inputs/BrowserMIDIInput";
-import {MessageBus, UnregisterCallback} from "../../MessageBus";
-import {MIDIValOutput} from "../../MIDIValOutput";
-import {MIDIValInput} from "../../MIDIValInput";
+import { Omnibus, UnregisterCallback } from "@hypersphere/omnibus";
 
-interface Buses {
-  inputConnected: MessageBus<[IMIDIInput]>,
-  inputDisconnected: MessageBus<[IMIDIInput]>,
-  outputConnected: MessageBus<[IMIDIOutput]>
-  outputDisconnected: MessageBus<[IMIDIOutput]>
+interface EventDefinitions {
+  inputConnected: [IMIDIInput],
+  inputDisconnected: [IMIDIInput],
+  outputConnected: [IMIDIOutput]
+  outputDisconnected: [IMIDIOutput]
 };
 
 export class BrowserMIDIAccess implements IMIDIAccess {
   private access: WebMidi.MIDIAccess;
 
-  private buses: Buses = {
-    inputConnected: new MessageBus<[IMIDIInput]>("inputStateChange"),
-    inputDisconnected: new MessageBus<[IMIDIInput]>("inputStateChange"),
-    outputConnected: new MessageBus<[IMIDIOutput]>("outputStateChange"),
-    outputDisconnected: new MessageBus<[IMIDIOutput]>("outputStateChange"),
-  };
+  private omnibus: Omnibus<EventDefinitions>;
 
   constructor() {
+    this.omnibus = new Omnibus();
     this.listenOnStateChange();
   }
   onInputConnected(callback: InputStateChangeCallback): UnregisterCallback {
-    return this.buses.inputConnected.on(callback);
+    return this.omnibus.on('inputConnected', callback);
   }
   onInputDisconnected(callback: InputStateChangeCallback): UnregisterCallback {
-    return this.buses.inputDisconnected.on(callback);
+    return this.omnibus.on('inputDisconnected', callback);
   }
   onOutputConnected(callback: OutputStateChangeCallback): UnregisterCallback {
-    return this.buses.outputConnected.on(callback);
+    return this.omnibus.on('outputConnected', callback);
   }
   onOutputDisconnected(callback: OutputStateChangeCallback): UnregisterCallback {
-    return this.buses.outputDisconnected.on(callback);
+    return this.omnibus.on('outputDisconnected', callback);
   }
 
   async connect(sysex: boolean = false): Promise<void> {
@@ -90,10 +84,10 @@ export class BrowserMIDIAccess implements IMIDIAccess {
           const input = this.getInputById(e.port.id);
           switch (e.port.connection) {
             case "closed":
-              this.buses.inputDisconnected.trigger(input);
+              this.omnibus.trigger('inputDisconnected', input);
               break;
             case "open":
-              this.buses.inputConnected.trigger(input);
+              this.omnibus.trigger('inputConnected', input);
             case "pending":
               console.log("Input pending.");
               break;
@@ -102,10 +96,10 @@ export class BrowserMIDIAccess implements IMIDIAccess {
           const output = this.getOutputById(e.port.id);
           switch (e.port.connection) {
             case "closed":
-              this.buses.outputDisconnected.trigger(output);
+              this.omnibus.trigger('outputDisconnected', output);
               break;
             case "open":
-              this.buses.outputConnected.trigger(output);
+              this.omnibus.trigger('outputConnected', output);
             case "pending":
               console.log("Output pending");
               break;

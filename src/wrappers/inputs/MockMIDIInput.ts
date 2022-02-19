@@ -1,7 +1,7 @@
+import { UnregisterCallback } from "@hypersphere/omnibus";
 import {
   IMIDIInput,
   OnMessageCallback,
-  UnregisterCallback,
 } from "./IMIDIInput";
 
 export interface MidiDeviceProps {

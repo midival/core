@@ -47,11 +47,13 @@ describe("MIDIValInput", () => {
     expect(note65Callback).toBeCalledTimes(1);
     expect(note66Callback).toBeCalledTimes(0);
 
-    expect(allCallback.mock.calls[0][1]).toEqual({
+    expect(allCallback.mock.calls[0][0]).toEqual({
       command: MidiCommand.NoteOn,
       channel: 1,
       data1: 65,
       data2: 128,
+      note: 65,
+      velocity: 128,
     });
   });
 
@@ -78,11 +80,13 @@ describe("MIDIValInput", () => {
     expect(note20Callback).toBeCalledTimes(1);
     expect(note50Callback).toBeCalledTimes(0);
 
-    expect(allCallback.mock.calls[0][1]).toEqual({
+    expect(allCallback.mock.calls[0][0]).toEqual({
       command: MidiCommand.NoteOff,
       channel: 1,
       data1: 20,
       data2: 0,
+      note: 20,
+      velocity: 0,
     });
   });
 
@@ -109,11 +113,13 @@ describe("MIDIValInput", () => {
     expect(control20Change).toBeCalledTimes(1);
     expect(control21Change).toBeCalledTimes(0);
 
-    expect(allCallback.mock.calls[0][1]).toEqual({
+    expect(allCallback.mock.calls[0][0]).toEqual({
       command: MidiCommand.ControlChange,
       channel: 1,
       data1: 20,
       data2: 0,
+      control: 20,
+      value: 0,
     });
   });
 
@@ -140,11 +146,13 @@ describe("MIDIValInput", () => {
     expect(program20Change).toBeCalledTimes(1);
     expect(program21Change).toBeCalledTimes(0);
 
-    expect(allCallback.mock.calls[0][1]).toEqual({
+    expect(allCallback.mock.calls[0][0]).toEqual({
       command: MidiCommand.ProgramChange,
       channel: 1,
       data1: 20,
       data2: 23,
+      program: 20,
+      value: 23,
     });
   });
 
@@ -183,13 +191,15 @@ describe("MIDIValInput", () => {
     };
     mock.sendMessage(makeMessage(msg));
     expect(callback).toBeCalledTimes(1);
-    expect(callback).toHaveBeenLastCalledWith(true, msg);
+    expect(callback).toHaveBeenLastCalledWith(true, {...msg, value: 127, control: MidiControlChange.LocalControlOnOff});
 
     let msg2 = {
       channel: 1,
       command: MidiCommand.ControlChange,
       data1: MidiControlChange.LocalControlOnOff,
       data2: 0, // OFF
+      control: MidiControlChange.LocalControlOnOff,
+      value: 0,
     };
     mock.sendMessage(makeMessage(msg2));
     expect(callback).toBeCalledTimes(2);

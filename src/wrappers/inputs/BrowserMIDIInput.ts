@@ -1,4 +1,5 @@
-import { IMIDIInput, MIDIMessage, UnregisterCallback } from "./IMIDIInput";
+import { UnregisterCallback } from "@hypersphere/omnibus";
+import { IMIDIInput, MIDIMessage } from "./IMIDIInput";
 
 export type MidiMessageCallback = (e: WebMidi.MIDIMessageEvent) => void;
 

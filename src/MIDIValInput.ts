@@ -1,5 +1,4 @@
-import { MessageBus, Callback, UnregisterCallback } from "./MessageBus";
-import {MultiMessageBus} from "./MultiMessageBus";
+import { CallbackType, Omnibus, OmnibusRegistrator, UnregisterCallback } from "@hypersphere/omnibus";
 import {
   toMidiMessage,
   isChannelMode,
@@ -12,37 +11,58 @@ import { splitValueIntoFraction } from "./utils/pitchBend";
 import { MidiCommand } from "./utils/midiCommands";
 import { MidiControlChange } from "./utils/midiControlChanges";
 
-interface Buses {
-  noteOn: MultiMessageBus<number, [MidiMessage]>,
-  noteOff: MultiMessageBus<number, [MidiMessage]>,
-  controlChange: MultiMessageBus<number, [MidiMessage]>,
-  programChange: MultiMessageBus<number, [MidiMessage]>,
-  polyKeyPressure: MultiMessageBus<number, [MidiMessage]>,
-  channelPressure: MessageBus<[MidiMessage]>,
-  pitchBend: MessageBus<[number]>,
-  sysex: MessageBus<[Uint8Array]>
+interface NoteMessage extends MidiMessage {
+  note: number;
+  velocity: number;
+}
+
+const toNoteMessage = (m: MidiMessage): NoteMessage => ({
+  ...m,
+  note: m.data1,
+  velocity: m.data2,
+});
+
+interface ControlChangeMessage extends MidiMessage {
+  control: number,
+  value: number,
+}
+
+const toControlChangeMessage = (m: MidiMessage): ControlChangeMessage => ({
+  ...m,
+  control: m.data1,
+  value: m.data2,
+});
+
+interface ProgramMessage extends MidiMessage {
+  program: number,
+  value: number,
+}
+
+const toProgramMessage = (m: MidiMessage): ProgramMessage => ({
+  ...m,
+  program: m.data1,
+  value: m.data2,
+});
+
+interface EventDefinitions {
+  'pitchBend': [number],
+  'sysex': [Uint8Array],
+  'channelPressure': [MidiMessage],
+  'noteOn': [NoteMessage],
+  'noteOff': [NoteMessage],
+  'controlChange': [ControlChangeMessage],
+  'programChange': [ProgramMessage],
+  'polyKeyPressure': [MidiMessage],
 }
 
 export class MIDIValInput {
-  private midiInput: IMIDIInput;
   private unregisterInput: UnregisterCallback;
-  private buses: Buses;
+  private omnibus: Omnibus<EventDefinitions>;
 
-  private buildBuses(): void {
-    this.buses = {
-      noteOn: new MultiMessageBus<number, [MidiMessage]>("noteOn"),
-      noteOff: new MultiMessageBus<number, [MidiMessage]>("noteOff"),
-      controlChange: new MultiMessageBus<number, [MidiMessage]>("controlChange"),
-      programChange: new MultiMessageBus<number, [MidiMessage]>("programChange"),
-      polyKeyPressure: new MultiMessageBus<number, [MidiMessage]>("polyKeyPressure"),
-      channelPressure: new MessageBus<[MidiMessage]>("channelPressure"),
-      pitchBend: new MessageBus<[number]>("pitchBend"),
-      sysex: new MessageBus<[Uint8Array]>("sysex"),
-    };
-  }
+  private midiInput: IMIDIInput;
 
   constructor(input: IMIDIInput) {
-    this.buildBuses();
+    this.omnibus = new Omnibus<EventDefinitions>();
     this.registerInput(input);
   }
 
@@ -80,46 +100,29 @@ export class MIDIValInput {
       (e: WebMidi.MIDIMessageEvent) => {
         if (e.data[0] === 0xf0) {
           // sysex
-          this.buses.sysex.trigger(e.data);
+          this.omnibus.trigger('sysex', e.data);
           return;
         }
         const midiMessage = toMidiMessage(e.data);
         switch (midiMessage.command) {
           case MidiCommand.NoteOn:
-            this.buses.noteOn.trigger(
-              midiMessage.data1,
-              midiMessage
-            );
+            this.omnibus.trigger('noteOn', toNoteMessage(midiMessage));
             break;
           case MidiCommand.NoteOff:
-            this.buses.noteOff.trigger(
-              midiMessage.data1,
-              midiMessage
-            );
+            this.omnibus.trigger('noteOff', toNoteMessage(midiMessage));
             break;
           case MidiCommand.ControlChange:
-            this.buses.controlChange.trigger(
-              midiMessage.data1,
-              midiMessage
-            );
+            this.omnibus.trigger('controlChange', toControlChangeMessage(midiMessage));
             break;
           case MidiCommand.ProgramChange:
-            this.buses.programChange.trigger(
-              midiMessage.data1,
-              midiMessage
-            );
+            this.omnibus.trigger('programChange', toProgramMessage(midiMessage));
             break;
           case MidiCommand.PolyKeyPressure:
-            this.buses.polyKeyPressure.trigger(
-              midiMessage.data1,
-              midiMessage
-            );
+            this.omnibus.trigger('polyKeyPressure', midiMessage);
             break;
           case MidiCommand.PitchBend:
-            this.buses.pitchBend.trigger(
-              splitValueIntoFraction([midiMessage.data1, midiMessage.data2])
-            )
-
+            this.omnibus.trigger('pitchBend', splitValueIntoFraction([midiMessage.data1, midiMessage.data2]));
+            break;
           default:
             // TODO: Unknown message.
             break;
@@ -128,13 +131,20 @@ export class MIDIValInput {
     );
   }
 
+  private onBusKeyValue<K extends keyof EventDefinitions>(event: K, key: keyof EventDefinitions[K][0], value: EventDefinitions[K][0][keyof EventDefinitions[K][0]], callback: (obj: EventDefinitions[K][0]) => void) {
+    return this.omnibus.on(event, (obj) => {
+      // FIXME: how to do it so we have multiple args?
+      if (obj[key] === value) {
+        callback(obj);
+      }
+    })
+  }
+
   /**
    * Disconnects all listeners.
    */
   public disconnect(): void {
-    for (const key of Object.keys(this.buses)) {
-      this.buses[key].offAll();
-    }
+    this.omnibus.offAll();
     if (this.unregisterInput) {
       this.unregisterInput();
     }
@@ -145,8 +155,8 @@ export class MIDIValInput {
    * @param callback Callback that will get called on each note on event. 
    * @returns Callback to unregister.
    */
-  onAllNoteOn(callback: Callback<[number, MidiMessage]>): UnregisterCallback {
-    return this.buses.noteOn.onAll(callback);
+  onAllNoteOn(callback: CallbackType<[NoteMessage]>): UnregisterCallback {
+    return this.omnibus.on('noteOn', callback);
   }
 
   /**
@@ -155,8 +165,13 @@ export class MIDIValInput {
    * @param callback Callback that gets called on every note on on this specific key
    * @returns Callback to unregister.
    */
-  onNoteOn(key: number, callback: Callback<[MidiMessage]>): UnregisterCallback {
-    return this.buses.noteOn.on(key, callback);
+  onNoteOn(key: number, callback: CallbackType<[NoteMessage]>): UnregisterCallback {
+    return this.omnibus.on('noteOn', (midiMessage) => {
+      if (midiMessage.note !== key) {
+        return;
+      }
+      return callback(midiMessage);
+    });
   }
 
   /**
@@ -164,27 +179,27 @@ export class MIDIValInput {
    * @param callback Callback that gets called on every note off.
    * @returns Unregister callback
    */
-  onAllNoteOff(callback: Callback<[number, MidiMessage]>): UnregisterCallback {
-    return this.buses.noteOff.onAll(callback);
+  onAllNoteOff(callback: CallbackType<[NoteMessage]>): UnregisterCallback {
+    return this.omnibus.on('noteOff', callback);
   }
+
+    /**
+   * Registers new callback on specific note off.
+   * @param key key number
+   * @param callback Callback that gets called on every note off on this specific key
+   * @returns Unregister callback
+   */
+     onNoteOff(key: number, callback: CallbackType<[NoteMessage]>): UnregisterCallback {
+       return this.onBusKeyValue('noteOff', 'note', key, callback);
+    }
 
   /**
    * Registers new callback on pitch bend message
    * @param callback Callback that gets called on every pitch bend message. It gets value of the bend in the range of -1.0 to 1.0 using 16-bit precision (if supported by sending device).
    * @returns Unregister callback.
    */
-  onPitchBend(callback: Callback<[number]>): UnregisterCallback {
-    return this.buses.pitchBend.on(callback);
-  }
-
-  /**
-   * Registers new callback on specific note off.
-   * @param key key number
-   * @param callback Callback that gets called on every note off on this specific key
-   * @returns Unregister callback
-   */
-  onNoteOff(key: number, callback: Callback<[MidiMessage]>): UnregisterCallback {
-    return this.buses.noteOff.on(key, callback);
+  onPitchBend(callback: CallbackType<[number]>): UnregisterCallback {
+    return this.omnibus.on('pitchBend', callback);
   }
 
   /**
@@ -192,24 +207,29 @@ export class MIDIValInput {
    * @param callback Callback that will get called on control change.
    * @returns Unregister callback.
    */
-  onAllControlChange(callback: Callback<[number, MidiMessage]>): UnregisterCallback {
-    return this.buses.controlChange.onAll(callback);
+  onAllControlChange(callback: CallbackType<[ControlChangeMessage]>): UnregisterCallback {
+    return this.omnibus.on('controlChange', callback);
   }
 
   /**
    * Registers callback on specific control change key.
-   * @param key Control change key value
+   * @param channel Control change channel value
    * @param callback Callback to be called
    * @returns Unregister function
    */
-  onControlChange(key: number, callback: Callback<[MidiMessage]>): UnregisterCallback {
-    if (isChannelMode(key)) {
+  onControlChange(control: number, callback: CallbackType<[MidiMessage]>): UnregisterCallback {
+    if (isChannelMode(control)) {
       console.warn(
         "use designated Channel Mode callback instead of onControlChange for " +
-          key
+        control
       );
     }
-    return this.buses.controlChange.on(key, callback);
+    return this.omnibus.on('controlChange', (m) => {
+      if (m.control !== control) {
+        return;
+      }
+      callback(m);
+    })
   }
 
   /**
@@ -217,8 +237,8 @@ export class MIDIValInput {
    * @param callback Callback to be called
    * @returns Unregister function.
    */
-  onAllProgramChange(callback: Callback<[number, MidiMessage]>): UnregisterCallback {
-    return this.buses.programChange.onAll(callback);
+  onAllProgramChange(callback: CallbackType<[ProgramMessage]>): UnregisterCallback {
+    return this.omnibus.on('programChange', callback);
   }
 
   /**
@@ -227,8 +247,8 @@ export class MIDIValInput {
    * @param callback Callback to be called
    * @returns Unregister function
    */
-  onProgramChange(key: number, callback: Callback<[MidiMessage]>): UnregisterCallback {
-    return this.buses.programChange.on(key, callback);
+  onProgramChange(program: number, callback: CallbackType<[ProgramMessage]>): UnregisterCallback {
+    return this.onBusKeyValue('programChange', 'program', program, callback);
   }
 
   /**
@@ -236,8 +256,8 @@ export class MIDIValInput {
    * @param callback Callback to be called
    * @returns Unregister function
    */
-  onAllPolyKeyPressure(callback: Callback<[number, MidiMessage]>): UnregisterCallback {
-    return this.buses.polyKeyPressure.onAll(callback);
+  onAllPolyKeyPressure(callback: CallbackType<[MidiMessage]>): UnregisterCallback {
+    return this.omnibus.on('polyKeyPressure', callback);
   }
 
   /**
@@ -246,8 +266,8 @@ export class MIDIValInput {
    * @param callback Callback to be called
    * @returns Unregister function
    */
-  onPolyKeyPressure(key: number, callback: Callback<[MidiMessage]>): UnregisterCallback {
-    return this.buses.polyKeyPressure.on(key, callback);
+  onPolyKeyPressure(key: number, callback: CallbackType<[MidiMessage]>): UnregisterCallback {
+    return this.onBusKeyValue('polyKeyPressure', 'data1', key, callback);
   }
 
   /**
@@ -255,8 +275,8 @@ export class MIDIValInput {
    * @param callback Callback to be called
    * @returns Unregister callback
    */
-  onSysex(callback: Callback<[Uint8Array]>): UnregisterCallback {
-    return this.buses.sysex.on(callback);
+  onSysex(callback: CallbackType<[Uint8Array]>): UnregisterCallback {
+    return this.omnibus.on('sysex', callback);
   }
 
   /**
@@ -264,11 +284,8 @@ export class MIDIValInput {
    * @param callback Callback to be called
    * @returns Unregister callback
    */
-  onAllSoundsOff(callback: Callback<[MidiMessage]>): UnregisterCallback {
-    return this.buses.controlChange.on(
-      MidiControlChange.AllSoundsOff,
-      callback
-    );
+  onAllSoundsOff(callback: CallbackType<[ControlChangeMessage]>): UnregisterCallback {
+    return this.onBusKeyValue('controlChange', 'control', MidiControlChange.AllSoundsOff, callback);
   }
 
   /**
@@ -276,11 +293,8 @@ export class MIDIValInput {
    * @param callback Callback to be called
    * @returns Unregister callback
    */
-  onResetAllControllers(callback: Callback<[MidiMessage]>): UnregisterCallback {
-    return this.buses.controlChange.on(
-      MidiControlChange.ResetAllControllers,
-      callback
-    );
+  onResetAllControllers(callback: CallbackType<[ControlChangeMessage]>): UnregisterCallback {
+    return this.onBusKeyValue('controlChange', 'control', MidiControlChange.ResetAllControllers, callback);
   }
 
   /**
@@ -288,11 +302,10 @@ export class MIDIValInput {
    * @param callback Callback to be called: first argument to the callback is a boolean representing if the local control was set on or off
    * @returns Unregister event
    */
-  onLocalControlChange(callback: Callback<[boolean, MidiMessage]>): UnregisterCallback {
-    return this.buses.controlChange.on(
-      MidiControlChange.LocalControlOnOff,
-      (message) => callback(message.data2 === 127, message)
-    );
+  onLocalControlChange(callback: CallbackType<[isLocalControlOn: boolean, message: ControlChangeMessage]>): UnregisterCallback {
+    return this.onBusKeyValue('controlChange', 'control', MidiControlChange.LocalControlOnOff, (m) => {
+      callback(m.data2 === 127, m);
+    });
   }
 
   /**
@@ -300,38 +313,23 @@ export class MIDIValInput {
    * @param callback Callback to be called
    * @returns Unregister callback
    */
-  onAllNotesOff(callback: Callback<[MidiMessage]>): UnregisterCallback {
-    return this.buses.controlChange.on(
-      MidiControlChange.AllNotesOff,
-      callback
-    );
+  onAllNotesOff(callback: CallbackType<[MidiMessage]>): UnregisterCallback {
+    return this.onBusKeyValue('controlChange', 'control', MidiControlChange.AllNotesOff, callback);
   }
 
-  onOmniModeOff(callback: Callback<[MidiMessage]>): UnregisterCallback {
-    return this.buses.controlChange.on(
-      MidiControlChange.OmniModeOff,
-      callback,
-    );
+  onOmniModeOff(callback: CallbackType<[MidiMessage]>): UnregisterCallback {
+    return this.onBusKeyValue('controlChange', 'control', MidiControlChange.OmniModeOff, callback);
   }
 
-  onOmniModeOn(callback: Callback<[MidiMessage]>): UnregisterCallback {
-    return this.buses.controlChange.on(
-      MidiControlChange.OmniModeOn,
-      callback
-    );
+  onOmniModeOn(callback: CallbackType<[MidiMessage]>): UnregisterCallback {
+    return this.onBusKeyValue('controlChange', 'control', MidiControlChange.OmniModeOn, callback);
   }
 
-  onMonoModeOn(callback: Callback<[MidiMessage]>): UnregisterCallback {
-    return this.buses.controlChange.on(
-      MidiControlChange.MonoModeOn,
-      callback
-    );
+  onMonoModeOn(callback: CallbackType<[MidiMessage]>): UnregisterCallback {
+    return this.onBusKeyValue('controlChange', 'control', MidiControlChange.MonoModeOn, callback);
   }
 
-  onPolyModeOn(callback: Callback<[MidiMessage]>): UnregisterCallback {
-    return this.buses.controlChange.on(
-      MidiControlChange.PolyModeOn,
-      callback
-    );
+  onPolyModeOn(callback: CallbackType<[MidiMessage]>): UnregisterCallback {
+    return this.onBusKeyValue('controlChange', 'control', MidiControlChange.PolyModeOn, callback);
   }
 }

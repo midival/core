@@ -6,7 +6,7 @@ import {
 import {BrowserMIDIAccess} from "./BrowserMIDIAccess";
 import {IMIDIOutput} from "../outputs/IMIDIOutput";
 import {IMIDIInput} from "../inputs/IMIDIInput";
-import { UnregisterCallback } from "../../MessageBus";
+import { UnregisterCallback } from "@hypersphere/omnibus";
 
 export class MIDIAccess implements IMIDIAccess {
   private access: IMIDIAccess;
