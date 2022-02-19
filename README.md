@@ -15,7 +15,7 @@ yarn add @midival/core
 To get started you need to initialise the library and ask for available devices:
 
 ```javascript
-import MIDIVal from "@midival/core";
+import { MIDIVal } from "@midival/core";
 
 MIDIVal.connect()
 .then(accessObject => {
@@ -28,7 +28,7 @@ MIDIVal.connect()
 You can also listen to new devices and react when they are connected:
 
 ```javascript
-import MIDIVal from "@midival/core";
+import { MIDIVal } from "@midival/core";
 
 MIDIVal.onDeviceConnected(device => {
     console.log("Device", device);
@@ -38,7 +38,7 @@ MIDIVal.onDeviceConnected(device => {
 You can also listen to disconnect events:
 
 ```javascript
-import MIDIVal from "@midival/core";
+import { MIDIVal } from "@midival/core";
 
 MIDIVal.onDeviceDisconnected(device => {
     console.log("Device", device);
