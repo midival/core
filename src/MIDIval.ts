@@ -1,4 +1,3 @@
-import { MessageBus, Callback, UnregisterCallback } from "./MessageBus";
 import {MIDIValInput} from "./MIDIValInput";
 import {MIDIValOutput} from "./MIDIValOutput";
 
@@ -7,12 +6,13 @@ import {IMIDIInput} from "./wrappers/inputs/IMIDIInput";
 import {MIDIAccess} from "./wrappers/access/MIDIAccess";
 import {IMIDIOutput} from "./wrappers/outputs/IMIDIOutput";
 import {IMIDIAccess} from "./wrappers/access/IMIDIAccess";
+import { CallbackType, Omnibus, UnregisterCallback } from "@hypersphere/omnibus";
 
-type StaticBuses = {
-  inputDeviceConnected: MessageBus<[IMIDIInput]>;
-  inputDeviceDisconnected: MessageBus<[IMIDIInput]>;
-  outputDeviceConnected: MessageBus<[IMIDIOutput]>;
-  outputDeviceDisconnected: MessageBus<[IMIDIOutput]>;
+type EventDefinitions = {
+  inputDeviceConnected: [IMIDIInput];
+  inputDeviceDisconnected: [IMIDIInput];
+  outputDeviceConnected: [IMIDIOutput];
+  outputDeviceDisconnected: [IMIDIOutput];
 };
 
 export interface ConfigScheme {
@@ -32,12 +32,7 @@ export const matchesConfig = (input: IMIDIInput | IMIDIOutput, scheme: ConfigSch
 }
 
 export class MIDIVal {
-  private static staticBuses: StaticBuses = {
-    inputDeviceConnected: new MessageBus<[IMIDIInput]>("inputDeviceConnected"),
-    inputDeviceDisconnected: new MessageBus<[IMIDIInput]>("inputDeviceDisconnected"),
-    outputDeviceConnected: new MessageBus<[IMIDIOutput]>("outputDeviceConnected"),
-    outputDeviceDisconnected: new MessageBus<[IMIDIOutput]>("outputDeviceDisconnected"),
-  };
+  private static omnibus = new Omnibus<EventDefinitions>();
 
   private static isSetup: boolean = false;
   private static accessObject: IMIDIAccess;
@@ -57,9 +52,9 @@ export class MIDIVal {
    * @param callOnAlreadyConnected If set to true, the function will instantly trigger for all already connected devices. Default to false
    * @returns Promise resolving to unregister callback when finishes.
    */
-  public static async onInputDeviceConnected(fn: Callback<[IMIDIInput]>, callOnAlreadyConnected: boolean = false): Promise<UnregisterCallback> {
+  public static async onInputDeviceConnected(fn: CallbackType<[IMIDIInput]>, callOnAlreadyConnected: boolean = false): Promise<UnregisterCallback> {
     await this.setupDeviceWatchers();
-    const unregister = this.staticBuses.inputDeviceConnected.on(fn);
+    const unregister = this.omnibus.on('inputDeviceConnected', fn);
 
     if (!callOnAlreadyConnected) {
       return unregister;
@@ -106,9 +101,9 @@ export class MIDIVal {
    * @param callOnAlreadyConnected If set to true, the function will instantly trigger for all already connected devices. Default to false
    * @returns Promise resolving to unregister callback when finishes.
    */
-   public static async onOutputDeviceConnected(fn: Callback<[IMIDIOutput]>, callOnAlreadyConnected: boolean = false): Promise<UnregisterCallback> {
+   public static async onOutputDeviceConnected(fn: CallbackType<[IMIDIOutput]>, callOnAlreadyConnected: boolean = false): Promise<UnregisterCallback> {
     await this.setupDeviceWatchers();
-    const unregister = this.staticBuses.outputDeviceConnected.on(fn);
+    const unregister = this.omnibus.on('outputDeviceConnected', fn);
 
     if (!callOnAlreadyConnected) {
       return unregister;
@@ -127,8 +122,8 @@ export class MIDIVal {
    * @param fn Callback to be called.
    * @returns promise resolving to unregister callback
    */
-  public static async onInputDeviceDisconnected(fn: Callback<[IMIDIInput]>): Promise<UnregisterCallback> {
-    const unregister = this.staticBuses.inputDeviceConnected.on(fn);
+  public static async onInputDeviceDisconnected(fn: CallbackType<[IMIDIInput]>): Promise<UnregisterCallback> {
+    const unregister = this.omnibus.on('inputDeviceConnected', fn);
     await this.setupDeviceWatchers();
     return unregister;
   }
@@ -138,8 +133,8 @@ export class MIDIVal {
    * @param fn Callback to be called.
    * @returns promise resolving to unregister callback
    */
-   public static async onOutputDeviceDisconnected(fn: Callback<[IMIDIOutput]>): Promise<UnregisterCallback> {
-    const unregister = this.staticBuses.outputDeviceDisconnected.on(fn);
+   public static async onOutputDeviceDisconnected(fn: CallbackType<[IMIDIOutput]>): Promise<UnregisterCallback> {
+    const unregister = this.omnibus.on('outputDeviceDisconnected', fn);
     await this.setupDeviceWatchers();
     return unregister;
   }
@@ -184,10 +179,10 @@ export class MIDIVal {
     const access = await this.accessObject.connect();
 
     for (const input of this.accessObject.inputs) {
-      this.staticBuses.inputDeviceConnected.trigger(input);
+      this.omnibus.trigger('inputDeviceConnected', input);
     }
     for (const output of this.accessObject.outputs) {
-      this.staticBuses.outputDeviceConnected.trigger(output);
+      this.omnibus.trigger('outputDeviceConnected', output);
     }
 
     
