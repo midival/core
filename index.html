@@ -1,290 +1,147 @@
-<!doctype html>
-<html class="default no-js">
-<head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>@midival/core</title>
-	<meta name="description" content="Documentation for @midival/core">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="assets/css/main.css">
-	<script async src="assets/js/search.js" id="search-script"></script>
-</head>
-<body>
-<header>
-	<div class="tsd-page-toolbar">
-		<div class="container">
-			<div class="table-wrap">
-				<div class="table-cell" id="tsd-search" data-index="assets/js/search.json" data-base=".">
-					<div class="field">
-						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
-						<input id="tsd-search-field" type="text" />
-					</div>
-					<ul class="results">
-						<li class="state loading">Preparing search index...</li>
-						<li class="state failure">The search index is not available</li>
-					</ul>
-					<a href="index.html" class="title">@midival/core</a>
-				</div>
-				<div class="table-cell" id="tsd-widgets">
-					<div id="tsd-filter">
-						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
-						<div class="tsd-filter-group">
-							<div class="tsd-select" id="tsd-filter-visibility">
-								<span class="tsd-select-label">All</span>
-								<ul class="tsd-select-list">
-									<li data-value="public">Public</li>
-									<li data-value="protected">Public/Protected</li>
-									<li data-value="private" class="selected">All</li>
-								</ul>
-							</div>
-							<input type="checkbox" id="tsd-filter-inherited" checked />
-							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
-							<input type="checkbox" id="tsd-filter-externals" checked />
-							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
-						</div>
-					</div>
-					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="tsd-page-title">
-		<div class="container">
-			<h1>@midival/core</h1>
-		</div>
-	</div>
-</header>
-<div class="container container-main">
-	<div class="row">
-		<div class="col-8 col-content">
-			<div class="tsd-panel tsd-typography">
-				<a href="#midivalcore" id="midivalcore" style="color: inherit; text-decoration: none;">
-					<h1>@midival/core</h1>
-				</a>
-				<p><code>midival</code> is the library to handle MIDI messages in JavaScript (TypeScript) with ease. It provides simple programming interface to interact with both MIDI IN and MIDI OUT.</p>
-				<p>The library is currently in alpha state. Feel free to contribute, post bug reports, comments and ideas.</p>
-				<p>More information: <a href="https://midival.github.io">midival.github.io</a></p>
-				<a href="#installation" id="installation" style="color: inherit; text-decoration: none;">
-					<h2>Installation</h2>
-				</a>
-				<pre><code class="language-bash"><span style="color: #000000">yarn add @midival/core</span>
-</code></pre>
-				<a href="#getting-started" id="getting-started" style="color: inherit; text-decoration: none;">
-					<h2>Getting started</h2>
-				</a>
-				<p>To get started you need to initialise the library and ask for available devices:</p>
-				<pre><code class="language-javascript"><span style="color: #AF00DB">import</span><span style="color: #000000"> </span><span style="color: #001080">MIDIVal</span><span style="color: #000000"> </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;@midival/core&quot;</span><span style="color: #000000">;</span>
+<!DOCTYPE html><html class="default"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>@midival/core</title><meta name="description" content="Documentation for @midival/core"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="assets/style.css"/><link rel="stylesheet" href="assets/highlight.css"/><script async src="assets/search.js" id="search-script"></script></head><body><script>document.body.classList.add(localStorage.getItem("tsd-theme") || "os")</script><header><div class="tsd-page-toolbar"><div class="container"><div class="table-wrap"><div class="table-cell" id="tsd-search" data-base="."><div class="field"><label for="tsd-search-field" class="tsd-widget search no-caption">Search</label><input type="text" id="tsd-search-field"/></div><ul class="results"><li class="state loading">Preparing search index...</li><li class="state failure">The search index is not available</li></ul><a href="index.html" class="title">@midival/core</a></div><div class="table-cell" id="tsd-widgets"><div id="tsd-filter"><a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a><div class="tsd-filter-group"><div class="tsd-select" id="tsd-filter-visibility"><span class="tsd-select-label">All</span><ul class="tsd-select-list"><li data-value="public">Public</li><li data-value="protected">Public/Protected</li><li data-value="private" class="selected">All</li></ul></div> <input type="checkbox" id="tsd-filter-inherited" checked/><label class="tsd-widget" for="tsd-filter-inherited">Inherited</label><input type="checkbox" id="tsd-filter-externals" checked/><label class="tsd-widget" for="tsd-filter-externals">Externals</label></div></div><a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a></div></div></div></div><div class="tsd-page-title"><div class="container"><h1>@midival/core</h1></div></div></header><div class="container container-main"><div class="row"><div class="col-8 col-content"><div class="tsd-panel tsd-typography">
+<a href="#midivalcore" id="midivalcore" style="color: inherit; text-decoration: none;">
+  <h1>@midival/core</h1>
+</a>
+<p><code>midival</code> is the library to handle MIDI messages in JavaScript (TypeScript) with ease. It provides simple programming interface to interact with both MIDI IN and MIDI OUT.</p>
+<p>The library is currently in alpha state. Feel free to contribute, post bug reports, comments and ideas.</p>
+<p>More information: <a href="https://midival.github.io">midival.github.io</a></p>
 
-<span style="color: #001080">MIDIVal</span><span style="color: #000000">.</span><span style="color: #795E26">connect</span><span style="color: #000000">()</span>
-<span style="color: #000000">.</span><span style="color: #795E26">then</span><span style="color: #000000">(</span><span style="color: #001080">accessObject</span><span style="color: #000000"> </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
-<span style="color: #000000">    </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #A31515">&quot;Inputs&quot;</span><span style="color: #000000">, </span><span style="color: #001080">accessObject</span><span style="color: #000000">.</span><span style="color: #001080">inputs</span><span style="color: #000000">);</span>
-<span style="color: #000000">    </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #A31515">&quot;Outputs&quot;</span><span style="color: #000000">, </span><span style="color: #001080">accessObject</span><span style="color: #000000">.</span><span style="color: #001080">outputs</span><span style="color: #000000">);</span>
-<span style="color: #000000">})</span>
+<a href="#installation" id="installation" style="color: inherit; text-decoration: none;">
+  <h2>Installation</h2>
+</a>
+<pre><code class="language-bash"><span class="hl-0">yarn add @midival/core</span>
 </code></pre>
-				<a href="#listening-to-devices" id="listening-to-devices" style="color: inherit; text-decoration: none;">
-					<h3>Listening to devices</h3>
-				</a>
-				<p>You can also listen to new devices and react when they are connected:</p>
-				<pre><code class="language-javascript"><span style="color: #AF00DB">import</span><span style="color: #000000"> </span><span style="color: #001080">MIDIVal</span><span style="color: #000000"> </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;@midival/core&quot;</span><span style="color: #000000">;</span>
 
-<span style="color: #001080">MIDIVal</span><span style="color: #000000">.</span><span style="color: #795E26">onDeviceConnected</span><span style="color: #000000">(</span><span style="color: #001080">device</span><span style="color: #000000"> </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
-<span style="color: #000000">    </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #A31515">&quot;Device&quot;</span><span style="color: #000000">, </span><span style="color: #001080">device</span><span style="color: #000000">);</span>
-<span style="color: #000000">});</span>
+<a href="#getting-started" id="getting-started" style="color: inherit; text-decoration: none;">
+  <h2>Getting started</h2>
+</a>
+<p>To get started you need to initialise the library and ask for available devices:</p>
+<pre><code class="language-javascript"><span class="hl-1">import</span><span class="hl-0"> </span><span class="hl-2">MIDIVal</span><span class="hl-0"> </span><span class="hl-1">from</span><span class="hl-0"> </span><span class="hl-3">&quot;@midival/core&quot;</span><span class="hl-0">;</span><br/><br/><span class="hl-2">MIDIVal</span><span class="hl-0">.</span><span class="hl-4">connect</span><span class="hl-0">()</span><br/><span class="hl-0">.</span><span class="hl-4">then</span><span class="hl-0">(</span><span class="hl-2">accessObject</span><span class="hl-0"> </span><span class="hl-5">=&gt;</span><span class="hl-0"> {</span><br/><span class="hl-0">    </span><span class="hl-2">console</span><span class="hl-0">.</span><span class="hl-4">log</span><span class="hl-0">(</span><span class="hl-3">&quot;Inputs&quot;</span><span class="hl-0">, </span><span class="hl-2">accessObject</span><span class="hl-0">.</span><span class="hl-2">inputs</span><span class="hl-0">);</span><br/><span class="hl-0">    </span><span class="hl-2">console</span><span class="hl-0">.</span><span class="hl-4">log</span><span class="hl-0">(</span><span class="hl-3">&quot;Outputs&quot;</span><span class="hl-0">, </span><span class="hl-2">accessObject</span><span class="hl-0">.</span><span class="hl-2">outputs</span><span class="hl-0">);</span><br/><span class="hl-0">})</span>
 </code></pre>
-				<p>You can also listen to disconnect events:</p>
-				<pre><code class="language-javascript"><span style="color: #AF00DB">import</span><span style="color: #000000"> </span><span style="color: #001080">MIDIVal</span><span style="color: #000000"> </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;@midival/core&quot;</span><span style="color: #000000">;</span>
 
-<span style="color: #001080">MIDIVal</span><span style="color: #000000">.</span><span style="color: #795E26">onDeviceDisconnected</span><span style="color: #000000">(</span><span style="color: #001080">device</span><span style="color: #000000"> </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
-<span style="color: #000000">    </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #A31515">&quot;Device&quot;</span><span style="color: #000000">, </span><span style="color: #001080">device</span><span style="color: #000000">);</span>
-<span style="color: #000000">});</span>
+<a href="#listening-to-devices" id="listening-to-devices" style="color: inherit; text-decoration: none;">
+  <h3>Listening to devices</h3>
+</a>
+<p>You can also listen to new devices and react when they are connected:</p>
+<pre><code class="language-javascript"><span class="hl-1">import</span><span class="hl-0"> </span><span class="hl-2">MIDIVal</span><span class="hl-0"> </span><span class="hl-1">from</span><span class="hl-0"> </span><span class="hl-3">&quot;@midival/core&quot;</span><span class="hl-0">;</span><br/><br/><span class="hl-2">MIDIVal</span><span class="hl-0">.</span><span class="hl-4">onDeviceConnected</span><span class="hl-0">(</span><span class="hl-2">device</span><span class="hl-0"> </span><span class="hl-5">=&gt;</span><span class="hl-0"> {</span><br/><span class="hl-0">    </span><span class="hl-2">console</span><span class="hl-0">.</span><span class="hl-4">log</span><span class="hl-0">(</span><span class="hl-3">&quot;Device&quot;</span><span class="hl-0">, </span><span class="hl-2">device</span><span class="hl-0">);</span><br/><span class="hl-0">});</span>
 </code></pre>
-				<p>Once you obtain reference to device, you can use it by creating <code>MIDIValInput</code> / <code>MIDIValOutput</code> object from it:</p>
-				<pre><code class="language-javascript"><span style="color: #001080">MIDIVal</span><span style="color: #000000">.</span><span style="color: #795E26">connect</span><span style="color: #000000">()</span>
-<span style="color: #000000">.</span><span style="color: #795E26">then</span><span style="color: #000000">(</span><span style="color: #001080">accessObject</span><span style="color: #000000"> </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
-<span style="color: #000000">    </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">input</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">MIDIValInput</span><span style="color: #000000">(</span><span style="color: #001080">accessObject</span><span style="color: #000000">.</span><span style="color: #001080">inputs</span><span style="color: #000000">[</span><span style="color: #098658">0</span><span style="color: #000000">]);</span>
-<span style="color: #000000">});</span>
+<p>You can also listen to disconnect events:</p>
+<pre><code class="language-javascript"><span class="hl-1">import</span><span class="hl-0"> </span><span class="hl-2">MIDIVal</span><span class="hl-0"> </span><span class="hl-1">from</span><span class="hl-0"> </span><span class="hl-3">&quot;@midival/core&quot;</span><span class="hl-0">;</span><br/><br/><span class="hl-2">MIDIVal</span><span class="hl-0">.</span><span class="hl-4">onDeviceDisconnected</span><span class="hl-0">(</span><span class="hl-2">device</span><span class="hl-0"> </span><span class="hl-5">=&gt;</span><span class="hl-0"> {</span><br/><span class="hl-0">    </span><span class="hl-2">console</span><span class="hl-0">.</span><span class="hl-4">log</span><span class="hl-0">(</span><span class="hl-3">&quot;Device&quot;</span><span class="hl-0">, </span><span class="hl-2">device</span><span class="hl-0">);</span><br/><span class="hl-0">});</span>
 </code></pre>
-				<a href="#midi-inputs" id="midi-inputs" style="color: inherit; text-decoration: none;">
-					<h2>MIDI Inputs</h2>
-				</a>
-				<p>Once you obtain access to the MIDI Input you can interact with it.</p>
-				<a href="#note-on" id="note-on" style="color: inherit; text-decoration: none;">
-					<h3>Note On</h3>
-				</a>
-				<p>You can subscribe to note on.</p>
-				<pre><code class="language-javascript"><span style="color: #001080">input</span><span style="color: #000000">.</span><span style="color: #795E26">onAllNoteOn</span><span style="color: #000000">((</span><span style="color: #001080">key</span><span style="color: #000000">, </span><span style="color: #001080">midiMessage</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
-<span style="color: #000000">    </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #A31515">&quot;Note On:&quot;</span><span style="color: #000000">, </span><span style="color: #001080">key</span><span style="color: #000000">, </span><span style="color: #A31515">&quot;velocity:&quot;</span><span style="color: #000000">, </span><span style="color: #001080">cmidiMessage</span><span style="color: #000000">.</span><span style="color: #001080">data2</span><span style="color: #000000">);</span>
-<span style="color: #000000">});</span>
+<p>Once you obtain reference to device, you can use it by creating <code>MIDIValInput</code> / <code>MIDIValOutput</code> object from it:</p>
+<pre><code class="language-javascript"><span class="hl-2">MIDIVal</span><span class="hl-0">.</span><span class="hl-4">connect</span><span class="hl-0">()</span><br/><span class="hl-0">.</span><span class="hl-4">then</span><span class="hl-0">(</span><span class="hl-2">accessObject</span><span class="hl-0"> </span><span class="hl-5">=&gt;</span><span class="hl-0"> {</span><br/><span class="hl-0">    </span><span class="hl-5">const</span><span class="hl-0"> </span><span class="hl-6">input</span><span class="hl-0"> = </span><span class="hl-5">new</span><span class="hl-0"> </span><span class="hl-4">MIDIValInput</span><span class="hl-0">(</span><span class="hl-2">accessObject</span><span class="hl-0">.</span><span class="hl-2">inputs</span><span class="hl-0">[</span><span class="hl-7">0</span><span class="hl-0">]);</span><br/><span class="hl-0">});</span>
 </code></pre>
-				<p>You can also subscribe to a specific key:</p>
-				<pre><code class="language-javascript"><span style="color: #001080">input</span><span style="color: #000000">.</span><span style="color: #795E26">onNoteOn</span><span style="color: #000000">(</span><span style="color: #098658">60</span><span style="color: #000000">, (</span><span style="color: #001080">midiMessage</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
-<span style="color: #000000">    </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #A31515">&quot;C pressed with velocity&quot;</span><span style="color: #000000">, </span><span style="color: #001080">midiMessage</span><span style="color: #000000">.</span><span style="color: #001080">data2</span><span style="color: #000000">);</span>
-<span style="color: #000000">});</span>
-</code></pre>
-				<a href="#note-off" id="note-off" style="color: inherit; text-decoration: none;">
-					<h3>Note Off</h3>
-				</a>
-				<p>You can subscribe to note off. The note off takes into account both Note Off message as well as Note On with Velocity 0.</p>
-				<pre><code class="language-javascript"><span style="color: #001080">input</span><span style="color: #000000">.</span><span style="color: #795E26">onAllNoteOff</span><span style="color: #000000">((</span><span style="color: #001080">key</span><span style="color: #000000">, </span><span style="color: #001080">midiMessage</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
-<span style="color: #000000">    </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #A31515">&quot;Note Off:&quot;</span><span style="color: #000000">, </span><span style="color: #001080">key</span><span style="color: #000000">);</span>
-<span style="color: #000000">});</span>
-</code></pre>
-				<p>You can also subscribe to a specific key:</p>
-				<pre><code class="language-javascript"><span style="color: #001080">input</span><span style="color: #000000">.</span><span style="color: #795E26">onNoteOff</span><span style="color: #000000">(</span><span style="color: #098658">60</span><span style="color: #000000">, (</span><span style="color: #001080">midiMessage</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
-<span style="color: #000000">    </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #A31515">&quot;C depressed with velocity&quot;</span><span style="color: #000000">, </span><span style="color: #001080">midiMessage</span><span style="color: #000000">.</span><span style="color: #001080">data2</span><span style="color: #000000">); </span><span style="color: #008000">// velocity should be 0.</span>
-<span style="color: #000000">});</span>
-</code></pre>
-				<a href="#control-change" id="control-change" style="color: inherit; text-decoration: none;">
-					<h3>Control Change</h3>
-				</a>
-				<p>To listen to Control Change (MIDI CC) messages like modulation, synth parameter change and more, you can do the following:</p>
-				<pre><code class="language-javascript"><span style="color: #001080">input</span><span style="color: #000000">.</span><span style="color: #795E26">onAllControlChange</span><span style="color: #000000">((</span><span style="color: #001080">param</span><span style="color: #000000">, </span><span style="color: #001080">midiMessage</span><span style="color: #000000"> </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
-<span style="color: #000000">    </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #A31515">`Param: </span><span style="color: #0000FF">${</span><span style="color: #001080">param</span><span style="color: #0000FF">}</span><span style="color: #A31515">, value: </span><span style="color: #0000FF">${</span><span style="color: #001080">midiMessage</span><span style="color: #000000FF">.</span><span style="color: #001080">data2</span><span style="color: #0000FF">}</span><span style="color: #A31515">`</span><span style="color: #000000">);</span>
-<span style="color: #000000">}));</span>
-</code></pre>
-				<p>You can also listen to the single control parameter (like Modulation wheel, Volume or Pan only). The full table with MIDI CC messages can be found in <a href="https://www.midi.org/specifications-old/item/table-3-control-change-messages-data-bytes-2">the official MIDI CC documentation</a>. </p>
-				<pre><code class="language-javascript"><span style="color: #001080">input</span><span style="color: #000000">.</span><span style="color: #795E26">onControlChange</span><span style="color: #000000">(</span><span style="color: #098658">7</span><span style="color: #000000">, (</span><span style="color: #001080">midiMessage</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
-<span style="color: #000000">    </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;Volume change to value:&#039;</span><span style="color: #000000">, </span><span style="color: #001080">midiMessage</span><span style="color: #000000">.</span><span style="color: #001080">data2</span><span style="color: #000000">));</span>
-<span style="color: #000000">});</span>
 
-<span style="color: #001080">input</span><span style="color: #000000">.</span><span style="color: #795E26">onControlChange</span><span style="color: #000000">(</span><span style="color: #098658">1</span><span style="color: #000000">, (</span><span style="color: #001080">midiMessage</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
-<span style="color: #000000">    </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;Modulation Wheel value changed to:&#039;</span><span style="color: #000000">, </span><span style="color: #001080">midiMessage</span><span style="color: #000000">.</span><span style="color: #001080">data2</span><span style="color: #000000">);</span>
-<span style="color: #000000">})</span>
+<a href="#midi-inputs" id="midi-inputs" style="color: inherit; text-decoration: none;">
+  <h2>MIDI Inputs</h2>
+</a>
+<p>Once you obtain access to the MIDI Input you can interact with it.</p>
+
+<a href="#note-on" id="note-on" style="color: inherit; text-decoration: none;">
+  <h3>Note On</h3>
+</a>
+<p>You can subscribe to note on.</p>
+<pre><code class="language-javascript"><span class="hl-2">input</span><span class="hl-0">.</span><span class="hl-4">onAllNoteOn</span><span class="hl-0">(({ </span><span class="hl-2">note</span><span class="hl-0">, </span><span class="hl-2">velocity</span><span class="hl-0"> }) </span><span class="hl-5">=&gt;</span><span class="hl-0"> {</span><br/><span class="hl-0">    </span><span class="hl-2">console</span><span class="hl-0">.</span><span class="hl-4">log</span><span class="hl-0">(</span><span class="hl-3">&quot;Note On:&quot;</span><span class="hl-0">, </span><span class="hl-2">note</span><span class="hl-0">, </span><span class="hl-3">&quot;velocity:&quot;</span><span class="hl-0">, </span><span class="hl-2">velocity</span><span class="hl-0">);</span><br/><span class="hl-0">});</span>
 </code></pre>
-				<a href="#program-change" id="program-change" style="color: inherit; text-decoration: none;">
-					<h3>Program Change</h3>
-				</a>
-				<p>You can listen to program change messages:</p>
-				<pre><code class="language-javascript"><span style="color: #001080">input</span><span style="color: #000000">.</span><span style="color: #795E26">onAllProgramChange</span><span style="color: #000000">((</span><span style="color: #001080">program</span><span style="color: #000000">, </span><span style="color: #001080">midiMessage</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
-<span style="color: #000000">    </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #A31515">`Program </span><span style="color: #0000FF">${</span><span style="color: #001080">program</span><span style="color: #0000FF">}</span><span style="color: #A31515"> changed to: </span><span style="color: #0000FF">${</span><span style="color: #001080">midiMessage</span><span style="color: #000000FF">.</span><span style="color: #001080">data2</span><span style="color: #0000FF">}</span><span style="color: #A31515">`</span><span style="color: #000000">);</span>
-<span style="color: #000000">});</span>
+<p>You can also subscribe to a specific key:</p>
+<pre><code class="language-javascript"><span class="hl-2">input</span><span class="hl-0">.</span><span class="hl-4">onNoteOn</span><span class="hl-0">(</span><span class="hl-7">60</span><span class="hl-0">, ({ </span><span class="hl-2">velocity</span><span class="hl-0"> }) </span><span class="hl-5">=&gt;</span><span class="hl-0"> {</span><br/><span class="hl-0">    </span><span class="hl-2">console</span><span class="hl-0">.</span><span class="hl-4">log</span><span class="hl-0">(</span><span class="hl-3">&quot;C pressed with velocity&quot;</span><span class="hl-0">, </span><span class="hl-2">velocity</span><span class="hl-0">);</span><br/><span class="hl-0">});</span>
 </code></pre>
-				<p>You can also listen to a single program channel:</p>
-				<pre><code class="language-javascript"><span style="color: #001080">input</span><span style="color: #000000">.</span><span style="color: #795E26">onProgramChange</span><span style="color: #000000">(</span><span style="color: #098658">1</span><span style="color: #000000">, (</span><span style="color: #001080">midiMessage</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
-<span style="color: #000000">    </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #A31515">`Program 1 changed to:`</span><span style="color: #000000">, </span><span style="color: #001080">midiMessage</span><span style="color: #000000">.</span><span style="color: #001080">data2</span><span style="color: #000000">);</span>
-<span style="color: #000000">});</span>
+
+<a href="#note-off" id="note-off" style="color: inherit; text-decoration: none;">
+  <h3>Note Off</h3>
+</a>
+<p>You can subscribe to note off. The note off takes into account both Note Off message as well as Note On with Velocity 0.</p>
+<pre><code class="language-javascript"><span class="hl-2">input</span><span class="hl-0">.</span><span class="hl-4">onAllNoteOff</span><span class="hl-0">(({ </span><span class="hl-2">note</span><span class="hl-0"> }) </span><span class="hl-5">=&gt;</span><span class="hl-0"> {</span><br/><span class="hl-0">    </span><span class="hl-2">console</span><span class="hl-0">.</span><span class="hl-4">log</span><span class="hl-0">(</span><span class="hl-3">&quot;Note Off:&quot;</span><span class="hl-0">, </span><span class="hl-2">note</span><span class="hl-0">);</span><br/><span class="hl-0">});</span>
 </code></pre>
-				<a href="#poly-key-pressure" id="poly-key-pressure" style="color: inherit; text-decoration: none;">
-					<h3>Poly Key Pressure</h3>
-				</a>
-				<p>You can listen to Poly Key Pressure:</p>
-				<pre><code class="language-javascript"><span style="color: #001080">input</span><span style="color: #000000">.</span><span style="color: #795E26">onAllPolyKeyPressure</span><span style="color: #000000">((</span><span style="color: #001080">key</span><span style="color: #000000">, </span><span style="color: #001080">midiMessage</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {});</span>
+<p>You can also subscribe to a specific key:</p>
+<pre><code class="language-javascript"><span class="hl-2">input</span><span class="hl-0">.</span><span class="hl-4">onNoteOff</span><span class="hl-0">(</span><span class="hl-7">60</span><span class="hl-0">, ({ </span><span class="hl-2">velocity</span><span class="hl-0"> }) </span><span class="hl-5">=&gt;</span><span class="hl-0"> {</span><br/><span class="hl-0">    </span><span class="hl-2">console</span><span class="hl-0">.</span><span class="hl-4">log</span><span class="hl-0">(</span><span class="hl-3">&quot;C depressed with velocity&quot;</span><span class="hl-0">, </span><span class="hl-2">velocity</span><span class="hl-0">); </span><span class="hl-8">// velocity should be 0.</span><br/><span class="hl-0">});</span>
 </code></pre>
-				<p>you can listen to a specific key:</p>
-				<pre><code class="language-javascript"><span style="color: #001080">input</span><span style="color: #000000">.</span><span style="color: #795E26">onPolyKeyPressure</span><span style="color: #000000">(</span><span style="color: #098658">5</span><span style="color: #000000">, (</span><span style="color: #001080">midiMessage</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> { });</span>
+
+<a href="#control-change" id="control-change" style="color: inherit; text-decoration: none;">
+  <h3>Control Change</h3>
+</a>
+<p>To listen to Control Change (MIDI CC) messages like modulation, synth parameter change and more, you can do the following:</p>
+<pre><code class="language-javascript"><span class="hl-2">input</span><span class="hl-0">.</span><span class="hl-4">onAllControlChange</span><span class="hl-0">(({ </span><span class="hl-2">control</span><span class="hl-0">, </span><span class="hl-2">value</span><span class="hl-0">}) </span><span class="hl-5">=&gt;</span><span class="hl-0"> {</span><br/><span class="hl-0">    </span><span class="hl-2">console</span><span class="hl-0">.</span><span class="hl-4">log</span><span class="hl-0">(</span><span class="hl-3">`Param: </span><span class="hl-5">${</span><span class="hl-2">control</span><span class="hl-5">}</span><span class="hl-3">, value: </span><span class="hl-5">${</span><span class="hl-2">value</span><span class="hl-5">}</span><span class="hl-3">`</span><span class="hl-0">);</span><br/><span class="hl-0">});</span>
 </code></pre>
-				<a href="#systex" id="systex" style="color: inherit; text-decoration: none;">
-					<h3>Systex</h3>
-				</a>
-				<p>You can listen to systex message:</p>
-				<pre><code class="language-javascript"><span style="color: #001080">input</span><span style="color: #000000">.</span><span style="color: #795E26">onSysex</span><span style="color: #000000">((</span><span style="color: #001080">midiMessage</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> { });</span>
+<p>You can also listen to the single control parameter (like Modulation wheel, Volume or Pan only). The full table with MIDI CC messages can be found in <a href="https://www.midi.org/specifications-old/item/table-3-control-change-messages-data-bytes-2">the official MIDI CC documentation</a>. </p>
+<pre><code class="language-javascript"><span class="hl-2">input</span><span class="hl-0">.</span><span class="hl-4">onControlChange</span><span class="hl-0">(</span><span class="hl-7">7</span><span class="hl-0">, ({</span><span class="hl-2">value</span><span class="hl-0">}) </span><span class="hl-5">=&gt;</span><span class="hl-0"> {</span><br/><span class="hl-0">    </span><span class="hl-2">console</span><span class="hl-0">.</span><span class="hl-4">log</span><span class="hl-0">(</span><span class="hl-3">&#39;Volume change to value:&#39;</span><span class="hl-0">, </span><span class="hl-2">value</span><span class="hl-0">));</span><br/><span class="hl-0">});</span><br/><br/><span class="hl-2">input</span><span class="hl-0">.</span><span class="hl-4">onControlChange</span><span class="hl-0">(</span><span class="hl-7">1</span><span class="hl-0">, ({</span><span class="hl-2">value</span><span class="hl-0">}) </span><span class="hl-5">=&gt;</span><span class="hl-0"> {</span><br/><span class="hl-0">    </span><span class="hl-2">console</span><span class="hl-0">.</span><span class="hl-4">log</span><span class="hl-0">(</span><span class="hl-3">&#39;Modulation Wheel value changed to:&#39;</span><span class="hl-0">, </span><span class="hl-2">value</span><span class="hl-0">);</span><br/><span class="hl-0">})</span>
 </code></pre>
-				<a href="#all-sounds-off" id="all-sounds-off" style="color: inherit; text-decoration: none;">
-					<h3>All Sounds Off</h3>
-				</a>
-				<p>You can listen to all sounds off message</p>
-				<pre><code class="language-javascript"><span style="color: #001080">input</span><span style="color: #000000">.</span><span style="color: #795E26">onAllSoundsOff</span><span style="color: #000000">(() </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> { });</span>
+
+<a href="#program-change" id="program-change" style="color: inherit; text-decoration: none;">
+  <h3>Program Change</h3>
+</a>
+<p>You can listen to program change messages:</p>
+<pre><code class="language-javascript"><span class="hl-2">input</span><span class="hl-0">.</span><span class="hl-4">onAllProgramChange</span><span class="hl-0">(({ </span><span class="hl-2">program</span><span class="hl-0">, </span><span class="hl-2">value</span><span class="hl-0"> }) </span><span class="hl-5">=&gt;</span><span class="hl-0"> {</span><br/><span class="hl-0">    </span><span class="hl-2">console</span><span class="hl-0">.</span><span class="hl-4">log</span><span class="hl-0">(</span><span class="hl-3">`Program </span><span class="hl-5">${</span><span class="hl-2">program</span><span class="hl-5">}</span><span class="hl-3"> changed to: </span><span class="hl-5">${</span><span class="hl-2">value</span><span class="hl-5">}</span><span class="hl-3">`</span><span class="hl-0">);</span><br/><span class="hl-0">});</span>
 </code></pre>
-				<a href="#reset-all-controllers" id="reset-all-controllers" style="color: inherit; text-decoration: none;">
-					<h3>Reset All Controllers</h3>
-				</a>
-				<p>You can listen to the signal to reset all controllers</p>
-				<pre><code class="language-javascript"><span style="color: #001080">input</span><span style="color: #000000">.</span><span style="color: #795E26">onResetAllControllers</span><span style="color: #000000">(() </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> { });</span>
+<p>You can also listen to a single program channel:</p>
+<pre><code class="language-javascript"><span class="hl-2">input</span><span class="hl-0">.</span><span class="hl-4">onProgramChange</span><span class="hl-0">(</span><span class="hl-7">1</span><span class="hl-0">, ({</span><span class="hl-2">value</span><span class="hl-0">}) </span><span class="hl-5">=&gt;</span><span class="hl-0"> {</span><br/><span class="hl-0">    </span><span class="hl-2">console</span><span class="hl-0">.</span><span class="hl-4">log</span><span class="hl-0">(</span><span class="hl-3">`Program 1 changed to:`</span><span class="hl-0">, </span><span class="hl-2">value</span><span class="hl-0">);</span><br/><span class="hl-0">});</span>
 </code></pre>
-				<a href="#local-control-change" id="local-control-change" style="color: inherit; text-decoration: none;">
-					<h3>Local Control Change</h3>
-				</a>
-				<p>Under construction</p>
-				<a href="#all-notes-off" id="all-notes-off" style="color: inherit; text-decoration: none;">
-					<h3>All Notes Off</h3>
-				</a>
-				<p>You can listen to all notes off</p>
-				<pre><code class="language-javascript"><span style="color: #001080">input</span><span style="color: #000000">.</span><span style="color: #795E26">onAllNotesOff</span><span style="color: #000000">(() </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> { });</span>
+
+<a href="#poly-key-pressure" id="poly-key-pressure" style="color: inherit; text-decoration: none;">
+  <h3>Poly Key Pressure</h3>
+</a>
+<p>You can listen to Poly Key Pressure:</p>
+<pre><code class="language-javascript"><span class="hl-2">input</span><span class="hl-0">.</span><span class="hl-4">onAllPolyKeyPressure</span><span class="hl-0">((</span><span class="hl-2">midiMessage</span><span class="hl-0">) </span><span class="hl-5">=&gt;</span><span class="hl-0"> {});</span>
 </code></pre>
-				<a href="#to-be-added" id="to-be-added" style="color: inherit; text-decoration: none;">
-					<h3>To Be Added</h3>
-				</a>
-				<p>The following features are planned to be added to MIDI Input:</p>
-				<ul>
-					<li>Omni Mode On</li>
-					<li>Omni Mode Off</li>
-					<li>Mode Mode On</li>
-					<li>Poly On</li>
-					<li>Better support for sysex</li>
-				</ul>
-				<a href="#disconnect" id="disconnect" style="color: inherit; text-decoration: none;">
-					<h3>Disconnect</h3>
-				</a>
-				<p>If you want to stop listening to all the messages and unregister all callbacks simply call:</p>
-				<pre><code class="language-javascript"><span style="color: #001080">input</span><span style="color: #000000">.</span><span style="color: #795E26">disconnect</span><span style="color: #000000">();</span>
+<p>you can listen to a specific key:</p>
+<pre><code class="language-javascript"><span class="hl-2">input</span><span class="hl-0">.</span><span class="hl-4">onPolyKeyPressure</span><span class="hl-0">(</span><span class="hl-7">5</span><span class="hl-0">, (</span><span class="hl-2">midiMessage</span><span class="hl-0">) </span><span class="hl-5">=&gt;</span><span class="hl-0"> { });</span>
 </code></pre>
-				<a href="#midi-outputs" id="midi-outputs" style="color: inherit; text-decoration: none;">
-					<h2>MIDI Outputs</h2>
-				</a>
-				<p>Under construction.</p>
-			</div>
-		</div>
-		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
-			<nav class="tsd-navigation primary">
-				<ul>
-					<li class=" ">
-						<a href="modules.html">Exports</a>
-					</li>
-				</ul>
-			</nav>
-			<nav class="tsd-navigation secondary menu-sticky">
-				<ul class="before-current">
-					<li class=" tsd-kind-class">
-						<a href="classes/MIDIVal.html" class="tsd-kind-icon">MIDIVal</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/MIDIValInput.html" class="tsd-kind-icon">MIDIVal<wbr>Input</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="classes/MIDIValOutput.html" class="tsd-kind-icon">MIDIVal<wbr>Output</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/IMIDIAccess.html" class="tsd-kind-icon">IMIDIAccess</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/IMIDIInput.html" class="tsd-kind-icon">IMIDIInput</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/IMIDIOutput.html" class="tsd-kind-icon">IMIDIOutput</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
-						<a href="modules.html#Callback" class="tsd-kind-icon">Callback</a>
-					</li>
-					<li class=" tsd-kind-type-alias">
-						<a href="modules.html#UnregisterCallback" class="tsd-kind-icon">Unregister<wbr>Callback</a>
-					</li>
-				</ul>
-			</nav>
-		</div>
-	</div>
-</div>
-<footer class="with-border-bottom">
-	<div class="container">
-		<h2>Legend</h2>
-		<div class="tsd-legend-group">
-			<ul class="tsd-legend">
-				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
-				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
-			</ul>
-			<ul class="tsd-legend">
-				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
-				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
-			</ul>
-			<ul class="tsd-legend">
-				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
-			</ul>
-		</div>
-	</div>
-</footer>
-<div class="container tsd-generator">
-	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
-</div>
-<div class="overlay"></div>
-<script src="assets/js/main.js"></script>
-</body>
-</html>
+
+<a href="#systex" id="systex" style="color: inherit; text-decoration: none;">
+  <h3>Systex</h3>
+</a>
+<p>You can listen to systex message:</p>
+<pre><code class="language-javascript"><span class="hl-2">input</span><span class="hl-0">.</span><span class="hl-4">onSysex</span><span class="hl-0">((</span><span class="hl-2">midiMessage</span><span class="hl-0">) </span><span class="hl-5">=&gt;</span><span class="hl-0"> { });</span>
+</code></pre>
+
+<a href="#all-sounds-off" id="all-sounds-off" style="color: inherit; text-decoration: none;">
+  <h3>All Sounds Off</h3>
+</a>
+<p>You can listen to all sounds off message</p>
+<pre><code class="language-javascript"><span class="hl-2">input</span><span class="hl-0">.</span><span class="hl-4">onAllSoundsOff</span><span class="hl-0">(() </span><span class="hl-5">=&gt;</span><span class="hl-0"> { });</span>
+</code></pre>
+
+<a href="#reset-all-controllers" id="reset-all-controllers" style="color: inherit; text-decoration: none;">
+  <h3>Reset All Controllers</h3>
+</a>
+<p>You can listen to the signal to reset all controllers</p>
+<pre><code class="language-javascript"><span class="hl-2">input</span><span class="hl-0">.</span><span class="hl-4">onResetAllControllers</span><span class="hl-0">(() </span><span class="hl-5">=&gt;</span><span class="hl-0"> { });</span>
+</code></pre>
+
+<a href="#local-control-change" id="local-control-change" style="color: inherit; text-decoration: none;">
+  <h3>Local Control Change</h3>
+</a>
+<p>Under construction</p>
+
+<a href="#all-notes-off" id="all-notes-off" style="color: inherit; text-decoration: none;">
+  <h3>All Notes Off</h3>
+</a>
+<p>You can listen to all notes off</p>
+<pre><code class="language-javascript"><span class="hl-2">input</span><span class="hl-0">.</span><span class="hl-4">onAllNotesOff</span><span class="hl-0">(() </span><span class="hl-5">=&gt;</span><span class="hl-0"> { });</span>
+</code></pre>
+
+<a href="#to-be-added" id="to-be-added" style="color: inherit; text-decoration: none;">
+  <h3>To Be Added</h3>
+</a>
+<p>The following features are planned to be added to MIDI Input:</p>
+<ul>
+<li>Omni Mode On</li>
+<li>Omni Mode Off</li>
+<li>Mode Mode On</li>
+<li>Poly On</li>
+<li>Better support for sysex</li>
+</ul>
+
+<a href="#disconnect" id="disconnect" style="color: inherit; text-decoration: none;">
+  <h3>Disconnect</h3>
+</a>
+<p>If you want to stop listening to all the messages and unregister all callbacks simply call:</p>
+<pre><code class="language-javascript"><span class="hl-2">input</span><span class="hl-0">.</span><span class="hl-4">disconnect</span><span class="hl-0">();</span>
+</code></pre>
+
+<a href="#changelog-and-migration-guide" id="changelog-and-migration-guide" style="color: inherit; text-decoration: none;">
+  <h2>Changelog and migration guide</h2>
+</a>
+<p>For changelog see <a href="./CHANGELOG.md">CHANGELOG.md</a>.</p>
+<p>For migration guide see <a href="./MIGRATION.md">MIGRATION.md</a>.</p>
+</div></div><div class="col-4 col-menu menu-sticky-wrap menu-highlight"><nav class="tsd-navigation primary"><ul><li class="current"><a href="modules.html">Exports</a></li></ul></nav><nav class="tsd-navigation secondary menu-sticky"><ul><li class="tsd-kind-class"><a href="classes/MIDIVal.html" class="tsd-kind-icon">MIDIVal</a></li><li class="tsd-kind-class"><a href="classes/MIDIValInput.html" class="tsd-kind-icon">MIDIVal<wbr/>Input</a></li><li class="tsd-kind-class"><a href="classes/MIDIValOutput.html" class="tsd-kind-icon">MIDIVal<wbr/>Output</a></li><li class="tsd-kind-interface"><a href="interfaces/IMIDIAccess.html" class="tsd-kind-icon">IMIDIAccess</a></li><li class="tsd-kind-interface"><a href="interfaces/IMIDIInput.html" class="tsd-kind-icon">IMIDIInput</a></li><li class="tsd-kind-interface"><a href="interfaces/IMIDIOutput.html" class="tsd-kind-icon">IMIDIOutput</a></li><li class="tsd-kind-type-alias tsd-has-type-parameter tsd-is-external"><a href="modules.html#Callback" class="tsd-kind-icon">Callback</a></li><li class="tsd-kind-type-alias tsd-is-external"><a href="modules.html#UnregisterCallback" class="tsd-kind-icon">Unregister<wbr/>Callback</a></li></ul></nav></div></div></div><footer class="with-border-bottom"><div class="container"><h2>Legend</h2><div class="tsd-legend-group"><ul class="tsd-legend"><li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li><li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li></ul><ul class="tsd-legend"><li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li><li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li></ul><ul class="tsd-legend"><li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li></ul></div><h2>Settings</h2><p>Theme <select id="theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></p></div></footer><div class="container tsd-generator"><p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></div><div class="overlay"></div><script src="assets/main.js"></script></body></html>
