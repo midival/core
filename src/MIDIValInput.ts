@@ -10,39 +10,10 @@ import {IMIDIAccess} from "./wrappers/access/IMIDIAccess";
 import { splitValueIntoFraction } from "./utils/pitchBend";
 import { MidiCommand } from "./utils/midiCommands";
 import { MidiControlChange } from "./utils/midiControlChanges";
+import { ticksToBPM } from "./utils/clock";
+import { MIDIValConfigurationError, MIDIValError } from "./errors";
+import { ControlChangeMessage, NoteMessage, ProgramChangeMessage, toControlChangeMessage, toNoteMessage, toProgramMessage } from "./types/messages";
 
-interface NoteMessage extends MidiMessage {
-  note: number;
-  velocity: number;
-}
-
-const toNoteMessage = (m: MidiMessage): NoteMessage => ({
-  ...m,
-  note: m.data1,
-  velocity: m.data2,
-});
-
-interface ControlChangeMessage extends MidiMessage {
-  control: number,
-  value: number,
-}
-
-const toControlChangeMessage = (m: MidiMessage): ControlChangeMessage => ({
-  ...m,
-  control: m.data1,
-  value: m.data2,
-});
-
-interface ProgramMessage extends MidiMessage {
-  program: number,
-  value: number,
-}
-
-const toProgramMessage = (m: MidiMessage): ProgramMessage => ({
-  ...m,
-  program: m.data1,
-  value: m.data2,
-});
 
 interface EventDefinitions {
   'pitchBend': [number],
@@ -51,9 +22,27 @@ interface EventDefinitions {
   'noteOn': [NoteMessage],
   'noteOff': [NoteMessage],
   'controlChange': [ControlChangeMessage],
-  'programChange': [ProgramMessage],
+  'programChange': [ProgramChangeMessage],
   'polyKeyPressure': [MidiMessage],
+
+  'clockPulse': [],
+  'clockStart': [],
+  'clockStop': [],
+  'clockContinue': [],
 }
+
+const TEMPO_SAMPLES_LIMIT = 20;
+
+/**
+ * MIDIVal Input Configuration Options
+ */
+export interface MIDIValInputOptions {
+  computeClockTempo: boolean,
+}
+
+const DefaultOptions: MIDIValInputOptions = {
+  computeClockTempo: false,
+};
 
 export class MIDIValInput {
   private unregisterInput: UnregisterCallback;
@@ -61,37 +50,61 @@ export class MIDIValInput {
 
   private midiInput: IMIDIInput;
 
-  constructor(input: IMIDIInput) {
+  private tempoSamples: number[];
+  private options: MIDIValInputOptions
+
+  constructor(input: IMIDIInput, options: MIDIValInputOptions = DefaultOptions) {
     this.omnibus = new Omnibus<EventDefinitions>();
+    this.tempoSamples = [];
     this.registerInput(input);
+    this.options = options;
   }
 
   /**
    * Returns new MIDIValInput object based on the interface id.
    * @param interfaceId id of the interface from the MIDIAcces object. 
+   * @throws MIDIValError when interface id is not found.
    * @returns Promise resolving to MIDIValInput.
    */
-  static async fromInterfaceId(interfaceId: string): Promise<MIDIValInput> {
+  static async fromInterfaceId(interfaceId: string, options?: MIDIValInputOptions): Promise<MIDIValInput> {
     const midiAccess = await this.getMidiAccess();
     const input = midiAccess.inputs.find(({ id }) => id === interfaceId);
     if (!input) {
-      throw new Error(`${interfaceId} not found`);
+      throw new MIDIValError(`${interfaceId} not found`);
     }
-    return new MIDIValInput(input);
+    return new MIDIValInput(input, options);
   }
-
-  static async fromInterfaceName(interfaceName: string): Promise<MIDIValInput> {
+/**
+ * Finds first interface matching the name
+ * @param interfaceName interface Name
+ * @param options input configuration options
+ * @throws MIDIValError when no interface with that name is found
+ * @returns MIDIValInput object
+ */
+  static async fromInterfaceName(interfaceName: string, options?: MIDIValInputOptions): Promise<MIDIValInput> {
     const midiAccess = await this.getMidiAccess();
     const input = midiAccess.inputs.find(({ name }) => name === interfaceName);
     if (!input) {
-      throw new Error(`${interfaceName} not found`);
+      throw new MIDIValError(`${interfaceName} not found`);
     }
-    return new MIDIValInput(input);
+    return new MIDIValInput(input, options);
   }
 
   private static async getMidiAccess(): Promise<IMIDIAccess> {
     const midiAccess: IMIDIAccess = await MIDIVal.connect();
     return midiAccess;
+  }
+
+  /**
+   * Current MIDI Clock tempo
+   * @throws MIDIValConfigurationError when computeClockTempo is not on.
+   * @returns current tempo in BPM.
+   */
+  public get tempo(): number {
+    if (!this.options.computeClockTempo) {
+      throw new MIDIValConfigurationError("To use MIDIValInput.tempo you need to enable computeClockTempo option.");
+    }
+    return ticksToBPM(this.tempoSamples);
   }
 
   private async registerInput(input: IMIDIInput): Promise<void> {
@@ -101,6 +114,9 @@ export class MIDIValInput {
         if (e.data[0] === 0xf0) {
           // sysex
           this.omnibus.trigger('sysex', e.data);
+          return;
+        }
+        if (this.isClockCommand(e)) {
           return;
         }
         const midiMessage = toMidiMessage(e.data);
@@ -125,14 +141,55 @@ export class MIDIValInput {
             break;
           default:
             // TODO: Unknown message.
+            console.log('unknown msg', midiMessage);
             break;
         }
       }
     );
+
+    if (this.options.computeClockTempo) {
+      this.onClockPulse(() => {
+        // compute time 
+        this.tempoSamples.push(performance.now());
+        if (this.tempoSamples.length > TEMPO_SAMPLES_LIMIT) {
+          this.tempoSamples.shift();
+        }
+      });
+
+      const resetSamples = () => {
+        this.tempoSamples = [];
+      };
+
+      this.onClockContinue(resetSamples);
+      this.onClockStart(resetSamples);
+    }
+  }
+
+  private isClockCommand(e: WebMidi.MIDIMessageEvent): boolean {
+    switch (e.data[0]) {
+      case MidiCommand.Clock.Pulse:
+        this.omnibus.trigger('clockPulse');
+        return true;
+      case MidiCommand.Clock.Start:
+        this.omnibus.trigger('clockStart');
+        return true;
+      case MidiCommand.Clock.Continue:
+        this.omnibus.trigger('clockContinue');
+        return true;
+      case MidiCommand.Clock.Stop:
+        this.omnibus.trigger('clockStop');
+        return true;
+      default:
+        return false;
+    }
   }
 
   private onBusKeyValue<K extends keyof EventDefinitions>(event: K, key: keyof EventDefinitions[K][0], value: EventDefinitions[K][0][keyof EventDefinitions[K][0]], callback: (obj: EventDefinitions[K][0]) => void) {
-    return this.omnibus.on(event, (obj) => {
+    return this.omnibus.on(event, (...args) => {
+      if (!args.length) {
+        return;
+      }
+      const obj: EventDefinitions[K][0] = args[0];
       // FIXME: how to do it so we have multiple args?
       if (obj[key] === value) {
         callback(obj);
@@ -237,7 +294,7 @@ export class MIDIValInput {
    * @param callback Callback to be called
    * @returns Unregister function.
    */
-  onAllProgramChange(callback: CallbackType<[ProgramMessage]>): UnregisterCallback {
+  onAllProgramChange(callback: CallbackType<[ProgramChangeMessage]>): UnregisterCallback {
     return this.omnibus.on('programChange', callback);
   }
 
@@ -247,7 +304,7 @@ export class MIDIValInput {
    * @param callback Callback to be called
    * @returns Unregister function
    */
-  onProgramChange(program: number, callback: CallbackType<[ProgramMessage]>): UnregisterCallback {
+  onProgramChange(program: number, callback: CallbackType<[ProgramChangeMessage]>): UnregisterCallback {
     return this.onBusKeyValue('programChange', 'program', program, callback);
   }
 
@@ -331,5 +388,21 @@ export class MIDIValInput {
 
   onPolyModeOn(callback: CallbackType<[MidiMessage]>): UnregisterCallback {
     return this.onBusKeyValue('controlChange', 'control', MidiControlChange.PolyModeOn, callback);
+  }
+
+  onClockPulse(callback: CallbackType<[]>): UnregisterCallback {
+    return this.omnibus.on('clockPulse', callback);
+  }
+
+  onClockStart(callback: CallbackType<[]>): UnregisterCallback {
+    return this.omnibus.on('clockStart', callback);
+  }
+
+  onClockStop(callback: CallbackType<[]>): UnregisterCallback {
+    return this.omnibus.on('clockStop', callback);
+  }
+
+  onClockContinue(callback: CallbackType<[]>): UnregisterCallback {
+    return this.omnibus.on('clockContinue', callback);
   }
 }

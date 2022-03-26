@@ -181,13 +181,17 @@ You can listen to all notes off
 input.onAllNotesOff(() => { });
 ```
 
+### MIDI Clock
+You can listen to MIDI Clock messages:
+- `onClockStart`
+- `onClockStop`
+- `onClockContinue`
+- `onClockPulse` - sent 24 times every quarternote.
+
 ### To Be Added
 The following features are planned to be added to MIDI Input:
-- Omni Mode On
-- Omni Mode Off
-- Mode Mode On
-- Poly On
 - Better support for sysex
+- Better documentation
 
 ### Disconnect
 

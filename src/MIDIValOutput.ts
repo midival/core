@@ -178,4 +178,28 @@ export class MIDIValOutput {
       0,
     ]);
   }
+
+  sendClockStart(): void {
+    return this.send([
+      MidiCommand.Clock.Start,
+    ]);
+  }
+
+  sendClockStop(): void {
+    return this.send([
+      MidiCommand.Clock.Stop,
+    ])
+  }
+
+  sendClockContinue(): void {
+    return this.send([
+      MidiCommand.Clock.Continue,
+    ]);
+  }
+
+  sendClockPulse(): void {
+    return this.send([
+      MidiCommand.Clock.Pulse,
+    ]);
+  }
 }

@@ -1,4 +1,8 @@
-export type MidiMessage = {
+/**
+ * Generic message interface.
+ * @category MIDI Messages
+ */
+export interface MidiMessage {
   channel: number;
   command: number;
   data1: number;

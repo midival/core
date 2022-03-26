@@ -7,4 +7,10 @@ export const MidiCommand = {
     ChannelPressure: 0b1101 << 4,
     PitchBend: 0b1110 << 4,
     Sysex: 0b1111 << 4,
+    Clock: {
+        Start: 0xFA,
+        Continue: 0xFB,
+        Stop: 0xFC,
+        Pulse: 0xF8,
+    }
 };
