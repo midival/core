@@ -56,4 +56,40 @@ describe("MIDIVal", () => {
 
     expect(fn).toBeCalledTimes(3);
   });
+
+  it("should properly call input device connected / disconnected", async () => {
+    const fn = jest.fn();
+    await MIDIVal.onInputDeviceConnected(fn);
+    expect(fn).not.toBeCalled();
+    const deviceProps = { id: "1", name: "D1", manufacturer: "MIDI" };
+    const device = mockMidiAccess.addInput(deviceProps);
+    expect(fn).toBeCalledTimes(1);
+    expect(fn).toBeCalledWith(device);
+
+    const disconnect = jest.fn();
+    await MIDIVal.onInputDeviceDisconnected(disconnect);
+    expect(disconnect).not.toBeCalled();
+
+    mockMidiAccess.removeInput(device);
+    expect(disconnect).toBeCalledTimes(1);
+    expect(disconnect).toBeCalledWith(device);
+  });
+
+  it("should properly call output device connected / disconnected", async () => {
+    const fn = jest.fn();
+    await MIDIVal.onOutputDeviceConnected(fn);
+    expect(fn).not.toBeCalled();
+    const deviceProps = { id: "1", name: "D1", manufacturer: "MIDI" };
+    const device = mockMidiAccess.addOutput(deviceProps);
+    expect(fn).toBeCalledTimes(1);
+    expect(fn).toBeCalledWith(device);
+
+    const disconnect = jest.fn();
+    await MIDIVal.onOutputDeviceDisconnected(disconnect);
+    expect(disconnect).not.toBeCalled();
+
+    mockMidiAccess.removeOutput(device);
+    expect(disconnect).toBeCalledTimes(1);
+    expect(disconnect).toBeCalledWith(device);
+  });
 });

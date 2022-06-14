@@ -8,10 +8,17 @@ import { MidiDeviceProps, MockMIDIInput } from "../inputs/MockMIDIInput";
 import { UnregisterCallback } from "../..";
 import { Omnibus } from "@hypersphere/omnibus";
 
+interface Events {
+  "input_connected": [MockMIDIInput],
+  "input_disconnected": [MockMIDIInput],
+  "output_connected": [MockMIDIOutput],
+  "output_disconnected": [MockMIDIOutput],
+};
+
 export class MockMIDIAccess implements IMIDIAccess {
   private mockInputs: MockMIDIInput[];
   private mockOutputs: MockMIDIOutput[];
-  private bus: Omnibus = new Omnibus();
+  private bus: Omnibus<Events> = new Omnibus<Events>();
 
   constructor() {
     this.mockInputs = [];
@@ -49,10 +56,20 @@ export class MockMIDIAccess implements IMIDIAccess {
     return input;
   }
 
+  removeInput(device: MockMIDIInput) {
+    this.mockInputs = this.mockInputs.filter(x => x !== device);
+    this.bus.trigger("input_disconnected", device);
+  }
+
   addOutput(props: MidiDeviceProps): MockMIDIOutput {
     const output = new MockMIDIOutput(props);
     this.mockOutputs.push(output);
     this.bus.trigger("output_connected", output);
     return output;
+  }
+
+  removeOutput(device: MockMIDIOutput) {
+    this.mockOutputs = this.mockOutputs.filter(x => x !== device);
+    this.bus.trigger("output_disconnected", device);
   }
 }
