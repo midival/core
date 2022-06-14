@@ -1,5 +1,5 @@
 import { UnregisterCallback } from "@hypersphere/omnibus";
-import { IMIDIInput, MIDIMessage } from "./IMIDIInput";
+import { IMIDIInput } from "./IMIDIInput";
 
 export type MidiMessageCallback = (e: WebMidi.MIDIMessageEvent) => void;
 
@@ -11,13 +11,9 @@ export class BrowserMIDIInput implements IMIDIInput {
 
   async onMessage(fn: MidiMessageCallback): Promise<UnregisterCallback> {
     await this.input.open();
-
-    const f = (e: WebMidi.MIDIMessageEvent) => fn(e);
-
-    this.input.addEventListener("midimessage", f);
-
+    this.input.addEventListener("midimessage", fn);
     return () => {
-      this.input.removeEventListener("midimessage", f);
+      this.input.removeEventListener("midimessage", fn);
     };
   }
 

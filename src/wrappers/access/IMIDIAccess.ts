@@ -12,8 +12,8 @@ export type OutputStateChangeCallback = CallbackType<[IMIDIOutput]>;
 
 export interface IMIDIAccess {
   connect(): Promise<void>;
-  inputs: IMIDIInput[];
-  outputs: IMIDIOutput[];
+  get inputs(): IMIDIInput[];
+  get outputs(): IMIDIOutput[];
   onInputConnected(callback: InputStateChangeCallback): UnregisterCallback;
   onInputDisconnected(callback: InputStateChangeCallback): UnregisterCallback;
   onOutputConnected(callback: OutputStateChangeCallback): UnregisterCallback;

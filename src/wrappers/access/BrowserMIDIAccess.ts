@@ -15,23 +15,22 @@ interface EventDefinitions {
 export class BrowserMIDIAccess implements IMIDIAccess {
   private access: WebMidi.MIDIAccess;
 
-  private omnibus: Omnibus<EventDefinitions>;
+  private bus: Omnibus<EventDefinitions> = new Omnibus<EventDefinitions>();
 
   constructor() {
-    this.omnibus = new Omnibus();
     this.listenOnStateChange();
   }
   onInputConnected(callback: InputStateChangeCallback): UnregisterCallback {
-    return this.omnibus.on('inputConnected', callback);
+    return this.bus.on('inputConnected', callback);
   }
   onInputDisconnected(callback: InputStateChangeCallback): UnregisterCallback {
-    return this.omnibus.on('inputDisconnected', callback);
+    return this.bus.on('inputDisconnected', callback);
   }
   onOutputConnected(callback: OutputStateChangeCallback): UnregisterCallback {
-    return this.omnibus.on('outputConnected', callback);
+    return this.bus.on('outputConnected', callback);
   }
   onOutputDisconnected(callback: OutputStateChangeCallback): UnregisterCallback {
-    return this.omnibus.on('outputDisconnected', callback);
+    return this.bus.on('outputDisconnected', callback);
   }
 
   async connect(sysex: boolean = false): Promise<void> {
@@ -39,6 +38,7 @@ export class BrowserMIDIAccess implements IMIDIAccess {
       throw new Error("requestMIDIAccess not available, make sure you are using MIDI-compatible browser.");
     }
     this.access = await navigator.requestMIDIAccess({ sysex }); // FIXME: check.
+    this.listenOnStateChange();
   }
 
   get outputs(): IMIDIOutput[] {
@@ -75,8 +75,7 @@ export class BrowserMIDIAccess implements IMIDIAccess {
     return new BrowserMIDIOutput(output);
   }
 
-  private async listenOnStateChange() {
-    await this.connect();
+  private listenOnStateChange() {
     this.access.addEventListener(
       "statechange",
       (e: WebMidi.MIDIConnectionEvent) => {
@@ -84,10 +83,11 @@ export class BrowserMIDIAccess implements IMIDIAccess {
           const input = this.getInputById(e.port.id);
           switch (e.port.connection) {
             case "closed":
-              this.omnibus.trigger('inputDisconnected', input);
+              this.bus.trigger('inputDisconnected', input);
               break;
             case "open":
-              this.omnibus.trigger('inputConnected', input);
+              this.bus.trigger('inputConnected', input);
+              break;
             case "pending":
               console.log("Input pending.");
               break;
@@ -96,10 +96,11 @@ export class BrowserMIDIAccess implements IMIDIAccess {
           const output = this.getOutputById(e.port.id);
           switch (e.port.connection) {
             case "closed":
-              this.omnibus.trigger('outputDisconnected', output);
+              this.bus.trigger('outputDisconnected', output);
               break;
             case "open":
-              this.omnibus.trigger('outputConnected', output);
+              this.bus.trigger('outputConnected', output);
+              break;
             case "pending":
               console.log("Output pending");
               break;
