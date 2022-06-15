@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.0.17] 2022-06-15
+- Fixed `onInputConnected` / `onInputDisconnected` / `onOutputConnected` / `onOutputDisconnected`
+- Simplified code
+- Added tests
+- Added example code.
+
+## [0.0.16] 2022-03-16
+- Added MIDI Clock messages.
+
 ## [0.0.15] 2022-02-19
 
 - Migrated from custom event bus to `@hypersphere/omnibus`
