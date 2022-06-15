@@ -1,34 +1,45 @@
-import { CallbackType, Omnibus, OmnibusRegistrator, UnregisterCallback } from "@hypersphere/omnibus";
+import {
+  CallbackType,
+  Omnibus,
+  OmnibusRegistrator,
+  UnregisterCallback,
+} from "@hypersphere/omnibus";
 import {
   toMidiMessage,
   isChannelMode,
   MidiMessage,
 } from "./utils/MIDIMessageConvert";
-import {IMIDIInput} from "./wrappers/inputs/IMIDIInput";
-import {MIDIVal} from "./index";
-import {IMIDIAccess} from "./wrappers/access/IMIDIAccess";
+import { IMIDIInput } from "./wrappers/inputs/IMIDIInput";
+import { MIDIVal } from "./index";
+import { IMIDIAccess } from "./wrappers/access/IMIDIAccess";
 import { splitValueIntoFraction } from "./utils/pitchBend";
 import { MidiCommand } from "./utils/midiCommands";
 import { MidiControlChange } from "./utils/midiControlChanges";
 import { ticksToBPM } from "./utils/clock";
 import { MIDIValConfigurationError, MIDIValError } from "./errors";
-import { ControlChangeMessage, NoteMessage, ProgramChangeMessage, toControlChangeMessage, toNoteMessage, toProgramMessage } from "./types/messages";
-
+import {
+  ControlChangeMessage,
+  NoteMessage,
+  ProgramChangeMessage,
+  toControlChangeMessage,
+  toNoteMessage,
+  toProgramMessage,
+} from "./types/messages";
 
 interface EventDefinitions {
-  'pitchBend': [number],
-  'sysex': [Uint8Array],
-  'channelPressure': [MidiMessage],
-  'noteOn': [NoteMessage],
-  'noteOff': [NoteMessage],
-  'controlChange': [ControlChangeMessage],
-  'programChange': [ProgramChangeMessage],
-  'polyKeyPressure': [MidiMessage],
+  pitchBend: [number];
+  sysex: [Uint8Array];
+  channelPressure: [MidiMessage];
+  noteOn: [NoteMessage];
+  noteOff: [NoteMessage];
+  controlChange: [ControlChangeMessage];
+  programChange: [ProgramChangeMessage];
+  polyKeyPressure: [MidiMessage];
 
-  'clockPulse': [],
-  'clockStart': [],
-  'clockStop': [],
-  'clockContinue': [],
+  clockPulse: [];
+  clockStart: [];
+  clockStop: [];
+  clockContinue: [];
 }
 
 const TEMPO_SAMPLES_LIMIT = 20;
@@ -37,7 +48,7 @@ const TEMPO_SAMPLES_LIMIT = 20;
  * MIDIVal Input Configuration Options
  */
 export interface MIDIValInputOptions {
-  computeClockTempo: boolean,
+  computeClockTempo: boolean;
 }
 
 const DefaultOptions: MIDIValInputOptions = {
@@ -51,9 +62,12 @@ export class MIDIValInput {
   private midiInput: IMIDIInput;
 
   private tempoSamples: number[];
-  private options: MIDIValInputOptions
+  private options: MIDIValInputOptions;
 
-  constructor(input: IMIDIInput, options: MIDIValInputOptions = DefaultOptions) {
+  constructor(
+    input: IMIDIInput,
+    options: MIDIValInputOptions = DefaultOptions
+  ) {
     this.omnibus = new Omnibus<EventDefinitions>();
     this.tempoSamples = [];
     this.registerInput(input);
@@ -62,11 +76,14 @@ export class MIDIValInput {
 
   /**
    * Returns new MIDIValInput object based on the interface id.
-   * @param interfaceId id of the interface from the MIDIAcces object. 
+   * @param interfaceId id of the interface from the MIDIAcces object.
    * @throws MIDIValError when interface id is not found.
    * @returns Promise resolving to MIDIValInput.
    */
-  static async fromInterfaceId(interfaceId: string, options?: MIDIValInputOptions): Promise<MIDIValInput> {
+  static async fromInterfaceId(
+    interfaceId: string,
+    options?: MIDIValInputOptions
+  ): Promise<MIDIValInput> {
     const midiAccess = await this.getMidiAccess();
     const input = midiAccess.inputs.find(({ id }) => id === interfaceId);
     if (!input) {
@@ -74,14 +91,17 @@ export class MIDIValInput {
     }
     return new MIDIValInput(input, options);
   }
-/**
- * Finds first interface matching the name
- * @param interfaceName interface Name
- * @param options input configuration options
- * @throws MIDIValError when no interface with that name is found
- * @returns MIDIValInput object
- */
-  static async fromInterfaceName(interfaceName: string, options?: MIDIValInputOptions): Promise<MIDIValInput> {
+  /**
+   * Finds first interface matching the name
+   * @param interfaceName interface Name
+   * @param options input configuration options
+   * @throws MIDIValError when no interface with that name is found
+   * @returns MIDIValInput object
+   */
+  static async fromInterfaceName(
+    interfaceName: string,
+    options?: MIDIValInputOptions
+  ): Promise<MIDIValInput> {
     const midiAccess = await this.getMidiAccess();
     const input = midiAccess.inputs.find(({ name }) => name === interfaceName);
     if (!input) {
@@ -102,7 +122,9 @@ export class MIDIValInput {
    */
   public get tempo(): number {
     if (!this.options.computeClockTempo) {
-      throw new MIDIValConfigurationError("To use MIDIValInput.tempo you need to enable computeClockTempo option.");
+      throw new MIDIValConfigurationError(
+        "To use MIDIValInput.tempo you need to enable computeClockTempo option."
+      );
     }
     return ticksToBPM(this.tempoSamples);
   }
@@ -113,7 +135,7 @@ export class MIDIValInput {
       (e: WebMidi.MIDIMessageEvent) => {
         if (e.data[0] === 0xf0) {
           // sysex
-          this.omnibus.trigger('sysex', e.data);
+          this.omnibus.trigger("sysex", e.data);
           return;
         }
         if (this.isClockCommand(e)) {
@@ -122,26 +144,35 @@ export class MIDIValInput {
         const midiMessage = toMidiMessage(e.data);
         switch (midiMessage.command) {
           case MidiCommand.NoteOn:
-            this.omnibus.trigger('noteOn', toNoteMessage(midiMessage));
+            this.omnibus.trigger("noteOn", toNoteMessage(midiMessage));
             break;
           case MidiCommand.NoteOff:
-            this.omnibus.trigger('noteOff', toNoteMessage(midiMessage));
+            this.omnibus.trigger("noteOff", toNoteMessage(midiMessage));
             break;
           case MidiCommand.ControlChange:
-            this.omnibus.trigger('controlChange', toControlChangeMessage(midiMessage));
+            this.omnibus.trigger(
+              "controlChange",
+              toControlChangeMessage(midiMessage)
+            );
             break;
           case MidiCommand.ProgramChange:
-            this.omnibus.trigger('programChange', toProgramMessage(midiMessage));
+            this.omnibus.trigger(
+              "programChange",
+              toProgramMessage(midiMessage)
+            );
             break;
           case MidiCommand.PolyKeyPressure:
-            this.omnibus.trigger('polyKeyPressure', midiMessage);
+            this.omnibus.trigger("polyKeyPressure", midiMessage);
             break;
           case MidiCommand.PitchBend:
-            this.omnibus.trigger('pitchBend', splitValueIntoFraction([midiMessage.data1, midiMessage.data2]));
+            this.omnibus.trigger(
+              "pitchBend",
+              splitValueIntoFraction([midiMessage.data1, midiMessage.data2])
+            );
             break;
           default:
             // TODO: Unknown message.
-            console.log('unknown msg', midiMessage);
+            console.log("unknown msg", midiMessage);
             break;
         }
       }
@@ -149,7 +180,7 @@ export class MIDIValInput {
 
     if (this.options.computeClockTempo) {
       this.onClockPulse(() => {
-        // compute time 
+        // compute time
         this.tempoSamples.push(performance.now());
         if (this.tempoSamples.length > TEMPO_SAMPLES_LIMIT) {
           this.tempoSamples.shift();
@@ -168,23 +199,28 @@ export class MIDIValInput {
   private isClockCommand(e: WebMidi.MIDIMessageEvent): boolean {
     switch (e.data[0]) {
       case MidiCommand.Clock.Pulse:
-        this.omnibus.trigger('clockPulse');
+        this.omnibus.trigger("clockPulse");
         return true;
       case MidiCommand.Clock.Start:
-        this.omnibus.trigger('clockStart');
+        this.omnibus.trigger("clockStart");
         return true;
       case MidiCommand.Clock.Continue:
-        this.omnibus.trigger('clockContinue');
+        this.omnibus.trigger("clockContinue");
         return true;
       case MidiCommand.Clock.Stop:
-        this.omnibus.trigger('clockStop');
+        this.omnibus.trigger("clockStop");
         return true;
       default:
         return false;
     }
   }
 
-  private onBusKeyValue<K extends keyof EventDefinitions>(event: K, key: keyof EventDefinitions[K][0], value: EventDefinitions[K][0][keyof EventDefinitions[K][0]], callback: (obj: EventDefinitions[K][0]) => void) {
+  private onBusKeyValue<K extends keyof EventDefinitions>(
+    event: K,
+    key: keyof EventDefinitions[K][0],
+    value: EventDefinitions[K][0][keyof EventDefinitions[K][0]],
+    callback: (obj: EventDefinitions[K][0]) => void
+  ) {
     return this.omnibus.on(event, (...args) => {
       if (!args.length) {
         return;
@@ -194,7 +230,7 @@ export class MIDIValInput {
       if (obj[key] === value) {
         callback(obj);
       }
-    })
+    });
   }
 
   /**
@@ -209,11 +245,11 @@ export class MIDIValInput {
 
   /**
    * Registers new callback on every note on event.
-   * @param callback Callback that will get called on each note on event. 
+   * @param callback Callback that will get called on each note on event.
    * @returns Callback to unregister.
    */
   onAllNoteOn(callback: CallbackType<[NoteMessage]>): UnregisterCallback {
-    return this.omnibus.on('noteOn', callback);
+    return this.omnibus.on("noteOn", callback);
   }
 
   /**
@@ -222,8 +258,11 @@ export class MIDIValInput {
    * @param callback Callback that gets called on every note on on this specific key
    * @returns Callback to unregister.
    */
-  onNoteOn(key: number, callback: CallbackType<[NoteMessage]>): UnregisterCallback {
-    return this.omnibus.on('noteOn', (midiMessage) => {
+  onNoteOn(
+    key: number,
+    callback: CallbackType<[NoteMessage]>
+  ): UnregisterCallback {
+    return this.omnibus.on("noteOn", (midiMessage) => {
       if (midiMessage.note !== key) {
         return;
       }
@@ -237,18 +276,21 @@ export class MIDIValInput {
    * @returns Unregister callback
    */
   onAllNoteOff(callback: CallbackType<[NoteMessage]>): UnregisterCallback {
-    return this.omnibus.on('noteOff', callback);
+    return this.omnibus.on("noteOff", callback);
   }
 
-    /**
+  /**
    * Registers new callback on specific note off.
    * @param key key number
    * @param callback Callback that gets called on every note off on this specific key
    * @returns Unregister callback
    */
-     onNoteOff(key: number, callback: CallbackType<[NoteMessage]>): UnregisterCallback {
-       return this.onBusKeyValue('noteOff', 'note', key, callback);
-    }
+  onNoteOff(
+    key: number,
+    callback: CallbackType<[NoteMessage]>
+  ): UnregisterCallback {
+    return this.onBusKeyValue("noteOff", "note", key, callback);
+  }
 
   /**
    * Registers new callback on pitch bend message
@@ -256,7 +298,7 @@ export class MIDIValInput {
    * @returns Unregister callback.
    */
   onPitchBend(callback: CallbackType<[number]>): UnregisterCallback {
-    return this.omnibus.on('pitchBend', callback);
+    return this.omnibus.on("pitchBend", callback);
   }
 
   /**
@@ -264,8 +306,10 @@ export class MIDIValInput {
    * @param callback Callback that will get called on control change.
    * @returns Unregister callback.
    */
-  onAllControlChange(callback: CallbackType<[ControlChangeMessage]>): UnregisterCallback {
-    return this.omnibus.on('controlChange', callback);
+  onAllControlChange(
+    callback: CallbackType<[ControlChangeMessage]>
+  ): UnregisterCallback {
+    return this.omnibus.on("controlChange", callback);
   }
 
   /**
@@ -274,19 +318,22 @@ export class MIDIValInput {
    * @param callback Callback to be called
    * @returns Unregister function
    */
-  onControlChange(control: number, callback: CallbackType<[MidiMessage]>): UnregisterCallback {
+  onControlChange(
+    control: number,
+    callback: CallbackType<[MidiMessage]>
+  ): UnregisterCallback {
     if (isChannelMode(control)) {
       console.warn(
         "use designated Channel Mode callback instead of onControlChange for " +
-        control
+          control
       );
     }
-    return this.omnibus.on('controlChange', (m) => {
+    return this.omnibus.on("controlChange", (m) => {
       if (m.control !== control) {
         return;
       }
       callback(m);
-    })
+    });
   }
 
   /**
@@ -294,8 +341,10 @@ export class MIDIValInput {
    * @param callback Callback to be called
    * @returns Unregister function.
    */
-  onAllProgramChange(callback: CallbackType<[ProgramChangeMessage]>): UnregisterCallback {
-    return this.omnibus.on('programChange', callback);
+  onAllProgramChange(
+    callback: CallbackType<[ProgramChangeMessage]>
+  ): UnregisterCallback {
+    return this.omnibus.on("programChange", callback);
   }
 
   /**
@@ -304,8 +353,11 @@ export class MIDIValInput {
    * @param callback Callback to be called
    * @returns Unregister function
    */
-  onProgramChange(program: number, callback: CallbackType<[ProgramChangeMessage]>): UnregisterCallback {
-    return this.onBusKeyValue('programChange', 'program', program, callback);
+  onProgramChange(
+    program: number,
+    callback: CallbackType<[ProgramChangeMessage]>
+  ): UnregisterCallback {
+    return this.onBusKeyValue("programChange", "program", program, callback);
   }
 
   /**
@@ -313,8 +365,10 @@ export class MIDIValInput {
    * @param callback Callback to be called
    * @returns Unregister function
    */
-  onAllPolyKeyPressure(callback: CallbackType<[MidiMessage]>): UnregisterCallback {
-    return this.omnibus.on('polyKeyPressure', callback);
+  onAllPolyKeyPressure(
+    callback: CallbackType<[MidiMessage]>
+  ): UnregisterCallback {
+    return this.omnibus.on("polyKeyPressure", callback);
   }
 
   /**
@@ -323,8 +377,11 @@ export class MIDIValInput {
    * @param callback Callback to be called
    * @returns Unregister function
    */
-  onPolyKeyPressure(key: number, callback: CallbackType<[MidiMessage]>): UnregisterCallback {
-    return this.onBusKeyValue('polyKeyPressure', 'data1', key, callback);
+  onPolyKeyPressure(
+    key: number,
+    callback: CallbackType<[MidiMessage]>
+  ): UnregisterCallback {
+    return this.onBusKeyValue("polyKeyPressure", "data1", key, callback);
   }
 
   /**
@@ -333,7 +390,7 @@ export class MIDIValInput {
    * @returns Unregister callback
    */
   onSysex(callback: CallbackType<[Uint8Array]>): UnregisterCallback {
-    return this.omnibus.on('sysex', callback);
+    return this.omnibus.on("sysex", callback);
   }
 
   /**
@@ -341,8 +398,15 @@ export class MIDIValInput {
    * @param callback Callback to be called
    * @returns Unregister callback
    */
-  onAllSoundsOff(callback: CallbackType<[ControlChangeMessage]>): UnregisterCallback {
-    return this.onBusKeyValue('controlChange', 'control', MidiControlChange.AllSoundsOff, callback);
+  onAllSoundsOff(
+    callback: CallbackType<[ControlChangeMessage]>
+  ): UnregisterCallback {
+    return this.onBusKeyValue(
+      "controlChange",
+      "control",
+      MidiControlChange.AllSoundsOff,
+      callback
+    );
   }
 
   /**
@@ -350,8 +414,15 @@ export class MIDIValInput {
    * @param callback Callback to be called
    * @returns Unregister callback
    */
-  onResetAllControllers(callback: CallbackType<[ControlChangeMessage]>): UnregisterCallback {
-    return this.onBusKeyValue('controlChange', 'control', MidiControlChange.ResetAllControllers, callback);
+  onResetAllControllers(
+    callback: CallbackType<[ControlChangeMessage]>
+  ): UnregisterCallback {
+    return this.onBusKeyValue(
+      "controlChange",
+      "control",
+      MidiControlChange.ResetAllControllers,
+      callback
+    );
   }
 
   /**
@@ -359,10 +430,19 @@ export class MIDIValInput {
    * @param callback Callback to be called: first argument to the callback is a boolean representing if the local control was set on or off
    * @returns Unregister event
    */
-  onLocalControlChange(callback: CallbackType<[isLocalControlOn: boolean, message: ControlChangeMessage]>): UnregisterCallback {
-    return this.onBusKeyValue('controlChange', 'control', MidiControlChange.LocalControlOnOff, (m) => {
-      callback(m.data2 === 127, m);
-    });
+  onLocalControlChange(
+    callback: CallbackType<
+      [isLocalControlOn: boolean, message: ControlChangeMessage]
+    >
+  ): UnregisterCallback {
+    return this.onBusKeyValue(
+      "controlChange",
+      "control",
+      MidiControlChange.LocalControlOnOff,
+      (m) => {
+        callback(m.data2 === 127, m);
+      }
+    );
   }
 
   /**
@@ -371,38 +451,63 @@ export class MIDIValInput {
    * @returns Unregister callback
    */
   onAllNotesOff(callback: CallbackType<[MidiMessage]>): UnregisterCallback {
-    return this.onBusKeyValue('controlChange', 'control', MidiControlChange.AllNotesOff, callback);
+    return this.onBusKeyValue(
+      "controlChange",
+      "control",
+      MidiControlChange.AllNotesOff,
+      callback
+    );
   }
 
   onOmniModeOff(callback: CallbackType<[MidiMessage]>): UnregisterCallback {
-    return this.onBusKeyValue('controlChange', 'control', MidiControlChange.OmniModeOff, callback);
+    return this.onBusKeyValue(
+      "controlChange",
+      "control",
+      MidiControlChange.OmniModeOff,
+      callback
+    );
   }
 
   onOmniModeOn(callback: CallbackType<[MidiMessage]>): UnregisterCallback {
-    return this.onBusKeyValue('controlChange', 'control', MidiControlChange.OmniModeOn, callback);
+    return this.onBusKeyValue(
+      "controlChange",
+      "control",
+      MidiControlChange.OmniModeOn,
+      callback
+    );
   }
 
   onMonoModeOn(callback: CallbackType<[MidiMessage]>): UnregisterCallback {
-    return this.onBusKeyValue('controlChange', 'control', MidiControlChange.MonoModeOn, callback);
+    return this.onBusKeyValue(
+      "controlChange",
+      "control",
+      MidiControlChange.MonoModeOn,
+      callback
+    );
   }
 
   onPolyModeOn(callback: CallbackType<[MidiMessage]>): UnregisterCallback {
-    return this.onBusKeyValue('controlChange', 'control', MidiControlChange.PolyModeOn, callback);
+    return this.onBusKeyValue(
+      "controlChange",
+      "control",
+      MidiControlChange.PolyModeOn,
+      callback
+    );
   }
 
   onClockPulse(callback: CallbackType<[]>): UnregisterCallback {
-    return this.omnibus.on('clockPulse', callback);
+    return this.omnibus.on("clockPulse", callback);
   }
 
   onClockStart(callback: CallbackType<[]>): UnregisterCallback {
-    return this.omnibus.on('clockStart', callback);
+    return this.omnibus.on("clockStart", callback);
   }
 
   onClockStop(callback: CallbackType<[]>): UnregisterCallback {
-    return this.omnibus.on('clockStop', callback);
+    return this.omnibus.on("clockStop", callback);
   }
 
   onClockContinue(callback: CallbackType<[]>): UnregisterCallback {
-    return this.omnibus.on('clockContinue', callback);
+    return this.omnibus.on("clockContinue", callback);
   }
 }

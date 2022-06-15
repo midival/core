@@ -1,4 +1,4 @@
-import {IMIDIOutput} from "./IMIDIOutput";
+import { IMIDIOutput } from "./IMIDIOutput";
 import { OnMessageCallback } from "../inputs/IMIDIInput";
 import { MidiDeviceProps } from "../inputs/MockMIDIInput";
 

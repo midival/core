@@ -1,6 +1,6 @@
-import {IMIDIOutput} from "./wrappers/outputs/IMIDIOutput";
-import {MIDIVal} from "./index";
-import {IMIDIAccess} from "./wrappers/access/IMIDIAccess";
+import { IMIDIOutput } from "./wrappers/outputs/IMIDIOutput";
+import { MIDIVal } from "./index";
+import { IMIDIAccess } from "./wrappers/access/IMIDIAccess";
 import { fractionToPitchBendAsUints } from "./utils/pitchBend";
 import { MidiCommand } from "./utils/midiCommands";
 import { MidiControlChange } from "./utils/midiControlChanges";
@@ -16,7 +16,7 @@ export class MIDIValOutput {
   /**
    * Sends raw message to MIDI out
    * @param msgs Message as an array of UInt8 values
-   * @returns 
+   * @returns
    */
   send(msgs: Uint8Array | number[]): void {
     if (!this.midiOutput) {
@@ -68,7 +68,7 @@ export class MIDIValOutput {
    * @param note Note key value to be sent.
    * @param velocity Velocity - number between 0 and 128
    * @param channel Channel. By default will use channel set by setChannel method
-   * @returns 
+   * @returns
    */
   sendNoteOn(note: number, velocity: number, channel?: number): void {
     return this.send([
@@ -82,14 +82,10 @@ export class MIDIValOutput {
    * Sends note off message.
    * @param note Note key to be set off
    * @param channel Channel. By default will use channel set by setChannel method
-   * @returns 
+   * @returns
    */
   sendNoteOff(note: number, channel?: number): void {
-    return this.send([
-      MidiCommand.NoteOff + this.getChannel(channel),
-      note,
-      0
-    ]);
+    return this.send([MidiCommand.NoteOff + this.getChannel(channel), note, 0]);
   }
 
   sendPolyKeyPressure(key: number, velocity: number, channel?: number): void {
@@ -131,10 +127,12 @@ export class MIDIValOutput {
    * @throws Throws exception if bendValue is outside the range.
    */
   sendPitchBend(bendValue: number, channel?: number): void {
-    return this.send(new Uint8Array([
-      MidiCommand.PitchBend + this.getChannel(channel),
-      ...fractionToPitchBendAsUints(bendValue),
-    ]));
+    return this.send(
+      new Uint8Array([
+        MidiCommand.PitchBend + this.getChannel(channel),
+        ...fractionToPitchBendAsUints(bendValue),
+      ])
+    );
   }
 
   // Special Channel Modes
@@ -180,26 +178,18 @@ export class MIDIValOutput {
   }
 
   sendClockStart(): void {
-    return this.send([
-      MidiCommand.Clock.Start,
-    ]);
+    return this.send([MidiCommand.Clock.Start]);
   }
 
   sendClockStop(): void {
-    return this.send([
-      MidiCommand.Clock.Stop,
-    ])
+    return this.send([MidiCommand.Clock.Stop]);
   }
 
   sendClockContinue(): void {
-    return this.send([
-      MidiCommand.Clock.Continue,
-    ]);
+    return this.send([MidiCommand.Clock.Continue]);
   }
 
   sendClockPulse(): void {
-    return this.send([
-      MidiCommand.Clock.Pulse,
-    ]);
+    return this.send([MidiCommand.Clock.Pulse]);
   }
 }

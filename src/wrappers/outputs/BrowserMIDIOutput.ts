@@ -1,4 +1,4 @@
-import {IMIDIOutput} from "./IMIDIOutput";
+import { IMIDIOutput } from "./IMIDIOutput";
 
 export class BrowserMIDIOutput implements IMIDIOutput {
   private output: WebMidi.MIDIOutput;

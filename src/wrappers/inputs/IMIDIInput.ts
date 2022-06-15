@@ -7,7 +7,7 @@ export type MIDIMessage = {
 export type OnMessageCallback = (message: MIDIMessage) => void;
 export interface IMIDIInput {
   onMessage(callback: OnMessageCallback): Promise<UnregisterCallback>;
-  id: string;
-  name: string;
-  manufacturer: string;
+  get id(): string;
+  get name(): string;
+  get manufacturer(): string;
 }

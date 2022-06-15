@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Example 1: Device List</title>
+        <style>
+            .container {
+                display: flex;
+                font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            }
+            .column {
+                flex: 1;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="column">
+                <h2>Inputs</h2>
+                <div id="midi-inputs"></div>
+            </div>
+            <div class="column">
+                <h2>Outputs</h2>
+                <div id="midi-outputs"></div>
+            </div>
+        </div>
+        <script src="./app.ts" type="module"></script>
+    </body>
+</html>
