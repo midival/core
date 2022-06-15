@@ -3,17 +3,17 @@ import {
   InputStateChangeCallback,
   OutputStateChangeCallback,
 } from "./IMIDIAccess";
-import {MockMIDIOutput} from "../outputs/MockMIDIOutput";
+import { MockMIDIOutput } from "../outputs/MockMIDIOutput";
 import { MidiDeviceProps, MockMIDIInput } from "../inputs/MockMIDIInput";
 import { UnregisterCallback } from "../..";
 import { Omnibus } from "@hypersphere/omnibus";
 
 interface Events {
-  "input_connected": [MockMIDIInput],
-  "input_disconnected": [MockMIDIInput],
-  "output_connected": [MockMIDIOutput],
-  "output_disconnected": [MockMIDIOutput],
-};
+  input_connected: [MockMIDIInput];
+  input_disconnected: [MockMIDIInput];
+  output_connected: [MockMIDIOutput];
+  output_disconnected: [MockMIDIOutput];
+}
 
 export class MockMIDIAccess implements IMIDIAccess {
   private mockInputs: MockMIDIInput[];
@@ -33,7 +33,9 @@ export class MockMIDIAccess implements IMIDIAccess {
   onOutputConnected(callback: OutputStateChangeCallback): UnregisterCallback {
     return this.bus.on("output_connected", callback);
   }
-  onOutputDisconnected(callback: OutputStateChangeCallback): UnregisterCallback {
+  onOutputDisconnected(
+    callback: OutputStateChangeCallback
+  ): UnregisterCallback {
     return this.bus.on("output_disconnected", callback);
   }
 
@@ -57,7 +59,7 @@ export class MockMIDIAccess implements IMIDIAccess {
   }
 
   removeInput(device: MockMIDIInput) {
-    this.mockInputs = this.mockInputs.filter(x => x !== device);
+    this.mockInputs = this.mockInputs.filter((x) => x !== device);
     this.bus.trigger("input_disconnected", device);
   }
 
@@ -69,7 +71,7 @@ export class MockMIDIAccess implements IMIDIAccess {
   }
 
   removeOutput(device: MockMIDIOutput) {
-    this.mockOutputs = this.mockOutputs.filter(x => x !== device);
+    this.mockOutputs = this.mockOutputs.filter((x) => x !== device);
     this.bus.trigger("output_disconnected", device);
   }
 }

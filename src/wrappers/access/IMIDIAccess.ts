@@ -1,13 +1,13 @@
 import { CallbackType, UnregisterCallback } from "@hypersphere/omnibus";
-import {IMIDIInput} from "../inputs/IMIDIInput";
-import {IMIDIOutput} from "../outputs/IMIDIOutput";
+import { IMIDIInput } from "../inputs/IMIDIInput";
+import { IMIDIOutput } from "../outputs/IMIDIOutput";
 
 export enum STATUS {
   CONNECTED = "connected",
   DISCONNECTED = "disconnected",
 }
 
-export type InputStateChangeCallback = CallbackType<[IMIDIInput]>; 
+export type InputStateChangeCallback = CallbackType<[IMIDIInput]>;
 export type OutputStateChangeCallback = CallbackType<[IMIDIOutput]>;
 
 export interface IMIDIAccess {

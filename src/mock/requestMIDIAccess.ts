@@ -39,12 +39,11 @@ const makeOutputsMap = (
   return outputs;
 };
 
-export default (options: requestMIDIAccessFactoryOptions) => async (): Promise<
-  WebMidi.MIDIAccess
-> => {
-  return {
-    inputs: makeInputsMap(options),
-    outputs: makeOutputsMap(options),
-    onstatechange: null,
-  } as WebMidi.MIDIAccess;
-};
+export default (options: requestMIDIAccessFactoryOptions) =>
+  async (): Promise<WebMidi.MIDIAccess> => {
+    return {
+      inputs: makeInputsMap(options),
+      outputs: makeOutputsMap(options),
+      onstatechange: null,
+    } as WebMidi.MIDIAccess;
+  };

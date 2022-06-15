@@ -1,41 +1,47 @@
-import { IMIDIAccess, InputStateChangeCallback, OutputStateChangeCallback, STATUS } from "./IMIDIAccess";
-import {IMIDIOutput} from "../outputs/IMIDIOutput";
-import {BrowserMIDIOutput} from "../outputs/BrowserMIDIOutput";
-import {IMIDIInput} from "../inputs/IMIDIInput";
-import {BrowserMIDIInput} from "../inputs/BrowserMIDIInput";
+import {
+  IMIDIAccess,
+  InputStateChangeCallback,
+  OutputStateChangeCallback,
+  STATUS,
+} from "./IMIDIAccess";
+import { IMIDIOutput } from "../outputs/IMIDIOutput";
+import { BrowserMIDIOutput } from "../outputs/BrowserMIDIOutput";
+import { IMIDIInput } from "../inputs/IMIDIInput";
+import { BrowserMIDIInput } from "../inputs/BrowserMIDIInput";
 import { Omnibus, UnregisterCallback } from "@hypersphere/omnibus";
 
 interface EventDefinitions {
-  inputConnected: [IMIDIInput],
-  inputDisconnected: [IMIDIInput],
-  outputConnected: [IMIDIOutput]
-  outputDisconnected: [IMIDIOutput]
-};
+  inputConnected: [IMIDIInput];
+  inputDisconnected: [IMIDIInput];
+  outputConnected: [IMIDIOutput];
+  outputDisconnected: [IMIDIOutput];
+}
 
 export class BrowserMIDIAccess implements IMIDIAccess {
   private access: WebMidi.MIDIAccess;
 
   private bus: Omnibus<EventDefinitions> = new Omnibus<EventDefinitions>();
 
-  constructor() {
-    this.listenOnStateChange();
-  }
   onInputConnected(callback: InputStateChangeCallback): UnregisterCallback {
-    return this.bus.on('inputConnected', callback);
+    return this.bus.on("inputConnected", callback);
   }
   onInputDisconnected(callback: InputStateChangeCallback): UnregisterCallback {
-    return this.bus.on('inputDisconnected', callback);
+    return this.bus.on("inputDisconnected", callback);
   }
   onOutputConnected(callback: OutputStateChangeCallback): UnregisterCallback {
-    return this.bus.on('outputConnected', callback);
+    return this.bus.on("outputConnected", callback);
   }
-  onOutputDisconnected(callback: OutputStateChangeCallback): UnregisterCallback {
-    return this.bus.on('outputDisconnected', callback);
+  onOutputDisconnected(
+    callback: OutputStateChangeCallback
+  ): UnregisterCallback {
+    return this.bus.on("outputDisconnected", callback);
   }
 
   async connect(sysex: boolean = false): Promise<void> {
     if (!navigator.requestMIDIAccess) {
-      throw new Error("requestMIDIAccess not available, make sure you are using MIDI-compatible browser.");
+      throw new Error(
+        "requestMIDIAccess not available, make sure you are using MIDI-compatible browser."
+      );
     }
     this.access = await navigator.requestMIDIAccess({ sysex }); // FIXME: check.
     this.listenOnStateChange();
@@ -80,29 +86,21 @@ export class BrowserMIDIAccess implements IMIDIAccess {
       "statechange",
       (e: WebMidi.MIDIConnectionEvent) => {
         if (e.port.type === "input") {
-          const input = this.getInputById(e.port.id);
-          switch (e.port.connection) {
-            case "closed":
-              this.bus.trigger('inputDisconnected', input);
+          switch (e.port.state) {
+            case "disconnected":
+              this.bus.trigger("inputDisconnected", new BrowserMIDIInput(e.port as unknown as WebMidi.MIDIInput));
               break;
-            case "open":
-              this.bus.trigger('inputConnected', input);
-              break;
-            case "pending":
-              console.log("Input pending.");
+            case "connected":
+              this.bus.trigger("inputConnected", new BrowserMIDIInput(e.port as unknown as WebMidi.MIDIInput));
               break;
           }
         } else {
-          const output = this.getOutputById(e.port.id);
-          switch (e.port.connection) {
-            case "closed":
-              this.bus.trigger('outputDisconnected', output);
+          switch (e.port.state) {
+            case "disconnected":
+              this.bus.trigger("outputDisconnected", new BrowserMIDIOutput(e.port as unknown as WebMidi.MIDIOutput));
               break;
-            case "open":
-              this.bus.trigger('outputConnected', output);
-              break;
-            case "pending":
-              console.log("Output pending");
+            case "connected":
+              this.bus.trigger("outputConnected", new BrowserMIDIOutput(e.port as unknown as WebMidi.MIDIOutput));
               break;
           }
         }

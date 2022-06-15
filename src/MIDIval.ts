@@ -1,19 +1,22 @@
-import {MIDIValInput} from "./MIDIValInput";
-import {MIDIValOutput} from "./MIDIValOutput";
+import { MIDIValInput } from "./MIDIValInput";
+import { MIDIValOutput } from "./MIDIValOutput";
 
-import {IMIDIInput} from "./wrappers/inputs/IMIDIInput";
+import { IMIDIInput } from "./wrappers/inputs/IMIDIInput";
 
-import {MIDIAccess} from "./wrappers/access/MIDIAccess";
-import {IMIDIOutput} from "./wrappers/outputs/IMIDIOutput";
-import {IMIDIAccess} from "./wrappers/access/IMIDIAccess";
+import { IMIDIOutput } from "./wrappers/outputs/IMIDIOutput";
+import { IMIDIAccess } from "./wrappers/access/IMIDIAccess";
 import { CallbackType, UnregisterCallback } from "@hypersphere/omnibus";
+import { BrowserMIDIAccess } from "./wrappers/access/BrowserMIDIAccess";
 
 export interface ConfigScheme {
-  name?: string | RegExp,
-  manufacturer?: string | RegExp,
+  name?: string | RegExp;
+  manufacturer?: string | RegExp;
 }
 
-export const matchesConfig = (input: IMIDIInput | IMIDIOutput, scheme: ConfigScheme): boolean => {
+export const matchesConfig = (
+  input: IMIDIInput | IMIDIOutput,
+  scheme: ConfigScheme
+): boolean => {
   return Object.keys(scheme).reduce((acc, key) => {
     const val = scheme[key] as string | RegExp;
     if (typeof val === "string") {
@@ -22,10 +25,10 @@ export const matchesConfig = (input: IMIDIInput | IMIDIOutput, scheme: ConfigSch
       return acc && val.test(input[key]);
     }
   }, true);
-}
+};
 
 export class MIDIVal {
-  private static isSetup: boolean = false;
+  private static isSetupComplete: boolean = false;
   private static accessObject: IMIDIAccess;
 
   /**
@@ -33,7 +36,7 @@ export class MIDIVal {
    * @param newAccess Implementation of IMIDIAccess to be used to provide MIDI objects.
    */
   public static configureAccessObject(newAccess: IMIDIAccess): void {
-    this.isSetup = false;
+    this.isSetupComplete = false;
     this.accessObject = newAccess;
   }
 
@@ -43,33 +46,44 @@ export class MIDIVal {
    * @param callOnAlreadyConnected If set to true, the function will instantly trigger for all already connected devices. Default to false
    * @returns Promise resolving to unregister callback when finishes.
    */
-  public static async onInputDeviceConnected(callback: CallbackType<[IMIDIInput]>, callOnAlreadyConnected: boolean = false): Promise<UnregisterCallback> {
+  public static async onInputDeviceConnected(
+    callback: CallbackType<[IMIDIInput]>,
+    callOnAlreadyConnected: boolean = false
+  ): Promise<UnregisterCallback> {
     if (callOnAlreadyConnected) {
       this.accessObject.inputs.forEach(callback);
     }
     return this.accessObject.onInputConnected(callback);
   }
-/**
- * Listens to all input devices with a certain config (like name or manufacturer). Configuration can be provided as a string or regex. The callback unlike `onInputDeviceConnected` accepts MIDIValInput. `onInputDeviceConnected` is suitable when you want to filter devices yourself, beyond this configuration object so it does not instantiate objects.
- * @param config Configuration object used to match with device connected
- * @param fn Callback on connection. Connection is already wrapped in MIDIValInput object
- * @returns Promise for Unregister Callback
- */
-  public static async onInputDeviceWithConfigConnected(config: ConfigScheme, fn: (input: MIDIValInput) => void, callOnAlreadyConnected: boolean = false): Promise<UnregisterCallback> {
+  /**
+   * Listens to all input devices with a certain config (like name or manufacturer). Configuration can be provided as a string or regex. The callback unlike `onInputDeviceConnected` accepts MIDIValInput. `onInputDeviceConnected` is suitable when you want to filter devices yourself, beyond this configuration object so it does not instantiate objects.
+   * @param config Configuration object used to match with device connected
+   * @param fn Callback on connection. Connection is already wrapped in MIDIValInput object
+   * @returns Promise for Unregister Callback
+   */
+  public static async onInputDeviceWithConfigConnected(
+    config: ConfigScheme,
+    fn: (input: MIDIValInput) => void,
+    callOnAlreadyConnected: boolean = false
+  ): Promise<UnregisterCallback> {
     return this.onInputDeviceConnected((input) => {
       if (matchesConfig(input, config)) {
         fn(new MIDIValInput(input));
       }
     }, callOnAlreadyConnected);
   }
-  
-/**
- * Listens to all output devices with a certain config (like name or manufacturer). Configuration can be provided as a string or regex. The callback unlike `onOutputDeviceConnected` accepts MIDIValOutput. `onOutputDeviceConnected` is suitable when you want to filter devices yourself, beyond this configuration object so it does not instantiate objects.
- * @param config Configuration object used to match with device connected
- * @param fn Callback on connection. Connection is already wrapped in MIDIValOutput object
- * @returns Promise for Unregister Callback
- */
-  public static async onOutputDeviceWithConfigConnected(config: ConfigScheme, fn: (output: MIDIValOutput) => void, callOnAlreadyConnected: boolean = false): Promise<UnregisterCallback> {
+
+  /**
+   * Listens to all output devices with a certain config (like name or manufacturer). Configuration can be provided as a string or regex. The callback unlike `onOutputDeviceConnected` accepts MIDIValOutput. `onOutputDeviceConnected` is suitable when you want to filter devices yourself, beyond this configuration object so it does not instantiate objects.
+   * @param config Configuration object used to match with device connected
+   * @param fn Callback on connection. Connection is already wrapped in MIDIValOutput object
+   * @returns Promise for Unregister Callback
+   */
+  public static async onOutputDeviceWithConfigConnected(
+    config: ConfigScheme,
+    fn: (output: MIDIValOutput) => void,
+    callOnAlreadyConnected: boolean = false
+  ): Promise<UnregisterCallback> {
     return this.onOutputDeviceConnected((output) => {
       if (matchesConfig(output, config)) {
         fn(new MIDIValOutput(output));
@@ -83,7 +97,10 @@ export class MIDIVal {
    * @param callOnAlreadyConnected If set to true, the function will instantly trigger for all already connected devices. Default to false
    * @returns Promise resolving to unregister callback when finishes.
    */
-   public static async onOutputDeviceConnected(callback: CallbackType<[IMIDIOutput]>, callOnAlreadyConnected: boolean = false): Promise<UnregisterCallback> {
+  public static async onOutputDeviceConnected(
+    callback: CallbackType<[IMIDIOutput]>,
+    callOnAlreadyConnected: boolean = false
+  ): Promise<UnregisterCallback> {
     if (callOnAlreadyConnected) {
       this.accessObject.outputs.forEach(callback);
     }
@@ -95,7 +112,9 @@ export class MIDIVal {
    * @param callback Callback to be called.
    * @returns promise resolving to unregister callback
    */
-  public static async onInputDeviceDisconnected(callback: CallbackType<[IMIDIInput]>): Promise<UnregisterCallback> {
+  public static async onInputDeviceDisconnected(
+    callback: CallbackType<[IMIDIInput]>
+  ): Promise<UnregisterCallback> {
     return this.accessObject.onInputDisconnected(callback);
   }
 
@@ -104,7 +123,9 @@ export class MIDIVal {
    * @param callback Callback to be called.
    * @returns promise resolving to unregister callback
    */
-   public static async onOutputDeviceDisconnected(callback: CallbackType<[IMIDIOutput]>): Promise<UnregisterCallback> {
+  public static async onOutputDeviceDisconnected(
+    callback: CallbackType<[IMIDIOutput]>
+  ): Promise<UnregisterCallback> {
     return this.accessObject.onOutputDisconnected(callback);
   }
 
@@ -136,13 +157,13 @@ export class MIDIVal {
   }
 
   private static async setupDeviceWatchers() {
-    if (this.isSetup) {
+    if (this.isSetupComplete) {
       return;
     }
-    this.isSetup = true;
+    this.isSetupComplete = true;
 
     if (!this.accessObject) {
-      this.accessObject = new MIDIAccess();
+      this.accessObject = new BrowserMIDIAccess();
     }
 
     await this.accessObject.connect();
