@@ -4,6 +4,7 @@ import { IMIDIAccess } from "./wrappers/access/IMIDIAccess";
 import { fractionToPitchBendAsUints } from "./utils/pitchBend";
 import { MidiCommand } from "./utils/midiCommands";
 import { MidiControlChange } from "./utils/midiControlChanges";
+import { MIDIRegisteredParameters } from "./utils/midiRegisteredParameters";
 
 export class MIDIValOutput {
   private midiOutput: IMIDIOutput;
@@ -191,5 +192,44 @@ export class MIDIValOutput {
 
   sendClockPulse(): void {
     return this.send([MidiCommand.Clock.Pulse]);
+  }
+
+  // RPN
+  sendRPNSelection([msb, lsb]: readonly [number, number], channel?: number) {
+    this.sendControlChange(MidiControlChange.RegisteredParameterNumberMSB, msb, channel)
+    this.sendControlChange(MidiControlChange.RegisteredParameterNumberLSB, lsb, channel)
+  }
+
+  sendRPDataMSB(data: number, channel?: number) {
+    this.sendControlChange(MidiControlChange.DataEntryMSB, data, channel)
+  }
+
+  sendRPDataLSB(data: number, channel?: number) {
+    this.sendControlChange(MidiControlChange.DataEntryLSB, data, channel)
+  }
+
+  incrementRPData(incrementValue: number, channel?: number) {
+    this.sendControlChange(MidiControlChange.DataIncrement, incrementValue, channel)
+  }
+
+  decrementRPData(decrementValue: number, channel?: number) {
+    this.sendControlChange(MidiControlChange.DataDecrement, decrementValue, channel)
+  }
+
+  sendRPNNull() {
+  }
+
+  initializeMPE(lowerChannelSize: number, upperChannelSize: number) {
+    this.sendRPNSelection(MIDIRegisteredParameters.MPE_CONFIGURATION_MESSAGE, 1)
+    this.sendRPDataMSB(lowerChannelSize, 1)
+    this.sendRPDataMSB(upperChannelSize, 16)
+    this.sendRPNNull()
+  }
+
+  setPitchBendSensitivity(semitones: number, cents: number, channel?: number) {
+    // FIXME: probably calculate it here?
+    this.sendRPNSelection(MIDIRegisteredParameters.PITCH_BEND_SENSITIVITY, channel)
+    this.sendRPDataMSB(semitones, channel)
+    this.sendRPNNull()
   }
 }

@@ -26,8 +26,13 @@ import {
   toProgramMessage,
 } from "./types/messages";
 
+export interface PitchBendMessage {
+  channel: number;
+  value: number;
+}
+
 interface EventDefinitions {
-  pitchBend: [number];
+  pitchBend: [PitchBendMessage];
   sysex: [Uint8Array];
   channelPressure: [MidiMessage];
   noteOn: [NoteMessage];
@@ -63,6 +68,8 @@ export class MIDIValInput {
 
   private tempoSamples: number[];
   private options: MIDIValInputOptions;
+
+  private rpn: [number, number] = [-1, -1]
 
   constructor(
     input: IMIDIInput,
@@ -167,8 +174,14 @@ export class MIDIValInput {
           case MidiCommand.PitchBend:
             this.omnibus.trigger(
               "pitchBend",
-              splitValueIntoFraction([midiMessage.data1, midiMessage.data2])
+              {
+                channel: midiMessage.channel,
+                value: splitValueIntoFraction([midiMessage.data1, midiMessage.data2])
+              }
             );
+            break;
+          case MidiCommand.ChannelPressure:
+            this.omnibus.trigger("channelPressure", midiMessage);
             break;
           default:
             // TODO: Unknown message.
@@ -194,6 +207,23 @@ export class MIDIValInput {
       this.onClockContinue(resetSamples);
       this.onClockStart(resetSamples);
     }
+
+    // RPM
+    this.onControlChange(MidiControlChange.RegisteredParameterNumberMSB, message => {
+      this.rpn = [message.data2, this.rpn[1]]
+    })
+
+    this.onControlChange(MidiControlChange.RegisteredParameterNumberLSB, message => {
+      this.rpn = [this.rpn[0], message.data2]
+    })
+
+    this.onControlChange(MidiControlChange.DataEntryMSB, message => {
+      // FIXME: here we can detect data entry.
+    })
+
+    this.onControlChange(MidiControlChange.DataEntryLSB, message => {
+      // FIXME: here we can detect data entry.
+    })
   }
 
   private isClockCommand(e: WebMidi.MIDIMessageEvent): boolean {
@@ -297,7 +327,7 @@ export class MIDIValInput {
    * @param callback Callback that gets called on every pitch bend message. It gets value of the bend in the range of -1.0 to 1.0 using 16-bit precision (if supported by sending device).
    * @returns Unregister callback.
    */
-  onPitchBend(callback: CallbackType<[number]>): UnregisterCallback {
+  onPitchBend(callback: CallbackType<EventDefinitions["pitchBend"]>): UnregisterCallback {
     return this.omnibus.on("pitchBend", callback);
   }
 
@@ -457,6 +487,10 @@ export class MIDIValInput {
       MidiControlChange.AllNotesOff,
       callback
     );
+  }
+
+  onChannelPressure(callback: CallbackType<EventDefinitions["channelPressure"]>) {
+    return this.omnibus.on("channelPressure", callback)
   }
 
   onOmniModeOff(callback: CallbackType<[MidiMessage]>): UnregisterCallback {

@@ -1,0 +1,9 @@
+export const MIDIRegisteredParameters = {
+    PITCH_BEND_SENSITIVITY: [0, 0],
+    CHANNEL_FINE_TUNING: [0, 1],
+    CHANNEL_COARSE_TUNING: [0, 2],
+    TUNING_PROGRAM_CHANGE: [0, 3],
+    TUNING_BANK_SELECT: [0, 4],
+    MODULATION_DEPTH_CHANGE: [0, 5],
+    MPE_CONFIGURATION_MESSAGE: [0, 6]
+} as const;
