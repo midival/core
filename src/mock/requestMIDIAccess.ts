@@ -45,5 +45,5 @@ export default (options: requestMIDIAccessFactoryOptions) =>
       inputs: makeInputsMap(options),
       outputs: makeOutputsMap(options),
       onstatechange: null,
-    } as WebMidi.MIDIAccess;
+    } as unknown as WebMidi.MIDIAccess;
   };

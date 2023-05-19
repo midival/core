@@ -2,6 +2,11 @@
 
 This is migration guide explaining breaking changes between versions:
 
+## [0.1.0]
+
+### Breaking changes
+- MIDIValInput.onPitchBend now sends information about channel. To do that the signature of the callback changed from Callback<[number]> to Callback<[PitchBend]> where PitchBend is an interface containing channel and value fields.
+
 ## [0.0.15]
 
 ### Method signature changes
