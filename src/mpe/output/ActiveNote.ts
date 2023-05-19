@@ -3,25 +3,25 @@ import { MIDIValOutput } from "../../MIDIValOutput";
 export class ActiveNote {
   #pitchBend: number = 0;
   #timbre: number = 0;
-  #afterTouch: number = 0;
+  #pressure: number = 0;
 
   #isActive: boolean = true;
 
   constructor(
-    private readonly note: number,
-    private velocity: number,
+    public readonly note: number,
+    public readonly velocity: number,
     public readonly channel: number,
     private readonly output: MIDIValOutput
   ) {
     this.output.sendNoteOn(note, velocity, channel);
   }
 
-  changeVelocity(newVelocity: number) {
+  changePressure(pressure: number) {
     if (!this.isActive) {
       return;
     }
-    this.output.sendChannelPressure(newVelocity, this.channel);
-    this.velocity = newVelocity;
+    this.output.sendChannelPressure(pressure, this.channel);
+    this.#pressure = pressure;
   }
 
   changeBend(newBend: number) {
@@ -49,7 +49,7 @@ export class ActiveNote {
   }
 
   get z() {
-    return this.#afterTouch;
+    return this.#pressure;
   }
 
   set x(newValue: number) {
@@ -61,7 +61,19 @@ export class ActiveNote {
   }
 
   set z(newValue: number) {
-    this.changeVelocity(newValue);
+    this.changePressure(newValue);
+  }
+
+  get pitchBend() {
+    return this.#pitchBend
+  }
+
+  get timbre() {
+    return this.#timbre
+  }
+
+  get pressure() {
+    return this.#pressure
   }
 
   get isActive() {
