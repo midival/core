@@ -1,5 +1,8 @@
 {
   "entryPoints": ["src/index.ts"],
   "out": "docs",
-  "excludePrivate": true
+  "excludePrivate": true,
+  "compilerOptions": {
+    "skipLibCheck": true
+  }
 }

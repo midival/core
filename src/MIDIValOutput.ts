@@ -6,6 +6,8 @@ import { MidiCommand } from "./utils/midiCommands";
 import { MidiControlChange } from "./utils/midiControlChanges";
 import { MIDIRegisteredParameters } from "./utils/midiRegisteredParameters";
 
+const delay = (n: number) => new Promise((resolve) => setInterval(resolve, n));
+
 export class MIDIValOutput {
   private midiOutput: IMIDIOutput;
   private defaultChannel: number;
@@ -196,40 +198,76 @@ export class MIDIValOutput {
 
   // RPN
   sendRPNSelection([msb, lsb]: readonly [number, number], channel?: number) {
-    this.sendControlChange(MidiControlChange.RegisteredParameterNumberMSB, msb, channel)
-    this.sendControlChange(MidiControlChange.RegisteredParameterNumberLSB, lsb, channel)
+    this.sendControlChange(
+      MidiControlChange.RegisteredParameterNumberMSB,
+      msb,
+      channel
+    );
+    this.sendControlChange(
+      MidiControlChange.RegisteredParameterNumberLSB,
+      lsb,
+      channel
+    );
   }
 
   sendRPDataMSB(data: number, channel?: number) {
-    this.sendControlChange(MidiControlChange.DataEntryMSB, data, channel)
+    this.sendControlChange(MidiControlChange.DataEntryMSB, data, channel);
   }
 
   sendRPDataLSB(data: number, channel?: number) {
-    this.sendControlChange(MidiControlChange.DataEntryLSB, data, channel)
+    this.sendControlChange(MidiControlChange.DataEntryLSB, data, channel);
   }
 
   incrementRPData(incrementValue: number, channel?: number) {
-    this.sendControlChange(MidiControlChange.DataIncrement, incrementValue, channel)
+    this.sendControlChange(
+      MidiControlChange.DataIncrement,
+      incrementValue,
+      channel
+    );
   }
 
   decrementRPData(decrementValue: number, channel?: number) {
-    this.sendControlChange(MidiControlChange.DataDecrement, decrementValue, channel)
+    this.sendControlChange(
+      MidiControlChange.DataDecrement,
+      decrementValue,
+      channel
+    );
   }
 
-  sendRPNNull() {
+  sendRPNNull() {}
+
+  async initializeMPE(
+    lowerChannelSize: number,
+    upperChannelSize: number,
+    messageDelayMs: number = 100
+  ) {
+    this.sendRPNSelection(
+      MIDIRegisteredParameters.MPE_CONFIGURATION_MESSAGE,
+      1
+    );
+    await delay(messageDelayMs);
+    this.sendRPDataMSB(lowerChannelSize, 1);
+    await delay(messageDelayMs);
+    this.sendRPDataMSB(upperChannelSize, 16);
+    await delay(messageDelayMs);
+    this.sendRPNNull();
+    await delay(messageDelayMs);
   }
 
-  initializeMPE(lowerChannelSize: number, upperChannelSize: number) {
-    this.sendRPNSelection(MIDIRegisteredParameters.MPE_CONFIGURATION_MESSAGE, 1)
-    this.sendRPDataMSB(lowerChannelSize, 1)
-    this.sendRPDataMSB(upperChannelSize, 16)
-    this.sendRPNNull()
-  }
-
-  setPitchBendSensitivity(semitones: number, cents: number, channel?: number) {
+  async setPitchBendSensitivity(
+    semitones: number,
+    cents: number,
+    channel?: number,
+    messageDelayMs: number = 100
+  ) {
     // FIXME: probably calculate it here?
-    this.sendRPNSelection(MIDIRegisteredParameters.PITCH_BEND_SENSITIVITY, channel)
-    this.sendRPDataMSB(semitones, channel)
-    this.sendRPNNull()
+    this.sendRPNSelection(
+      MIDIRegisteredParameters.PITCH_BEND_SENSITIVITY,
+      channel
+    );
+    await delay(messageDelayMs);
+    this.sendRPDataMSB(semitones, channel);
+    await delay(messageDelayMs);
+    this.sendRPNNull();
   }
 }

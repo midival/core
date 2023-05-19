@@ -25,10 +25,21 @@ import {
   toNoteMessage,
   toProgramMessage,
 } from "./types/messages";
+import {
+  MIDIRegisteredParameters,
+  toRegisteredParameterKey,
+} from "./utils/midiRegisteredParameters";
 
 export interface PitchBendMessage {
   channel: number;
   value: number;
+}
+
+export interface RegisteredParameterData {
+  channel: number;
+  parameter: keyof typeof MIDIRegisteredParameters;
+  msb: number;
+  lsb: number;
 }
 
 interface EventDefinitions {
@@ -45,6 +56,8 @@ interface EventDefinitions {
   clockStart: [];
   clockStop: [];
   clockContinue: [];
+
+  registeredParameterData: [RegisteredParameterData];
 }
 
 const TEMPO_SAMPLES_LIMIT = 20;
@@ -69,7 +82,7 @@ export class MIDIValInput {
   private tempoSamples: number[];
   private options: MIDIValInputOptions;
 
-  private rpn: [number, number] = [-1, -1]
+  private rpn: [number, number] = [-1, -1];
 
   constructor(
     input: IMIDIInput,
@@ -172,13 +185,13 @@ export class MIDIValInput {
             this.omnibus.trigger("polyKeyPressure", midiMessage);
             break;
           case MidiCommand.PitchBend:
-            this.omnibus.trigger(
-              "pitchBend",
-              {
-                channel: midiMessage.channel,
-                value: splitValueIntoFraction([midiMessage.data1, midiMessage.data2])
-              }
-            );
+            this.omnibus.trigger("pitchBend", {
+              channel: midiMessage.channel,
+              value: splitValueIntoFraction([
+                midiMessage.data1,
+                midiMessage.data2,
+              ]),
+            });
             break;
           case MidiCommand.ChannelPressure:
             this.omnibus.trigger("channelPressure", midiMessage);
@@ -209,21 +222,39 @@ export class MIDIValInput {
     }
 
     // RPM
-    this.onControlChange(MidiControlChange.RegisteredParameterNumberMSB, message => {
-      this.rpn = [message.data2, this.rpn[1]]
-    })
+    this.onControlChange(
+      MidiControlChange.RegisteredParameterNumberMSB,
+      (message) => {
+        this.rpn = [message.data2, this.rpn[1]];
+      }
+    );
 
-    this.onControlChange(MidiControlChange.RegisteredParameterNumberLSB, message => {
-      this.rpn = [this.rpn[0], message.data2]
-    })
+    this.onControlChange(
+      MidiControlChange.RegisteredParameterNumberLSB,
+      (message) => {
+        this.rpn = [this.rpn[0], message.data2];
+      }
+    );
 
-    this.onControlChange(MidiControlChange.DataEntryMSB, message => {
-      // FIXME: here we can detect data entry.
-    })
+    this.onControlChange(MidiControlChange.DataEntryMSB, (message) => {
+      const key = toRegisteredParameterKey(this.rpn);
+      this.omnibus.trigger("registeredParameterData", {
+        channel: message.channel,
+        parameter: key,
+        msb: message.data2,
+        lsb: null,
+      });
+    });
 
-    this.onControlChange(MidiControlChange.DataEntryLSB, message => {
-      // FIXME: here we can detect data entry.
-    })
+    this.onControlChange(MidiControlChange.DataEntryLSB, (message) => {
+      const key = toRegisteredParameterKey(this.rpn);
+      this.omnibus.trigger("registeredParameterData", {
+        channel: message.channel,
+        parameter: key,
+        msb: null,
+        lsb: message.data2,
+      });
+    });
   }
 
   private isClockCommand(e: WebMidi.MIDIMessageEvent): boolean {
@@ -327,7 +358,9 @@ export class MIDIValInput {
    * @param callback Callback that gets called on every pitch bend message. It gets value of the bend in the range of -1.0 to 1.0 using 16-bit precision (if supported by sending device).
    * @returns Unregister callback.
    */
-  onPitchBend(callback: CallbackType<EventDefinitions["pitchBend"]>): UnregisterCallback {
+  onPitchBend(
+    callback: CallbackType<EventDefinitions["pitchBend"]>
+  ): UnregisterCallback {
     return this.omnibus.on("pitchBend", callback);
   }
 
@@ -489,8 +522,10 @@ export class MIDIValInput {
     );
   }
 
-  onChannelPressure(callback: CallbackType<EventDefinitions["channelPressure"]>) {
-    return this.omnibus.on("channelPressure", callback)
+  onChannelPressure(
+    callback: CallbackType<EventDefinitions["channelPressure"]>
+  ) {
+    return this.omnibus.on("channelPressure", callback);
   }
 
   onOmniModeOff(callback: CallbackType<[MidiMessage]>): UnregisterCallback {
@@ -543,5 +578,83 @@ export class MIDIValInput {
 
   onClockContinue(callback: CallbackType<[]>): UnregisterCallback {
     return this.omnibus.on("clockContinue", callback);
+  }
+
+  // RPN
+  onMpeConfiguration(
+    callback: CallbackType<EventDefinitions["registeredParameterData"]>
+  ) {
+    return this.onBusKeyValue(
+      "registeredParameterData",
+      "parameter",
+      "MPE_CONFIGURATION_MESSAGE",
+      callback
+    );
+  }
+
+  onPitchBendSensitivity(
+    callback: CallbackType<EventDefinitions["registeredParameterData"]>
+  ) {
+    return this.onBusKeyValue(
+      "registeredParameterData",
+      "parameter",
+      "PITCH_BEND_SENSITIVITY",
+      callback
+    );
+  }
+
+  onChannelFineTuning(
+    callback: CallbackType<EventDefinitions["registeredParameterData"]>
+  ) {
+    return this.onBusKeyValue(
+      "registeredParameterData",
+      "parameter",
+      "CHANNEL_FINE_TUNING",
+      callback
+    );
+  }
+
+  onChannelCoarseTuning(
+    callback: CallbackType<EventDefinitions["registeredParameterData"]>
+  ) {
+    return this.onBusKeyValue(
+      "registeredParameterData",
+      "parameter",
+      "CHANNEL_COARSE_TUNING",
+      callback
+    );
+  }
+
+  onTuningProgramChange(
+    callback: CallbackType<EventDefinitions["registeredParameterData"]>
+  ) {
+    return this.onBusKeyValue(
+      "registeredParameterData",
+      "parameter",
+      "TUNING_PROGRAM_CHANGE",
+      callback
+    );
+  }
+
+  onTuningBankChange(
+    callback: CallbackType<EventDefinitions["registeredParameterData"]>
+  ) {
+    return this.onBusKeyValue(
+      "registeredParameterData",
+      "parameter",
+      "TUNING_BANK_SELECT",
+      callback
+    );
+  }
+
+  onModulationDepthChange(
+    callback: CallbackType<EventDefinitions["registeredParameterData"]>
+  ) {
+    return this.onBusKeyValue(
+      "registeredParameterData",
+      "parameter",
+      "MODULATION_DEPTH_CHANGE",
+      callback
+    );
   }
 }

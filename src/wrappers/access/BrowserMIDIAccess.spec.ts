@@ -4,7 +4,7 @@
 import { Omnibus } from "@hypersphere/omnibus";
 import { BrowserMIDIAccess } from "./BrowserMIDIAccess";
 const _bus = new Omnibus();
-const access: WebMidi.MIDIAccess = {
+const access = {
   inputs: new Map(),
   outputs: new Map(),
   onstatechange: jest.fn(),
@@ -14,7 +14,7 @@ const access: WebMidi.MIDIAccess = {
   sysexEnabled: false,
   dispatchEvent: jest.fn(),
   removeEventListener: jest.fn(),
-};
+} satisfies WebMidi.MIDIAccess;
 
 describe("BrowserMIDIAccess", () => {
   beforeAll(() => {

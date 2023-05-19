@@ -88,19 +88,31 @@ export class BrowserMIDIAccess implements IMIDIAccess {
         if (e.port.type === "input") {
           switch (e.port.state) {
             case "disconnected":
-              this.bus.trigger("inputDisconnected", new BrowserMIDIInput(e.port as unknown as WebMidi.MIDIInput));
+              this.bus.trigger(
+                "inputDisconnected",
+                new BrowserMIDIInput(e.port as unknown as WebMidi.MIDIInput)
+              );
               break;
             case "connected":
-              this.bus.trigger("inputConnected", new BrowserMIDIInput(e.port as unknown as WebMidi.MIDIInput));
+              this.bus.trigger(
+                "inputConnected",
+                new BrowserMIDIInput(e.port as unknown as WebMidi.MIDIInput)
+              );
               break;
           }
         } else {
           switch (e.port.state) {
             case "disconnected":
-              this.bus.trigger("outputDisconnected", new BrowserMIDIOutput(e.port as unknown as WebMidi.MIDIOutput));
+              this.bus.trigger(
+                "outputDisconnected",
+                new BrowserMIDIOutput(e.port as unknown as WebMidi.MIDIOutput)
+              );
               break;
             case "connected":
-              this.bus.trigger("outputConnected", new BrowserMIDIOutput(e.port as unknown as WebMidi.MIDIOutput));
+              this.bus.trigger(
+                "outputConnected",
+                new BrowserMIDIOutput(e.port as unknown as WebMidi.MIDIOutput)
+              );
               break;
           }
         }
