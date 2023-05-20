@@ -1,5 +1,5 @@
 {
-  "entryPoints": ["src/index.ts"],
+  "entryPoints": ["src/index.ts", "src/mpe.ts"],
   "out": "docs",
   "excludePrivate": true,
   "compilerOptions": {
