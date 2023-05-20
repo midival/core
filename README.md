@@ -214,3 +214,7 @@ input.disconnect();
 For changelog see [CHANGELOG.md](./CHANGELOG.md).
 
 For migration guide see [MIGRATION.md](./MIGRATION.md).
+
+# Community
+
+[Join our Discord Community](https://discord.com/invite/WGgTCcEV) to ask questions or discuss all MIDI related topics!
