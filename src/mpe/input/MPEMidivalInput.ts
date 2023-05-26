@@ -8,6 +8,11 @@ interface EventDefinitions {
   upperZoneUpdate: [MPEInputZone];
 }
 
+export interface MPEInputConfig {
+  lowerZoneSize?: number;
+  upperZoneSize?: number;
+}
+
 /**
  * Defines MIDIVal MPE Input connection
  */
@@ -17,26 +22,42 @@ export class MPEMidivalInput {
   #lowerZone: MPEInputZone;
   #upperZone: MPEInputZone;
 
-  constructor(input: MIDIValInput) {
+  constructor(private readonly input: MIDIValInput, mpeDefaultZones?: MPEInputConfig) {
     input.onMpeConfiguration(({ channel, msb }) => {
       if (channel === 1) {
-        if (!msb) {
-          this.#lowerZone = null;
-        } else {
-          this.#lowerZone = new MPEInputZone(channel, [2, 1 + msb], input);
-        }
-        this.eventBus.trigger("lowerZoneUpdate", this.#lowerZone);
+        this.instantiateLowerZone(msb)
       }
       if (channel === 16) {
-        // Updating upper zone
-        if (!msb) {
-          this.#upperZone = null;
-        } else {
-          this.#upperZone = new MPEInputZone(channel, [15 - msb, 15], input);
-        }
-        this.eventBus.trigger("upperZoneUpdate", this.#upperZone);
+        this.instantiateUpperZone(msb)
       }
     });
+
+    if (mpeDefaultZones?.lowerZoneSize) {
+      this.instantiateLowerZone(mpeDefaultZones.lowerZoneSize)
+    }
+    
+    if (mpeDefaultZones?.upperZoneSize) {
+      this.instantiateUpperZone(mpeDefaultZones.upperZoneSize)
+    }
+
+  }
+
+  private instantiateLowerZone(size: number) {
+    if (!size) {
+      this.#lowerZone = null;
+    } else {
+      this.#lowerZone = new MPEInputZone(1, [2, 1 + size], this.input);
+    }
+    this.eventBus.trigger("lowerZoneUpdate", this.#lowerZone);
+  }
+
+  private instantiateUpperZone(size: number) {
+    if (!size) {
+      this.#upperZone = null;
+    } else {
+      this.#upperZone = new MPEInputZone(16, [15 - size, 15], this.input);
+    }
+    this.eventBus.trigger("upperZoneUpdate", this.#upperZone);
   }
 
   get isMpeEnabled() {
@@ -52,10 +73,18 @@ export class MPEMidivalInput {
   }
 
   onLowerZoneUpdate(cb: CallbackType<EventDefinitions["lowerZoneUpdate"]>) {
-    return this.eventBus.on("lowerZoneUpdate", cb);
+    const callback = this.eventBus.on("lowerZoneUpdate", cb);
+    if (this.lowerZone) {
+      this.eventBus.trigger('lowerZoneUpdate', this.lowerZone)
+    }
+    return callback
   }
 
   onUpperZoneUpdate(cb: CallbackType<EventDefinitions["upperZoneUpdate"]>) {
-    return this.eventBus.on("upperZoneUpdate", cb);
+    const callback = this.eventBus.on("upperZoneUpdate", cb);
+    if (this.upperZone) {
+      this.eventBus.trigger('upperZoneUpdate', this.upperZone)
+    }
+    return callback
   }
 }
