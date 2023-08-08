@@ -4,6 +4,11 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "license": "MIT",
+  "homepage": "https://midival.github.io/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/midival/core.git"
+  },
   "exports": {
     ".": "./dist/index.js",
     "./mpe": "./dist/mpe.js"
