@@ -217,4 +217,4 @@ For migration guide see [MIGRATION.md](./MIGRATION.md).
 
 # Community
 
-[Join our Discord Community](https://discord.com/invite/WGgTCcEV) to ask questions or discuss all MIDI related topics!
+[Join our Discord Community](https://discord.gg/GV88v3k56a) to ask questions or discuss all MIDI related topics!
