@@ -52,4 +52,4 @@ jobs:
         run: npm publish --access public
       - name: Publish tag
         if: steps.check.outputs.changed == 'true'
-        run: gh release create -m "`node -p "require('./package.json').version"`" `node -p "require('./package.json').version"`
+        run: gh release create `node -p require('package.json').version`
