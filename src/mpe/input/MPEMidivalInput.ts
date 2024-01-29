@@ -1,12 +1,7 @@
-import { CallbackType, Omnibus } from "@hypersphere/omnibus";
-import { IMIDIInput } from "../../wrappers/inputs/IMIDIInput";
+import { CallbackType, Omnibus, args } from "@hypersphere/omnibus";
 import { MIDIValInput } from "../../MIDIValInput";
 import { MPEInputZone } from "./MPEInputZone";
-
-interface EventDefinitions {
-  lowerZoneUpdate: [MPEInputZone];
-  upperZoneUpdate: [MPEInputZone];
-}
+import { OmnibusParams } from "../../types/omnibus";
 
 export interface MPEInputConfig {
   lowerZoneSize?: number;
@@ -17,10 +12,17 @@ export interface MPEInputConfig {
  * Defines MIDIVal MPE Input connection
  */
 export class MPEMidivalInput {
-  private eventBus: Omnibus<EventDefinitions> = new Omnibus();
+  private eventBus = this.buildBus()
 
   #lowerZone: MPEInputZone;
   #upperZone: MPEInputZone;
+
+  private buildBus() {
+    return Omnibus.builder()
+    .register('lowerZoneUpdate', args<MPEInputZone>())
+    .register('upperZoneUpdate', args<MPEInputZone>())
+    .build()
+  }
 
   constructor(private readonly input: MIDIValInput, mpeDefaultZones?: MPEInputConfig) {
     input.onMpeConfiguration(({ channel, msb }) => {
@@ -72,7 +74,7 @@ export class MPEMidivalInput {
     return this.#upperZone;
   }
 
-  onLowerZoneUpdate(cb: CallbackType<EventDefinitions["lowerZoneUpdate"]>) {
+  onLowerZoneUpdate(cb: CallbackType<OmnibusParams<typeof this.eventBus, 'lowerZoneUpdate'>>) {
     const callback = this.eventBus.on("lowerZoneUpdate", cb);
     if (this.lowerZone) {
       this.eventBus.trigger('lowerZoneUpdate', this.lowerZone)
@@ -80,7 +82,7 @@ export class MPEMidivalInput {
     return callback
   }
 
-  onUpperZoneUpdate(cb: CallbackType<EventDefinitions["upperZoneUpdate"]>) {
+  onUpperZoneUpdate(cb: CallbackType<OmnibusParams<typeof this.eventBus, 'upperZoneUpdate'>>) {
     const callback = this.eventBus.on("upperZoneUpdate", cb);
     if (this.upperZone) {
       this.eventBus.trigger('upperZoneUpdate', this.upperZone)

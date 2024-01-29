@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.1.4] 2024-01-29
+- Upgrading `Omnibus` dependency to 0.1.2
+- `.on` callbacks can be now unsubscribed with Explicit Resource Management (`using` keyword)
+
 ## [0.1.0] 2023-05-19
 - Support for MPE. You can now instantiate `MPEMidivalInput` or `MPEMidivalOutput`
 - Added support for Registered Parameters. See [MIDI Documentation, Table 3a](https://www.midi.org/specifications-old/item/table-3-control-change-messages-data-bytes-2)
