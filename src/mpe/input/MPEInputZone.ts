@@ -1,6 +1,7 @@
-import { Omnibus } from "@hypersphere/omnibus";
+import { Omnibus, args } from "@hypersphere/omnibus";
 import { Callback, MIDIValInput, MidiMessage, NoteMessage } from "../..";
 import { PitchBendMessage } from "../../MIDIValInput";
+import { OmnibusParams } from "../../types/omnibus";
 
 export interface MemberPitchBendMessage {
   masterPitchBend: number;
@@ -25,21 +26,8 @@ export interface MemberTimbreMessage {
   memberTimbre: number;
 }
 
-export interface EventDefinitions {
-  noteOn: [NoteMessage];
-  noteOff: [NoteMessage];
-  masterPitchBend: [PitchBendMessage];
-  memberPitchBend: [MemberPitchBendMessage];
-
-  masterTimbre: [ChannelValueMessage];
-  memberTimbre: [MemberTimbreMessage];
-
-  masterPressure: [ChannelValueMessage];
-  memberPressure: [MemberPressureMessage];
-}
-
 export class MPEInputZone {
-  private eventBus: Omnibus<EventDefinitions> = new Omnibus();
+  private eventBus = this.buildBus()
 
   #pitchBend: number = 0;
   #timbre: number = 0;
@@ -51,6 +39,21 @@ export class MPEInputZone {
     private input: MIDIValInput
   ) {
     this.bindEvents();
+  }
+
+
+  private buildBus() {
+    return Omnibus.builder()
+      .register('noteOn', args<NoteMessage>())
+      .register('noteOff', args<NoteMessage>())
+      .register('masterPitchBend', args<PitchBendMessage>())
+      .register('memberPitchBend', args<MemberPitchBendMessage>())
+      .register('masterTimbre', args<ChannelValueMessage>())
+      .register('memberTimbre', args<MemberTimbreMessage>())
+      .register('masterPressure', args<ChannelValueMessage>())
+      .register('memberPressure', args<MemberPressureMessage>())
+      .build()
+
   }
 
   private bindEvents() {
@@ -119,35 +122,35 @@ export class MPEInputZone {
     });
   }
 
-  onNoteOn(cb: Callback<EventDefinitions["noteOn"]>) {
+  onNoteOn(cb: Callback<OmnibusParams<typeof this.eventBus, 'noteOn'>>) {
     return this.eventBus.on("noteOn", cb);
   }
 
-  onNoteOff(cb: Callback<EventDefinitions["noteOff"]>) {
+  onNoteOff(cb: Callback<OmnibusParams<typeof this.eventBus, 'noteOff'>>) {
     return this.eventBus.on("noteOff", cb);
   }
 
-  onMasterPitchBend(cb: Callback<EventDefinitions["masterPitchBend"]>) {
+  onMasterPitchBend(cb: Callback<OmnibusParams<typeof this.eventBus, 'masterPitchBend'>>) {
     return this.eventBus.on("masterPitchBend", cb);
   }
 
-  onMemberPitchBend(cb: Callback<EventDefinitions["memberPitchBend"]>) {
+  onMemberPitchBend(cb: Callback<OmnibusParams<typeof this.eventBus, 'memberPitchBend'>>) {
     return this.eventBus.on("memberPitchBend", cb);
   }
 
-  onMasterTimbre(cb: Callback<EventDefinitions["masterTimbre"]>) {
+  onMasterTimbre(cb: Callback<OmnibusParams<typeof this.eventBus, 'masterTimbre'>>) {
     return this.eventBus.on("masterTimbre", cb);
   }
 
-  onMemberTimbre(cb: Callback<EventDefinitions["memberTimbre"]>) {
+  onMemberTimbre(cb: Callback<OmnibusParams<typeof this.eventBus, 'memberTimbre'>>) {
     return this.eventBus.on("memberTimbre", cb);
   }
 
-  onMasterPressure(cb: Callback<EventDefinitions["masterPressure"]>) {
+  onMasterPressure(cb: Callback<OmnibusParams<typeof this.eventBus, 'masterPressure'>>) {
     return this.eventBus.on("masterPressure", cb);
   }
 
-  onMemberPressure(cb: Callback<EventDefinitions["memberPressure"]>) {
+  onMemberPressure(cb: Callback<OmnibusParams<typeof this.eventBus, 'memberPressure'>>) {
     return this.eventBus.on("memberPressure", cb);
   }
 }

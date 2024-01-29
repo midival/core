@@ -1,7 +1,6 @@
 import { MPEMidivalInput } from "./mpe/input/MPEMidivalInput";
 import {
   ChannelValueMessage,
-  EventDefinitions,
   MPEInputZone,
   MemberPitchBendMessage,
   MemberPressureMessage,
@@ -18,7 +17,6 @@ import { ActiveNote } from "./mpe/output/ActiveNote";
 export {
   MPEMidivalInput,
   ChannelValueMessage,
-  EventDefinitions,
   MPEInputZone,
   MemberPitchBendMessage,
   MemberPressureMessage,
