@@ -31,6 +31,9 @@ import {
 } from "./utils/midiRegisteredParameters";
 import { OmnibusKeys, OmnibusParams, OmnibusValue } from "./types/omnibus";
 
+type OmnibusKeysCheck<B, T> = T extends OmnibusKeys<B> ? T : never
+export type ReverseParameters<T> = T extends [infer K] ? K : T
+
 export interface PitchBendMessage {
   channel: number;
   value: number;
@@ -144,6 +147,22 @@ export class MIDIValInput {
       );
     }
     return ticksToBPM(this.tempoSamples);
+  }
+
+  once<const B extends typeof this.omnibus, const T extends OmnibusKeys<B>>(event: T): Promise<B extends Omnibus<infer X> ? T extends keyof X ? ReverseParameters<X[T]> : never : never>;
+  once<const B extends typeof this.omnibus, const T extends OmnibusKeys<B>, const Cb extends CallbackType<OmnibusParams<B, OmnibusKeysCheck<B, T>>>>(event: T, cb: Cb): UnregisterCallback;
+
+  /**
+   * 
+   * @param key event you want to listen to
+   * @param cb Optional callback to be triggered. If not provided, Promise with the result is returned instead
+   * @returns UnregisterCallback if callback provided. Promise resolving to the event value otherwise.
+   */
+  once<
+  const B extends typeof this.omnibus, const T extends OmnibusKeys<B>,
+    Cb extends undefined | CallbackType<OmnibusParams<B, OmnibusKeysCheck<B, T>>>
+  >(key: T, cb?: Cb): any {
+    return this.omnibus.once(key as any, cb)
   }
 
   private async registerInput(input: IMIDIInput): Promise<void> {

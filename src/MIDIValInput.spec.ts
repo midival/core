@@ -235,4 +235,92 @@ describe("MIDIValInput", () => {
     expect(callback).toBeCalledTimes(2);
     expect(callback).toHaveBeenLastCalledWith(false, msg2);
   });
+
+  it(".noteOn - once", async () => {
+    const { input, mock } = await createInput({
+      id: "1",
+      name: "Input",
+      manufacturer: "MIDIVal",
+    });
+    const allCallback = jest.fn();
+
+    input.once('noteOn', allCallback)
+
+    mock.sendMessage(
+      makeMessage({
+        channel: 1,
+        command: MidiCommand.NoteOn,
+        data1: 65,
+        data2: 128,
+      })
+    );
+
+    expect(allCallback).toHaveBeenCalledTimes(1);
+
+    expect(allCallback.mock.calls[0][0]).toEqual({
+      command: MidiCommand.NoteOn,
+      channel: 1,
+      data1: 65,
+      data2: 128,
+      note: 65,
+      velocity: 128,
+    });
+
+    mock.sendMessage(
+      makeMessage({
+        channel: 1,
+        command: MidiCommand.NoteOn,
+        data1: 65,
+        data2: 128,
+      })
+    );
+    expect(allCallback).toHaveBeenCalledTimes(1);
+  });
+
+  it(".noteOn - once as Promise", async () => {
+    const { input, mock } = await createInput({
+      id: "1",
+      name: "Input",
+      manufacturer: "MIDIVal",
+    });
+    const allCallback = jest.fn();
+
+    const promise = input.once('noteOn')
+    promise.then(allCallback)
+    expect(allCallback).toHaveBeenCalledTimes(0);
+
+
+    mock.sendMessage(
+      makeMessage({
+        channel: 1,
+        command: MidiCommand.NoteOn,
+        data1: 65,
+        data2: 128,
+      })
+    );
+
+    await promise
+
+    expect(allCallback).toHaveBeenCalledTimes(1);
+
+    expect(allCallback.mock.calls[0][0]).toEqual({
+      command: MidiCommand.NoteOn,
+      channel: 1,
+      data1: 65,
+      data2: 128,
+      note: 65,
+      velocity: 128,
+    });
+
+    mock.sendMessage(
+      makeMessage({
+        channel: 1,
+        command: MidiCommand.NoteOn,
+        data1: 65,
+        data2: 128,
+      })
+    );
+    expect(allCallback).toHaveBeenCalledTimes(1);
+  });
+
 });

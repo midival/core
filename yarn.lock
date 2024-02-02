@@ -500,10 +500,10 @@
   dependencies:
     "@hypersphere/omnibus" "^0.1.0"
 
-"@hypersphere/omnibus@^0.1.2":
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/@hypersphere/omnibus/-/omnibus-0.1.2.tgz#2809bce9ed9a0c2aa7d99f6c82c1f7a1cc6e0be0"
-  integrity sha512-6OV+snxy+w9XnJ+dIis6Nn/4GAIzthQWV1z2m4XMpEFA9G8ZBcPrebX0bpy0KOP82EmaLQ5pouG5UFevY2tnAg==
+"@hypersphere/omnibus@^0.1.4":
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/@hypersphere/omnibus/-/omnibus-0.1.4.tgz#a52b7b8889e28cae8e9c993a864d474a7d753aed"
+  integrity sha512-gZXWpfZshbnQgQhJl2hx3rGRk8w9USotjVRcyTDYbPJmCYRF80lENuZ5/5QQsuYzVlRlxxCXzX0rpFOjjqI8Jg==
   dependencies:
     "@hypersphere/omnibus" "^0.1.1"
 
@@ -910,10 +910,10 @@
   dependencies:
     "@types/istanbul-lib-report" "*"
 
-"@types/jest@^29.5.11":
-  version "29.5.11"
-  resolved "https://registry.yarnpkg.com/@types/jest/-/jest-29.5.11.tgz#0c13aa0da7d0929f078ab080ae5d4ced80fa2f2c"
-  integrity sha512-S2mHmYIVe13vrm6q4kN6fLYYAka15ALQki/vgDC3mIukEOx8WJlv0kQPM+d4w8Gp6u0uSdKND04IlTXBv0rwnQ==
+"@types/jest@^29.5.12":
+  version "29.5.12"
+  resolved "https://registry.yarnpkg.com/@types/jest/-/jest-29.5.12.tgz#7f7dc6eb4cf246d2474ed78744b05d06ce025544"
+  integrity sha512-eDC8bTvT/QhYdxJAulQikueigY5AsdBRH2yDKW3yveW7svY3+DzN84/2NUgkw10RTiJbWqZrTtoGVdYlvFJdLw==
   dependencies:
     expect "^29.0.0"
     pretty-format "^29.0.0"
@@ -932,10 +932,10 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-15.14.0.tgz#74dbf254fb375551a9d2a71faf6b9dbc2178dc53"
   integrity sha512-um/+/ip3QZmwLfIkWZSNtQIJNVAqrJ92OkLMeuZrjZMTAJniI7fh8N8OICyDhAJ2mzgk/fmYFo72jRr5HyZ1EQ==
 
-"@types/node@^20.11.10":
-  version "20.11.10"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-20.11.10.tgz#6c3de8974d65c362f82ee29db6b5adf4205462f9"
-  integrity sha512-rZEfe/hJSGYmdfX9tvcPMYeYPW2sNl50nsw4jZmRcaG0HIAb0WYEpsB05GOb53vjqpyE9GUhlDQ4jLSoB5q9kg==
+"@types/node@^20.11.16":
+  version "20.11.16"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-20.11.16.tgz#4411f79411514eb8e2926f036c86c9f0e4ec6708"
+  integrity sha512-gKb0enTmRCzXSSUJDq6/sPcqrfCv2mkkG6Jt/clpn5eiCbKTY+SgZUxo+p8ZKMof5dCp9vHQUAB7wOUTod22wQ==
   dependencies:
     undici-types "~5.26.4"
 
