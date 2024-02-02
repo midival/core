@@ -1,5 +1,8 @@
 # Changelog
 
+## [0.1.5]
+- Adding `.once` method that allows to listen to an event once (as a callback or a promise)
+
 ## [0.1.4] 2024-01-29
 - Upgrading `Omnibus` dependency to 0.1.2
 - `.on` callbacks can be now unsubscribed with Explicit Resource Management (`using` keyword)
