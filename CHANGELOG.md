@@ -1,5 +1,8 @@
 # Changelog
 
+## [0.1.6]
+- Fixed typing issue in `MIDIValInput`
+
 ## [0.1.5]
 - Adding `.once` method that allows to listen to an event once (as a callback or a promise)
 

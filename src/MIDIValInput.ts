@@ -30,6 +30,7 @@ import {
   toRegisteredParameterKey,
 } from "./utils/midiRegisteredParameters";
 import { OmnibusKeys, OmnibusParams, OmnibusValue } from "./types/omnibus";
+import { MIDIValInputBusKeys, MIDIValInputBusParams, MIDIValInputBusValue, buildInputBus } from "./buildInputBus";
 
 type OmnibusKeysCheck<B, T> = T extends OmnibusKeys<B> ? T : never
 export type ReverseParameters<T> = T extends [infer K] ? K : T
@@ -61,31 +62,13 @@ const DefaultOptions: MIDIValInputOptions = {
 
 export class MIDIValInput {
   private unregisterInput: UnregisterCallback;
-  private omnibus = this.buildBus()
+  private omnibus = buildInputBus()
 
   private midiInput: IMIDIInput;
 
   private tempoSamples: number[] = [];
 
   private rpn: [number, number] = [-1, -1];
-
-  private buildBus() {
-    return Omnibus.builder()
-      .register('pithchBend', args<PitchBendMessage>())
-      .register('sysex', args<[Uint8Array]>())
-      .register('channelPressure', args<MidiMessage>())
-      .register('noteOn', args<NoteMessage>())
-      .register('noteOff', args<NoteMessage>())
-      .register('controlChange', args<ControlChangeMessage>())
-      .register('programChange', args<ProgramChangeMessage>())
-      .register('polyKeyPressure', args<MidiMessage>())
-      .register('clockPulse', args<void>())
-      .register('clockStart', args<void>())
-      .register('clockStop', args<void>())
-      .register('clockContinue', args<void>())
-      .register('registeredParameterData', args<RegisteredParameterData>())
-      .build()
-  }
 
   constructor(
     input: IMIDIInput,
@@ -292,7 +275,7 @@ export class MIDIValInput {
     }
   }
 
-  private onBusKeyValue<K extends OmnibusKeys<typeof this.omnibus>, V extends keyof OmnibusValue<typeof this.omnibus, K>>(
+  private onBusKeyValue<K extends MIDIValInputBusKeys, V extends keyof MIDIValInputBusValue<K>>(
     event: K,
     key: V,
     value: OmnibusValue<typeof this.omnibus, K>[V],
@@ -380,7 +363,7 @@ export class MIDIValInput {
    * @returns Unregister callback.
    */
   onPitchBend(
-    callback: CallbackType<OmnibusParams<typeof this.omnibus, 'pithchBend'>>
+    callback: CallbackType<MIDIValInputBusParams<'pithchBend'>>
   ): UnregisterCallback {
     return this.omnibus.on('pithchBend', callback);
   }
@@ -544,7 +527,7 @@ export class MIDIValInput {
   }
 
   onChannelPressure(
-    callback: CallbackType<OmnibusParams<typeof this.omnibus, "channelPressure">>
+    callback: CallbackType<MIDIValInputBusParams<"channelPressure">>
   ) {
     return this.omnibus.on("channelPressure", callback);
   }
@@ -603,7 +586,7 @@ export class MIDIValInput {
 
   // RPN
   onMpeConfiguration(
-    callback: CallbackType<OmnibusParams<typeof this.omnibus, "registeredParameterData">>
+    callback: CallbackType<MIDIValInputBusParams<"registeredParameterData">>
   ) {
     return this.onBusKeyValue(
       "registeredParameterData",
@@ -614,7 +597,7 @@ export class MIDIValInput {
   }
 
   onPitchBendSensitivity(
-    callback: CallbackType<OmnibusParams<typeof this.omnibus, "registeredParameterData">>
+    callback: CallbackType<MIDIValInputBusParams<"registeredParameterData">>
   ) {
     return this.onBusKeyValue(
       "registeredParameterData",
@@ -625,7 +608,7 @@ export class MIDIValInput {
   }
 
   onChannelFineTuning(
-    callback: CallbackType<OmnibusParams<typeof this.omnibus, "registeredParameterData">>
+    callback: CallbackType<MIDIValInputBusParams<"registeredParameterData">>
   ) {
     return this.onBusKeyValue(
       "registeredParameterData",
@@ -636,7 +619,7 @@ export class MIDIValInput {
   }
 
   onChannelCoarseTuning(
-    callback: CallbackType<OmnibusParams<typeof this.omnibus, "registeredParameterData">>
+    callback: CallbackType<MIDIValInputBusParams<"registeredParameterData">>
   ) {
     return this.onBusKeyValue(
       "registeredParameterData",
@@ -647,7 +630,7 @@ export class MIDIValInput {
   }
 
   onTuningProgramChange(
-    callback: CallbackType<OmnibusParams<typeof this.omnibus, "registeredParameterData">>
+    callback: CallbackType<MIDIValInputBusParams<"registeredParameterData">>
   ) {
     return this.onBusKeyValue(
       "registeredParameterData",
@@ -658,7 +641,7 @@ export class MIDIValInput {
   }
 
   onTuningBankChange(
-    callback: CallbackType<OmnibusParams<typeof this.omnibus, "registeredParameterData">>
+    callback: CallbackType<MIDIValInputBusParams<"registeredParameterData">>
   ) {
     return this.onBusKeyValue(
       "registeredParameterData",
@@ -669,7 +652,7 @@ export class MIDIValInput {
   }
 
   onModulationDepthChange(
-    callback: CallbackType<OmnibusParams<typeof this.omnibus, "registeredParameterData">>
+    callback: CallbackType<MIDIValInputBusParams<"registeredParameterData">>
   ) {
     return this.onBusKeyValue(
       "registeredParameterData",
