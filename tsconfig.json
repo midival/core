@@ -4,7 +4,7 @@
     "removeComments": true,
     "allowSyntheticDefaultImports": true,
     "target": "ES2022",
-    "lib": ["es2022"],
+    "lib": ["es2022", "dom"],
     "sourceMap": true,
     "baseUrl": "./src",
     "outDir": "./dist",
