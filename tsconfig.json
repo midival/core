@@ -1,9 +1,18 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
-    "target": "es2015",
     "declaration": true,
-    "outDir": "./dist"
+    "removeComments": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "ES2022",
+    "lib": ["es2022"],
+    "sourceMap": true,
+    "baseUrl": "./src",
+    "outDir": "./dist",
+    "noUncheckedIndexedAccess": true,
+    "noEmit": true,
+    "moduleResolution": "NodeNext",
+    "module": "NodeNext"
   },
-  "include": ["src/**/*"]
+  "include": ["src/"],
+  "exclude": ["!src/", "docs/"],
 }

@@ -10,20 +10,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-      - name: Get yarn cache
-        id: yarn-cache
-        run: echo "::set-output name=dir::$(yarn cache dir)"
-
-      - uses: actions/cache@v1
+      - uses: pnpm/action-setup@v2
         with:
-          path: ${{ steps.yarn-cache.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
-      - name: Install node_modules
-        run: yarn install --frozen-lockfile
+          version: 8
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 21.x
+          cache: "pnpm"
+      - run: pnpm install --frozen-lockfile
       - name: Compile
-        run: yarn docs
+        run: pnpm run docs
       - name: Upload docs folder
         uses: actions/upload-artifact@v1
         with:
@@ -37,19 +33,15 @@ jobs:
       NPM_TOKEN: ${{secrets.NPM_TOKEN}}
     steps:
       - uses: actions/checkout@v1
-      - name: Get yarn cache
-        id: yarn-cache
-        run: echo "::set-output name=dir::$(yarn cache dir)"
-
-      - uses: actions/cache@v1
+      - uses: pnpm/action-setup@v2
         with:
-          path: ${{ steps.yarn-cache.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
-      - name: Install node_modules
-        run: yarn install --frozen-lockfile
-      - name: Download math result for job 1
+          version: 8
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 21.x
+          cache: "pnpm"
+      - run: pnpm install --frozen-lockfile
+      - name: Download artifacts
         uses: actions/download-artifact@v1
         with:
           name: docs
