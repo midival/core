@@ -1,28 +1,40 @@
 # Changelog
 
+## 0.1.7
+
+### Patch Changes
+
+- 68f5f88: updating build process
+
 ## [0.1.6]
+
 - Fixed typing issue in `MIDIValInput`
 
 ## [0.1.5]
+
 - Adding `.once` method that allows to listen to an event once (as a callback or a promise)
 
 ## [0.1.4] 2024-01-29
+
 - Upgrading `Omnibus` dependency to 0.1.2
 - `.on` callbacks can be now unsubscribed with Explicit Resource Management (`using` keyword)
 
 ## [0.1.0] 2023-05-19
+
 - Support for MPE. You can now instantiate `MPEMidivalInput` or `MPEMidivalOutput`
 - Added support for Registered Parameters. See [MIDI Documentation, Table 3a](https://www.midi.org/specifications-old/item/table-3-control-change-messages-data-bytes-2)
 - Dependencies were updated to the latest versions including TypeScript 5.0
 - Breaking: `onPitchBend` callback changed it's parameter type. Instead of number it recieved object with value and channel. See [Migration guide](./MIGRATION.md) for more information.
 
 ## [0.0.17] 2022-06-15
+
 - Fixed `onInputConnected` / `onInputDisconnected` / `onOutputConnected` / `onOutputDisconnected`
 - Simplified code
 - Added tests
 - Added example code.
 
 ## [0.0.16] 2022-03-16
+
 - Added MIDI Clock messages.
 
 ## [0.0.15] 2022-02-19
