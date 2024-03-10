@@ -3,25 +3,30 @@
   "version": "0.1.6",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "module": "dist/index.mjs",
   "license": "MIT",
   "exports": {
     ".": "./dist/index.js",
     "./mpe": "./dist/mpe.js"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.27.1",
     "@types/jest": "^29.5.12",
-    "@types/node": "^20.11.16",
+    "@types/node": "^20.11.25",
     "@types/webmidi": "^2.0.10",
     "gh-pages": "^6.1.1",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
-    "prettier": "^3.2.4",
+    "prettier": "^3.2.5",
     "ts-jest": "^29.1.2",
-    "typedoc": "^0.25.7",
-    "typescript": "^5.3.3"
+    "tsup": "^8.0.2",
+    "typedoc": "^0.25.11",
+    "typescript": "^5.4.2"
   },
   "scripts": {
-    "compile": "tsc",
+    "build": "tsup src/index.ts src/mpe.ts --format cjs,esm --dts",
+    "release": "pnpm run build && changeset publish",
+    "lint": "tsc",
     "test": "jest",
     "prettier": "prettier --check \"src/**/*.ts\"",
     "prettier:fix": "prettier --write \"src/**/*.ts\"",
@@ -29,6 +34,9 @@
     "deploy": "gh-pages -d docs"
   },
   "dependencies": {
-    "@hypersphere/omnibus": "^0.1.4"
+    "@hypersphere/omnibus": "^0.1.6"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
