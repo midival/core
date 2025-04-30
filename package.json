@@ -9,6 +9,15 @@
     ".": "./dist/index.js",
     "./mpe": "./dist/mpe.js"
   },
+  "homepage": "https://midival.github.io",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:midival/core.git"
+  },
+  "author": {
+    "name": "Kacper Kula",
+    "url": "https://hypersphere.blog"
+  },
   "devDependencies": {
     "@changesets/cli": "^2.29.2",
     "@types/jest": "^29.5.14",
