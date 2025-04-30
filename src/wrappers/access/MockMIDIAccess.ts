@@ -39,7 +39,7 @@ export class MockMIDIAccess implements IMIDIAccess {
     return this.bus.on("output_disconnected", callback);
   }
 
-  async connect(): Promise<void> {
+  async connect(_sysex: boolean = false): Promise<void> {
     await Promise.resolve();
   }
 

@@ -161,6 +161,7 @@ export class MIDIValInput {
           return;
         }
         const midiMessage = toMidiMessage(e.data);
+        this.omnibus.trigger('message', midiMessage)
         switch (midiMessage.command) {
           case MidiCommand.NoteOn:
             this.omnibus.trigger("noteOn", toNoteMessage(midiMessage));
@@ -196,8 +197,6 @@ export class MIDIValInput {
             this.omnibus.trigger("channelPressure", midiMessage);
             break;
           default:
-            // TODO: Unknown message.
-            console.log("unknown msg", midiMessage);
             break;
         }
       }
