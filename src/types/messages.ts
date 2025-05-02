@@ -12,7 +12,7 @@ export interface NoteMessage extends MidiMessage {
 export const toNoteMessage = (m: MidiMessage): NoteMessage => ({
   ...m,
   note: m.data1,
-  velocity: m.data2,
+  velocity: m.data2 ?? 0,
 });
 
 /**
@@ -29,7 +29,7 @@ export const toControlChangeMessage = (
 ): ControlChangeMessage => ({
   ...m,
   control: m.data1,
-  value: m.data2,
+  value: m.data2 ?? 0,
 });
 
 /**
@@ -44,5 +44,5 @@ export interface ProgramChangeMessage extends MidiMessage {
 export const toProgramMessage = (m: MidiMessage): ProgramChangeMessage => ({
   ...m,
   program: m.data1,
-  value: m.data2,
+  value: m.data2 ?? 0,
 });

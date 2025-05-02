@@ -9,10 +9,11 @@ export const MIDIRegisteredParameters = {
 } as const;
 
 export const toRegisteredParameterKey = (
-  data: [number, number]
+  data: [number | null, number | null]
 ): keyof typeof MIDIRegisteredParameters => {
+  const [data0, data1] = data.map(val => val ?? -1);
   for (const [key, value] of Object.entries(MIDIRegisteredParameters)) {
-    if (value[0] === data[0] && value[1] === data[1]) {
+    if (value[0] === data0 && value[1] === data1) {
       return key as keyof typeof MIDIRegisteredParameters;
     }
   }

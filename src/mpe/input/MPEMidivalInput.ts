@@ -14,8 +14,8 @@ export interface MPEInputConfig {
 export class MPEMidivalInput {
   private eventBus = this.buildBus()
 
-  #lowerZone: MPEInputZone;
-  #upperZone: MPEInputZone;
+  #lowerZone: MPEInputZone | null = null;
+  #upperZone: MPEInputZone | null = null;
 
   private buildBus() {
     return Omnibus.builder()
@@ -44,22 +44,26 @@ export class MPEMidivalInput {
 
   }
 
-  private instantiateLowerZone(size: number) {
+  private instantiateLowerZone(size: number | null) {
     if (!size) {
       this.#lowerZone = null;
     } else {
       this.#lowerZone = new MPEInputZone(1, [2, 1 + size], this.input);
     }
-    this.eventBus.trigger("lowerZoneUpdate", this.#lowerZone);
+    if (this.#lowerZone) {
+      this.eventBus.trigger("lowerZoneUpdate", this.#lowerZone);
+    }
   }
 
-  private instantiateUpperZone(size: number) {
+  private instantiateUpperZone(size: number | null) {
     if (!size) {
       this.#upperZone = null;
     } else {
       this.#upperZone = new MPEInputZone(16, [15 - size, 15], this.input);
     }
-    this.eventBus.trigger("upperZoneUpdate", this.#upperZone);
+    if (this.#upperZone) {
+      this.eventBus.trigger("upperZoneUpdate", this.#upperZone);
+    }
   }
 
   get isMpeEnabled() {

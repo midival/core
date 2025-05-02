@@ -5,7 +5,7 @@ import { IMIDIInput } from "./wrappers/inputs/IMIDIInput";
 import { MockMIDIInput } from "./wrappers/inputs/MockMIDIInput";
 
 describe("MIDIVal", () => {
-  let mockMidiAccess: MockMIDIAccess = null;
+  let mockMidiAccess: MockMIDIAccess = {} as MockMIDIAccess;
   beforeEach(() => {
     mockMidiAccess = new MockMIDIAccess();
     MIDIVal.configureAccessObject(mockMidiAccess);

@@ -1,5 +1,5 @@
 import { UnregisterCallback } from "@hypersphere/omnibus";
-import { IMIDIInput } from "./IMIDIInput";
+import { IMIDIInput, MIDIMessage, OnMessageCallback } from "./IMIDIInput";
 
 export type MidiMessageCallback = (e: WebMidi.MIDIMessageEvent) => void;
 
@@ -9,11 +9,17 @@ export class BrowserMIDIInput implements IMIDIInput {
     this.input = input;
   }
 
-  async onMessage(fn: MidiMessageCallback): Promise<UnregisterCallback> {
+  async onMessage(callback: OnMessageCallback): Promise<UnregisterCallback> {
     await this.input.open();
-    this.input.addEventListener("midimessage", fn);
+    const wrappedCallback: MidiMessageCallback = (e: WebMidi.MIDIMessageEvent) => {
+      callback({
+        data: e.data,
+        receivedTime: e.timeStamp
+      });
+    };
+    this.input.addEventListener("midimessage", wrappedCallback);
     return () => {
-      this.input.removeEventListener("midimessage", fn);
+      this.input.removeEventListener("midimessage", wrappedCallback);
     };
   }
 
@@ -22,10 +28,10 @@ export class BrowserMIDIInput implements IMIDIInput {
   }
 
   get name(): string {
-    return this.input.name;
+    return this.input.name || "";
   }
 
   get manufacturer(): string {
-    return this.input.manufacturer;
+    return this.input.manufacturer || "";
   }
 }

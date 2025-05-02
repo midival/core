@@ -6,7 +6,7 @@ export class MockMIDIOutput implements IMIDIOutput {
   _id: string;
   _name: string;
   _manufacturer: string;
-  _callback: OnMessageCallback;
+  _callback: OnMessageCallback | null = null;
 
   constructor({ id, name, manufacturer }: MidiDeviceProps) {
     this._id = id;

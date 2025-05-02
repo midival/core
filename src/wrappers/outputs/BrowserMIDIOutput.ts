@@ -15,10 +15,10 @@ export class BrowserMIDIOutput implements IMIDIOutput {
   }
 
   get name(): string {
-    return this.output.name;
+    return this.output.name || "";
   }
 
   get manufacturer(): string {
-    return this.output.manufacturer;
+    return this.output.manufacturer || "";
   }
 }

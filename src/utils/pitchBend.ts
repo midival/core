@@ -19,10 +19,10 @@ export const splitNumberIntoUInt8s = (n: number): number[] => {
   return arr;
 };
 
-export const uIntsIntoNumber = (arr: number[]): number => {
-  return arr[0] + (arr[1] << 7);
+export const uIntsIntoNumber = (arr: (number | null)[]): number => {
+  return (arr[0] ?? 0) + ((arr[1] ?? 0) << 7);
 };
 
-export const splitValueIntoFraction = (arr: number[]): number => {
+export const splitValueIntoFraction = (arr: (number | null)[]): number => {
   return (uIntsIntoNumber(arr) / 16363 - 0.5) * 2;
 };

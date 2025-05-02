@@ -9,13 +9,13 @@ jobs:
   build-docs:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-      - uses: pnpm/action-setup@v2
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
         with:
-          version: 8
+          version: 10
       - uses: actions/setup-node@v4
         with:
-          node-version: 21.x
+          node-version: 22.x
           cache: "pnpm"
       - run: pnpm install --frozen-lockfile
       - name: Compile
@@ -32,13 +32,13 @@ jobs:
     env:
       NPM_TOKEN: ${{secrets.NPM_TOKEN}}
     steps:
-      - uses: actions/checkout@v1
-      - uses: pnpm/action-setup@v2
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
         with:
-          version: 8
+          version: 10
       - uses: actions/setup-node@v4
         with:
-          node-version: 21.x
+          node-version: 22.x
           cache: "pnpm"
       - run: pnpm install --frozen-lockfile
       - name: Download artifacts

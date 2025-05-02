@@ -8,19 +8,19 @@ const access = {
   inputs: new Map(),
   outputs: new Map(),
   onstatechange: jest.fn(),
-  addEventListener: jest.fn((event, callback: (any) => void) =>
+  addEventListener: jest.fn((event, callback: (arg0: any) => void) =>
     _bus.on(event, callback)
   ),
   sysexEnabled: false,
   dispatchEvent: jest.fn(),
   removeEventListener: jest.fn(),
-} satisfies WebMidi.MIDIAccess;
+} satisfies MIDIAccess;
 
 describe("BrowserMIDIAccess", () => {
   beforeAll(() => {
     // @ts-ignore
     navigator.requestMIDIAccess = (options) =>
-      Promise.resolve(access as unknown as WebMidi.MIDIAccess);
+      Promise.resolve(access as unknown as MIDIAccess);
   });
 
   it("should properly instantiate BrowserMIDIAccess", async () => {
@@ -36,7 +36,7 @@ describe("BrowserMIDIAccess", () => {
     accessObject.onInputConnected(inputConnectedCallback);
     access.inputs.set("1234", {
       id: "1234",
-    } as undefined);
+    });
     _bus.trigger("statechange", {
       port: {
         type: "input",
@@ -65,7 +65,7 @@ describe("BrowserMIDIAccess", () => {
     accessObject.onOutputConnected(outputConnectedCallback);
     access.outputs.set("1234", {
       id: "1234",
-    } as undefined);
+    });
     _bus.trigger("statechange", {
       port: {
         type: "output",
@@ -90,7 +90,7 @@ describe("BrowserMIDIAccess", () => {
   it("should throw error when there's no navigator.requestMIDIAccess", () => {
     const accessObject = new BrowserMIDIAccess();
     const prevNav = navigator.requestMIDIAccess;
-    navigator.requestMIDIAccess = null;
+    (navigator as any).requestMIDIAccess = null;
     expect(accessObject.connect()).rejects.toEqual(
       new Error(
         "requestMIDIAccess not available, make sure you are using MIDI-compatible browser."
@@ -106,7 +106,7 @@ describe("BrowserMIDIAccess", () => {
       type: "input",
       id: "1234",
       name: "MIDI In",
-    } as unknown as WebMidi.MIDIInput);
+    } as unknown as MIDIInput);
     await accessObject.connect();
     expect(accessObject.inputs).toHaveLength(1);
     expect(accessObject.inputs[0].name).toEqual("MIDI In");
@@ -119,7 +119,7 @@ describe("BrowserMIDIAccess", () => {
       type: "output",
       id: "1234",
       name: "MIDI Out",
-    } as unknown as WebMidi.MIDIOutput);
+    } as unknown as MIDIOutput);
     await accessObject.connect();
     expect(accessObject.outputs).toHaveLength(1);
     expect(accessObject.outputs[0].name).toEqual("MIDI Out");

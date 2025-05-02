@@ -18,18 +18,27 @@ export const matchesConfig = (
   scheme: ConfigScheme
 ): boolean => {
   return Object.keys(scheme).reduce((acc, key) => {
-    const val = scheme[key] as string | RegExp;
+    const val = scheme[key as keyof ConfigScheme] as string | RegExp;
     if (typeof val === "string") {
-      return acc && input[key] === val;
+      return acc && (input as any)[key] === val;
     } else {
-      return acc && val.test(input[key]);
+      return acc && val.test((input as any)[key]); // FIXME: fix typings here.
     }
   }, true);
 };
 
+export interface ConnectConfig {
+  sysex: boolean
+}
+
+const DEFAULT_CONFIG = {
+  sysex: false
+} satisfies ConnectConfig
+
 export class MIDIVal {
   private static isSetupComplete: boolean = false;
   private static accessObject: IMIDIAccess;
+  private static connectionConfig: ConnectConfig
 
   /**
    * Allows to reconfigure access object to use project in different environment as the default one (browser): See @midival/node, @midival/react-native for more details.
@@ -151,7 +160,8 @@ export class MIDIVal {
    * Connects to MIDI interface and returns implementation of IMIDIAccess
    * @returns Promise resolving to IMIDIAccess
    */
-  public static async connect(): Promise<IMIDIAccess> {
+  public static async connect(connectConfig: ConnectConfig = DEFAULT_CONFIG): Promise<IMIDIAccess> {
+    this.connectionConfig = connectConfig
     await this.setupDeviceWatchers();
     return this.accessObject;
   }
@@ -166,6 +176,6 @@ export class MIDIVal {
       this.accessObject = new BrowserMIDIAccess();
     }
 
-    await this.accessObject.connect();
+    await this.accessObject.connect(this.connectionConfig.sysex);
   }
 }

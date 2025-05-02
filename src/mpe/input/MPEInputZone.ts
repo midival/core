@@ -89,15 +89,15 @@ export class MPEInputZone {
       if (message.channel === this.masterChannel) {
         this.eventBus.trigger("masterPressure", {
           channel: message.channel,
-          value: message.data2,
+          value: message.data2 ?? 0,
         });
-        this.#pressure = message.data2;
+        this.#pressure = message.data2 ?? 0;
         return;
       }
       if (message.channel >= minCh && message.channel <= maxCh) {
         this.eventBus.trigger("memberPressure", {
           channel: message.channel,
-          memberPressure: message.data2,
+          memberPressure: message.data2 ?? 0,
           masterPressure: this.#pressure,
         });
       }
@@ -107,15 +107,15 @@ export class MPEInputZone {
       if (message.channel === this.masterChannel) {
         this.eventBus.trigger("masterTimbre", {
           channel: message.channel,
-          value: message.data2,
+          value: message.data2 ?? 0,
         });
-        this.#timbre = message.data2;
+        this.#timbre = message.data2 ?? 0;
         return;
       }
       if (message.channel >= minCh && message.channel <= maxCh) {
         this.eventBus.trigger("memberTimbre", {
           channel: message.channel,
-          memberTimbre: message.data2,
+          memberTimbre: message.data2 ?? 0,
           masterTimbre: this.#timbre,
         });
       }

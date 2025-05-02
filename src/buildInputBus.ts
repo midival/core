@@ -19,6 +19,7 @@ export const buildInputBus = () => {
       .register('clockStop', args<void>())
       .register('clockContinue', args<void>())
       .register('registeredParameterData', args<RegisteredParameterData>())
+      .register('message', args<MidiMessage>())
       .build()
 }
 
