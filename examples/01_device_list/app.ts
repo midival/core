@@ -1,7 +1,7 @@
 import { IMIDIAccess, MIDIVal } from "../../src/index";
 
-const inputsContainer = document.querySelector("#midi-inputs");
-const outputsContainer = document.querySelector("#midi-outputs");
+const inputsContainer = document.querySelector("#midi-inputs")!;
+const outputsContainer = document.querySelector("#midi-outputs")!;
 
 const renderInput = (access: IMIDIAccess) => {
     const ul = document.createElement("ul");
