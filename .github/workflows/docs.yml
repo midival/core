@@ -21,7 +21,7 @@ jobs:
       - name: Compile
         run: pnpm run docs
       - name: Upload docs folder
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v4
         with:
           name: docs
           path: docs/
@@ -42,7 +42,7 @@ jobs:
           cache: "pnpm"
       - run: pnpm install --frozen-lockfile
       - name: Download artifacts
-        uses: actions/download-artifact@v1
+        uses: actions/download-artifact@v4
         with:
           name: docs
       - name: Deploy with gh-pages
