@@ -9,7 +9,7 @@ import {
   isChannelMode,
   MidiMessage,
 } from "./utils/MIDIMessageConvert";
-import { IMIDIInput } from "./wrappers/inputs/IMIDIInput";
+import { IMIDIInput, MIDIMessage } from "./wrappers/inputs/IMIDIInput";
 import { MIDIVal } from "./index";
 import { IMIDIAccess } from "./wrappers/access/IMIDIAccess";
 import { splitValueIntoFraction } from "./utils/pitchBend";
@@ -43,8 +43,8 @@ export interface PitchBendMessage {
 export interface RegisteredParameterData {
   channel: number;
   parameter: keyof typeof MIDIRegisteredParameters;
-  msb: number;
-  lsb: number;
+  msb: number | null;
+  lsb: number | null;
 }
 
 const TEMPO_SAMPLES_LIMIT = 20;
@@ -61,14 +61,12 @@ const DefaultOptions: MIDIValInputOptions = {
 };
 
 export class MIDIValInput {
-  private unregisterInput: UnregisterCallback;
+  private unregisterInput?: UnregisterCallback;
   private omnibus = buildInputBus()
-
-  private midiInput: IMIDIInput;
 
   private tempoSamples: number[] = [];
 
-  private rpn: [number, number] = [-1, -1];
+  private rpn: [number | null, number | null] = [-1, -1];
 
   constructor(
     input: IMIDIInput,
@@ -145,13 +143,12 @@ export class MIDIValInput {
   const B extends typeof this.omnibus, const T extends OmnibusKeys<B>,
     Cb extends undefined | CallbackType<OmnibusParams<B, OmnibusKeysCheck<B, T>>>
   >(key: T, cb?: Cb): any {
-    return this.omnibus.once(key as any, cb)
+    return this.omnibus.once(key as any, cb as any) // FIXME: fix typing here
   }
 
   private async registerInput(input: IMIDIInput): Promise<void> {
-    this.midiInput = input;
     this.unregisterInput = await input.onMessage(
-      (e: WebMidi.MIDIMessageEvent) => {
+      (e: MIDIMessage) => {
         if (e.data[0] === 0xf0) {
           // sysex
           this.omnibus.trigger("sysex", e.data);
@@ -223,14 +220,14 @@ export class MIDIValInput {
     this.onControlChange(
       MidiControlChange.RegisteredParameterNumberMSB,
       (message) => {
-        this.rpn = [message.data2, this.rpn[1]];
+        this.rpn = [message.data2 ?? 0, this.rpn[1]];
       }
     );
 
     this.onControlChange(
       MidiControlChange.RegisteredParameterNumberLSB,
       (message) => {
-        this.rpn = [this.rpn[0], message.data2];
+        this.rpn = [this.rpn[0], message.data2 ?? 0];
       }
     );
 
@@ -255,7 +252,7 @@ export class MIDIValInput {
     });
   }
 
-  private isClockCommand(e: WebMidi.MIDIMessageEvent): boolean {
+  private isClockCommand(e: MIDIMessage): boolean {
     switch (e.data[0]) {
       case MidiCommand.Clock.Pulse:
         this.omnibus.trigger("clockPulse");
@@ -456,7 +453,7 @@ export class MIDIValInput {
    * @returns Unregister callback
    */
   onSysex(callback: CallbackType<[Uint8Array]>): UnregisterCallback {
-    return this.omnibus.on("sysex", callback);
+    return this.omnibus.on("sysex", callback as any); // FIXME: fix typing here.
   }
 
   /**

@@ -10,8 +10,8 @@ export interface MPEOutputConfig {
 export class MPEMidivalOutput {
   private midivalOutput: MIDIValOutput;
 
-  #lowerZone: MPEOutputZone = null;
-  #upperZone: MPEOutputZone = null;
+  #lowerZone: MPEOutputZone | null = null;
+  #upperZone: MPEOutputZone | null = null;
 
   get lowerZone() {
     return this.#lowerZone;

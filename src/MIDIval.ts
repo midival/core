@@ -18,11 +18,11 @@ export const matchesConfig = (
   scheme: ConfigScheme
 ): boolean => {
   return Object.keys(scheme).reduce((acc, key) => {
-    const val = scheme[key] as string | RegExp;
+    const val = scheme[key as keyof ConfigScheme] as string | RegExp;
     if (typeof val === "string") {
-      return acc && input[key] === val;
+      return acc && (input as any)[key] === val;
     } else {
-      return acc && val.test(input[key]);
+      return acc && val.test((input as any)[key]); // FIXME: fix typings here.
     }
   }, true);
 };

@@ -11,7 +11,7 @@ export class MockMIDIInput implements IMIDIInput {
   private _name: string;
   private _id: string;
   private _manufacturer: string;
-  private _callback: OnMessageCallback;
+  private _callback: OnMessageCallback | null = null;
 
   constructor({ id, name, manufacturer }: MidiDeviceProps) {
     this._id = id;

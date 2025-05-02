@@ -6,7 +6,7 @@ export interface MidiMessage {
   channel: number;
   command: number;
   data1: number;
-  data2: number;
+  data2: number | null;
 }
 
 type MidiData = Uint8Array;
@@ -18,7 +18,7 @@ export const makeMessage = ({
   data1,
   data2,
 }: MidiMessage): Uint8Array => {
-  return Uint8Array.from([command + (channel - 1), data1, data2]);
+  return Uint8Array.from([command + (channel - 1), data1, data2 ?? 0]);
 };
 
 export const toMidiMessage = ([

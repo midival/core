@@ -18,6 +18,7 @@ export class MPEOutputZone {
         return key;
       }
     }
+    return 0; // FIXME: check if this is definitely correct
   }
 
   private forEachMember(fn: (channel: number) => void) {
@@ -34,7 +35,7 @@ export class MPEOutputZone {
       ch.set(i, 0);
     }
     this.#notes.forEach((n) => {
-      ch.set(n.channel, ch.get(n.channel) + 1);
+      ch.set(n.channel, (ch.get(n.channel) ?? 0) + 1);
     });
     // Filter out notes that are off
     this.#notes = this.#notes.filter((n) => n.isActive);

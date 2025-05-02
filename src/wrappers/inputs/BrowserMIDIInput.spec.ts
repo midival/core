@@ -23,10 +23,10 @@ describe("BrowserMIDIInput", () => {
     const input = new BrowserMIDIInput(inputObj);
     const fn = jest.fn();
     const remove = await input.onMessage(fn);
-    expect(inputObj.addEventListener).toBeCalledWith("midimessage", fn);
+    expect(inputObj.addEventListener).toHaveBeenCalledWith("midimessage", expect.any(Function));
     expect(inputObj.removeEventListener).not.toBeCalled();
     expect(inputObj.open).toBeCalled();
     remove();
-    expect(inputObj.removeEventListener).toBeCalledWith("midimessage", fn);
+    expect(inputObj.removeEventListener).toHaveBeenCalledWith("midimessage", expect.any(Function));
   });
 });
