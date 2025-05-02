@@ -26,28 +26,28 @@ jobs:
           name: docs
           path: docs/
 
-  publish-docs:
-    runs-on: ubuntu-latest
-    needs: build-docs
-    env:
-      NPM_TOKEN: ${{secrets.NPM_TOKEN}}
-    steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 10
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22.x
-          cache: "pnpm"
-      - run: pnpm install --frozen-lockfile
-      - name: Download artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: docs
-      - name: Deploy with gh-pages
-        run: |
-          git remote set-url origin https://git:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
-          npx gh-pages -d docs -u "github-actions-bot <support+actions@github.com>"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  # publish-docs:
+  #   runs-on: ubuntu-latest
+  #   needs: build-docs
+  #   env:
+  #     NPM_TOKEN: ${{secrets.NPM_TOKEN}}
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: pnpm/action-setup@v4
+  #       with:
+  #         version: 10
+  #     - uses: actions/setup-node@v4
+  #       with:
+  #         node-version: 22.x
+  #         cache: "pnpm"
+  #     - run: pnpm install --frozen-lockfile
+  #     - name: Download artifacts
+  #       uses: actions/download-artifact@v4
+  #       with:
+  #         name: docs
+  #     - name: Deploy with gh-pages
+  #       run: |
+  #         git remote set-url origin https://git:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
+  #         npx gh-pages -d docs -u "github-actions-bot <support+actions@github.com>"
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
